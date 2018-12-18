@@ -5,9 +5,9 @@ aeolus2netcdf is a converter for L2A data of the ESA satellite
 The reading is done using ESA's reading library [coda](http://stcorp.nl/coda/) 
 (provided by [Science [&] Technology Corporation](http://stcorp.nl)). coda is now also [packaged for conda](https://anaconda.org/stcorp/coda).
 
-The purpose of aeolus2netcdf is therefore, to just convert the binary file to a netcdf file that can be easier read by 
-other programs. The contents of the resulting netcdf files are focused on [Met Norway's](https://www.met.no/) cal / val effort
-for the ADM Aeolus mission at this point and might therefore not contain all the information in the binary file.
+The purpose of aeolus2netcdf is to convert the binary file to a netcdf file that can be read without coda by 
+other programs. The contents of the resulting netcdf files are focused on [Met Norway's](https://www.met.no/) cal/val effort
+for the ADM Aeolus mission at this point and might therefore not contain all the information of the binary file.
 
 # prerequests
 The converter needs a working python interface to [coda](http://stcorp.nl/coda/). You can either install it if you use anaconda as
