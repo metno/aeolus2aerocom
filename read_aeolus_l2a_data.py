@@ -84,7 +84,7 @@ class ReadAeolusL2aData:
     _LODINDEX = 7
     # for distance calculations we need the location in radians
     # so store these for speed in self.data
-    # the following indexes indicate the column in that is stored
+    # the following indexes indicate the column where that is stored
     _RADLATINDEX = 8
     _RADLONINDEX = 9
     _DISTINDEX = 10
@@ -724,18 +724,18 @@ class ReadAeolusL2aData:
             # a geopy supported geoid for the calculation. Although that will then be another
             # magnitude slower than geopy.distance.great_circle
             start = time.perf_counter()
-            for idx in range(len(self.data[:,self._TIMEINDEX])):
+            for idx in range(len(self.data[:, self._TIMEINDEX])):
                 # blend out NaNs in lat and long
-                if np.isnan(self.data[idx,self._LATINDEX] + self.data[idx,self._LONINDEX]):
-                    self.data[idx,self._DISTINDEX] = np.nan
+                if np.isnan(self.data[idx, self._LATINDEX] + self.data[idx, self._LONINDEX]):
+                    self.data[idx, self._DISTINDEX] = np.nan
                     continue
 
                 # one magnitude slower than geopy.distance.great_circle
                 # distance = geopy.distance.distance(locs[0],(file_data['latitude']['data'][idx], file_data['longitude']['data'][idx])).m
                 # exclude wrong coordinates
                 self.data[idx, self._DISTINDEX] = geopy.distance.great_circle(location,
-                                                       (self.data[idx,self._LATINDEX],
-                                                        self.data[idx, self._LONINDEX])).km
+                                                                              (self.data[idx, self._LATINDEX],
+                                                                               self.data[idx, self._LONINDEX])).km
 
             end_time = time.perf_counter()
             elapsed_sec = end_time - start
@@ -785,13 +785,13 @@ class ReadAeolusL2aData:
         index_counter = 0
         cut_flag = True
         if location is not None:
-            if isinstance(location,list):
+            if isinstance(location, list):
                 # parameter is a list
                 # iterate
                 for idx_lat, loc in enumerate(location):
                     # calculate distance
                     self.calc_dist_in_data(loc)
-                    matching_indexes = np.where(self.data[:,self._DISTINDEX] < max_dist)
+                    matching_indexes = np.where(self.data[:, self._DISTINDEX] < max_dist)
                     matching_length = len(matching_indexes[0])
                     if matching_length > 0:
                         # check if the data fits into ret_data
@@ -800,11 +800,11 @@ class ReadAeolusL2aData:
                             # append the needed elements
                             logging.info('adding {} elements to ret_data'.format(end_index - len(ret_data)))
                             ret_data = np.append(ret_data,
-                                np.zeros([end_index - len(ret_data),
-                                          self._COLNO], dtype=np.float_,axis=0))
+                                                 np.zeros([end_index - len(ret_data),
+                                                           self._COLNO], dtype=np.float_, axis=0))
                             cut_flag = False
 
-                        ret_data[index_counter:index_counter+matching_length,:] = self.data[matching_indexes,:]
+                        ret_data[index_counter:index_counter + matching_length, :] = self.data[matching_indexes, :]
                         index_counter += matching_length
 
             elif isinstance(location, tuple):
@@ -827,7 +827,7 @@ class ReadAeolusL2aData:
 
         elif bbox is not None:
             # return points in the bounding box given in bbox
-            if isinstance(bbox,list):
+            if isinstance(bbox, list):
                 # parameter is a list
                 # iterate
                 ret_data = {}
@@ -851,16 +851,16 @@ class ReadAeolusL2aData:
             start_lon = -180.
             end_lon = 180.
             lon_spacing = 1.
-            grid_lats_start = list(np.arange(start_lat,end_lat,lat_spacing))
-            grid_lats_end = list(np.arange(start_lat+lat_spacing,end_lat+lat_spacing,lat_spacing))
-            grid_lons_start = list(np.arange(start_lon,end_lon,lon_spacing))
-            grid_lons_end = list(np.arange(start_lon+lon_spacing,end_lon+lon_spacing,lon_spacing))
+            grid_lats_start = list(np.arange(start_lat, end_lat, lat_spacing))
+            grid_lats_end = list(np.arange(start_lat + lat_spacing, end_lat + lat_spacing, lat_spacing))
+            grid_lons_start = list(np.arange(start_lon, end_lon, lon_spacing))
+            grid_lons_end = list(np.arange(start_lon + lon_spacing, end_lon + lon_spacing, lon_spacing))
 
             bbox_temp = []
             for idx_lat in range(len(grid_lats_start)):
                 for idx_lon in range(len(grid_lons_start)):
                     bbox_temp.append((grid_lats_start[idx_lat], grid_lats_end[idx_lat],
-                                 grid_lons_start[idx_lon], grid_lons_end[idx_lon]))
+                                      grid_lons_start[idx_lon], grid_lons_end[idx_lon]))
             ret_data = {}
             for idx, _bbox in enumerate(bbox_temp):
                 # select the values
@@ -881,7 +881,7 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def select_bbox(self,bbox=None):
+    def select_bbox(self, bbox=None):
         """method to return all points of self.data laying within a certain latitude and longitude range
 
         This method will likely never be used by a user, but serves as helper method for the colocate method
@@ -915,11 +915,11 @@ class ReadAeolusL2aData:
 
             # remove NaNs at this point
             matching_indexes = np.where(np.isfinite(self.data[:, self._LATINDEX]))
-            ret_data = self.data[matching_indexes[0],:]
+            ret_data = self.data[matching_indexes[0], :]
 
             # np.where can unfortunately only work with a single criterion
             matching_indexes = np.where(ret_data[:, self._LATINDEX] <= lat_max)
-            ret_data = ret_data[matching_indexes[0],:]
+            ret_data = ret_data[matching_indexes[0], :]
             # logging.warning('len after lat_max: {}'.format(len(ret_data)))
             matching_indexes = np.where(ret_data[:, self._LATINDEX] > lat_min)
             ret_data = ret_data[matching_indexes[0], :]
@@ -941,6 +941,7 @@ class ReadAeolusL2aData:
             # self.logger.info('matching times:')
             # self.logger.info(unique_times)
             return ret_data
+
     ###################################################################################
 
     def plot_profile(self):
@@ -985,4 +986,385 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
+    def to_netcdf_simple(self, netcdf_filename='/home/jang/tmp/to_netcdf_simple.nc'):
+
+        """method to store the file contents in a very basic netcdf file
+        >>> import read_aeolus_l2a_data
+        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> import os
+        >>> os.environ['CODA_DEFINITION']='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/'
+        >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
+        >>> # read returning a ndarray
+        >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
+        >>> obj.ndarr2data(filedata_numpy)
+        >>> obj.to_netcdf_simple()
+
+
+        """
+
+        start_time = time.perf_counter()
+        import xarray as xr
+        import pandas as pd
+        import numpy as np
+        datetimedata = pd.to_datetime(self.data[:, self._TIMEINDEX].astype('datetime64[s]'))
+        pointnumber = np.arange(0, len(datetimedata))
+        ds = xr.Dataset()
+        ds['time'] = ('point'), datetimedata
+        ds['latitude'] = ('point'), self.data[:, self._LATINDEX]
+        ds['longitude'] = ('point'), self.data[:, self._LONINDEX]
+        ds['height'] = ('point'), self.data[:, self._ALTITUDEINDEX]
+        ds['ec355aer'] = ('point'), self.data[:, self._EC355INDEX]
+        ds.coords['point'] = pointnumber
+        ds.to_netcdf(netcdf_filename)
+
+        end_time = time.perf_counter()
+        elapsed_sec = end_time - start_time
+        temp = 'time for netcdf write [s]: {:.3f}'.format(elapsed_sec)
+        self.logger.info(temp)
+        temp = 'file written: {}'.format(netcdf_filename)
+        self.logger.info(temp)
+
+    ###################################################################################
+
+    def read_data_fields(self, filename, fields_to_read=['mph','sca_optical_properties'], loglevel=None):
+        """method to read certain fields of an ESA binary data file
+
+        Parameters
+        ----------
+        filename : str
+            absolute path to filename to read
+        vars_to_read : list
+            list of str with variable names to read; defaults to ['od355aer']
+        verbose : Bool
+            set to True to increase verbosity
+
+        Returns
+        --------
+        Either:
+            dictionary (default):
+                keys are 'time', 'latitude', 'longitude', 'altitude' and the variable names
+                'ec355aer', 'bs355aer', 'sr', 'lod' if the whole file is read
+                'time' is a 1d array, while the other dict values are a another dict with the
+                time as keys (the same ret['time']) and a numpy array as values. These values represent the profile.
+                Note 1: latitude and longitude are height dependent due to the tilt of the measurement.
+                Note 2: negative values indicate a NaN
+
+            2d ndarray of type float:
+                representing a 'point cloud' with all points
+                    column 1: time in seconds since the Unix epoch with ms accuracy (same time for every height
+                    in a profile)
+                    column 2: latitude
+                    column 3: longitude
+                    column 4: altitude
+                    column 5: extinction
+                    column 6: backscatter
+                    column 7: sr
+                    column 8: lod
+
+                    Note: negative values are put to np.nan already
+
+                    The indexes are noted in read_aeolus_l2a_data.ReadAeolusL2aData.<index_name>
+                    e.g. the time index is named read_aeolus_l2a_data.ReadAeolusL2aData._TIMEINDEX
+                    have a look at the example to access the values
+
+        This is whats in one DBL file
+        codadump list /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL
+
+        /mph/product
+        /mph/proc_stage
+        /mph/ref_doc
+        /mph/acquisition_station
+        /mph/proc_center
+        /mph/proc_time
+        /mph/software_ver
+        /mph/baseline
+        /mph/sensing_start
+        /mph/sensing_stop
+        /mph/phase
+        /mph/cycle
+        /mph/rel_orbit
+        /mph/abs_orbit
+        /mph/state_vector_time
+        /mph/delta_ut1
+        /mph/x_position
+        /mph/y_position
+        /mph/z_position
+        /mph/x_velocity
+        /mph/y_velocity
+        /mph/z_velocity
+        /mph/vector_source
+        /mph/utc_sbt_time
+        /mph/sat_binary_time
+        /mph/clock_step
+        /mph/leap_utc
+        /mph/leap_sign
+        /mph/leap_err
+        /mph/product_err
+        /mph/tot_size
+        /mph/sph_size
+        /mph/num_dsd
+        /mph/dsd_size
+        /mph/num_data_sets
+        /sph/sph_descriptor
+        /sph/intersect_start_lat
+        /sph/intersect_start_long
+        /sph/intersect_stop_lat
+        /sph/intersect_stop_long
+        /sph/sat_track
+        /sph/num_brc
+        /sph/num_meas_max_brc
+        /sph/num_bins_per_meas
+        /sph/num_prof_sca
+        /sph/num_prof_ica
+        /sph/num_prof_mca
+        /sph/num_group_tot
+        /dsd[?]/ds_name
+        /dsd[?]/ds_type
+        /dsd[?]/filename
+        /dsd[?]/ds_offset
+        /dsd[?]/ds_size
+        /dsd[?]/num_dsr
+        /dsd[?]/dsr_size
+        /dsd[?]/byte_order
+        /geolocation[?]/start_of_obs_time
+        /geolocation[?]/num_meas_eff
+        /geolocation[?]/measurement_geolocation[?]/centroid_time
+        /geolocation[?]/measurement_geolocation[?]/mie_geolocation_height_bin[25]/longitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/mie_geolocation_height_bin[25]/latitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/mie_geolocation_height_bin[25]/altitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/rayleigh_geolocation_height_bin[25]/longitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/rayleigh_geolocation_height_bin[25]/latitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/rayleigh_geolocation_height_bin[25]/altitude_of_height_bin
+        /geolocation[?]/measurement_geolocation[?]/longitude_of_dem_intersection
+        /geolocation[?]/measurement_geolocation[?]/latitude_of_dem_intersection
+        /geolocation[?]/measurement_geolocation[?]/altitude_of_dem_intersection
+        /geolocation[?]/geoid_separation
+        /meas_pcd[?]/start_of_obs_time
+        /meas_pcd[?]/l1b_input_screening/l1b_obs_screening
+        /meas_pcd[?]/l1b_input_screening/l1b_obs_screening_flags[40]
+        /meas_pcd[?]/l1b_input_screening/l1b_mie_meas_screening[?]/l1b_mie_meas_qc
+        /meas_pcd[?]/l1b_input_screening/l1b_mie_meas_screening[?]/l1b_mie_meas_qc_flags[8]
+        /meas_pcd[?]/l1b_input_screening/l1b_rayleigh_meas_screening[?]/l1b_rayleigh_meas_qc
+        /meas_pcd[?]/l1b_input_screening/l1b_rayleigh_meas_screening[?]/l1b_rayleigh_meas_qc_flags[8]
+        /meas_pcd[?]/l1b_cal_screening/cal_valid
+        /meas_pcd[?]/l2a_processing_qc/sca_applied
+        /meas_pcd[?]/l2a_processing_qc/ica_applied
+        /meas_pcd[?]/l2a_processing_qc/mca_applied
+        /meas_pcd[?]/l2a_processing_qc/feature_finder_indicators/layer_information[24]/bin_loaded
+        /meas_pcd[?]/l2a_processing_qc/feature_finder_indicators/layer_information[24]/seed[30]
+        /meas_pcd[?]/l2a_processing_qc/feature_finder_indicators/lowest_computable_bin[30]
+        /sca_pcd[?]/starttime
+        /sca_pcd[?]/firstmatchingbin
+        /sca_pcd[?]/qc_flag
+        /sca_pcd[?]/profile_pcd_bins[24]/extinction_variance
+        /sca_pcd[?]/profile_pcd_bins[24]/backscatter_variance
+        /sca_pcd[?]/profile_pcd_bins[24]/lod_variance
+        /sca_pcd[?]/profile_pcd_bins[24]/processing_qc_flag
+        /sca_pcd[?]/profile_pcd_mid_bins[23]/extinction_variance
+        /sca_pcd[?]/profile_pcd_mid_bins[23]/backscatter_variance
+        /sca_pcd[?]/profile_pcd_mid_bins[23]/lod_variance
+        /sca_pcd[?]/profile_pcd_mid_bins[23]/ber_variance
+        /sca_pcd[?]/profile_pcd_mid_bins[23]/processing_qc_flag
+        /ica_pcd[?]/starttime
+        /ica_pcd[?]/first_matching_bin
+        /ica_pcd[?]/qc_flag
+        /ica_pcd[?]/ica_processing_qc_flag_bin[24]
+        /mca_pcd[?]/starttime
+        /mca_pcd[?]/processing_qc_flag_bin[24]
+        /amd_pcd[?]/starttime
+        /amd_pcd[?]/l2b_amd_screening_qc
+        /amd_pcd[?]/l2b_amd_screening_qc_flags
+        /amd_pcd[?]/l2b_amd_collocations[?]/l2b_amd_collocation_qc
+        /amd_pcd[?]/l2b_amd_collocations[?]/l2b_amd_collocation_qc_flags
+        /group_pcd[?]/starttime
+        /group_pcd[?]/brc_start
+        /group_pcd[?]/measurement_start
+        /group_pcd[?]/brc_end
+        /group_pcd[?]/measurement_end
+        /group_pcd[?]/height_bin_index
+        /group_pcd[?]/upper_problem_flag
+        /group_pcd[?]/particle_extinction_variance
+        /group_pcd[?]/particle_backscatter_variance
+        /group_pcd[?]/particle_lod_variance
+        /group_pcd[?]/qc_flag
+        /group_pcd[?]/mid_particle_extinction_variance_top
+        /group_pcd[?]/mid_particle_backscatter_variance_top
+        /group_pcd[?]/mid_particle_lod_variance_top
+        /group_pcd[?]/mid_particle_ber_variance_top
+        /group_pcd[?]/mid_particle_extinction_variance_bot
+        /group_pcd[?]/mid_particle_backscatter_variance_bot
+        /group_pcd[?]/mid_particle_lod_variance_bot
+        /group_pcd[?]/mid_particle_ber_variance_bot
+        /sca_optical_properties[?]/starttime
+        /sca_optical_properties[?]/sca_optical_properties[24]/extinction
+        /sca_optical_properties[?]/sca_optical_properties[24]/backscatter
+        /sca_optical_properties[?]/sca_optical_properties[24]/lod
+        /sca_optical_properties[?]/sca_optical_properties[24]/sr
+        /sca_optical_properties[?]/geolocation_middle_bins[24]/longitude
+        /sca_optical_properties[?]/geolocation_middle_bins[24]/latitude
+        /sca_optical_properties[?]/geolocation_middle_bins[24]/altitude
+        /sca_optical_properties[?]/sca_optical_properties_mid_bins[23]/extinction
+        /sca_optical_properties[?]/sca_optical_properties_mid_bins[23]/backscatter
+        /sca_optical_properties[?]/sca_optical_properties_mid_bins[23]/lod
+        /sca_optical_properties[?]/sca_optical_properties_mid_bins[23]/ber
+        /ica_optical_properties[?]/starttime
+        /ica_optical_properties[?]/ica_optical_properties[24]/case
+        /ica_optical_properties[?]/ica_optical_properties[24]/extinction
+        /ica_optical_properties[?]/ica_optical_properties[24]/backscatter
+        /ica_optical_properties[?]/ica_optical_properties[24]/lod
+        /mca_optical_properties[?]/starttime
+        /mca_optical_properties[?]/mca_optical_properties[24]/climber
+        /mca_optical_properties[?]/mca_optical_properties[24]/extinction
+        /mca_optical_properties[?]/mca_optical_properties[24]/lod
+        /amd[?]/starttime
+        /amd[?]/amd_properties[24]/pressure_fp
+        /amd[?]/amd_properties[24]/temperature_fp
+        /amd[?]/amd_properties[24]/frequencyshift_fp
+        /amd[?]/amd_properties[24]/relativehumidity_fp
+        /amd[?]/amd_properties[24]/molecularlod_fp
+        /amd[?]/amd_properties[24]/molecularbackscatter_fp
+        /amd[?]/amd_properties[24]/pressure_fiz
+        /amd[?]/amd_properties[24]/temperature_fiz
+        /amd[?]/amd_properties[24]/frequencyshift_fiz
+        /amd[?]/amd_properties[24]/relativehumidity_fiz
+        /amd[?]/amd_properties[24]/molecularlod_fiz
+        /amd[?]/amd_properties[24]/molecularbackscatter_fiz
+        /group_optical_properties[?]/starttime
+        /group_optical_properties[?]/height_bin_index
+        /group_optical_properties[?]/group_optical_property/group_extinction
+        /group_optical_properties[?]/group_optical_property/group_backscatter
+        /group_optical_properties[?]/group_optical_property/group_lod
+        /group_optical_properties[?]/group_optical_property/group_sr
+        /group_optical_properties[?]/group_geolocation_middle_bins/start_longitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/start_latitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/start_altitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/mid_longitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/mid_latitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/mid_altitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/stop_longitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/stop_latitude
+        /group_optical_properties[?]/group_geolocation_middle_bins/stop_altitude
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_extinction_top
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_backscatter_top
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_lod_top
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_ber_top
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_extinction_bot
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_backscatter_bot
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_lod_bot
+        /group_optical_properties[?]/group_optical_property_middle_bins/mid_ber_bot
+        /scene_classification[?]/starttime
+        /scene_classification[?]/height_bin_index
+        /scene_classification[?]/aladin_cloud_flag/clrh
+        /scene_classification[?]/aladin_cloud_flag/clsr
+        /scene_classification[?]/aladin_cloud_flag/downclber
+        /scene_classification[?]/aladin_cloud_flag/topclber
+        /scene_classification[?]/nwp_cloud_flag
+        /scene_classification[?]/l2a_group_class_reliability
+
+        The question mark indicates a variable size array
+
+        It is not entirely clear what we actually have to look at.
+        For simplicity the data of the group 'sca_optical_properties' is returned at this point
+
+        Example
+        -------
+        >>> import read_aeolus_l2a_data
+        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> import os
+        >>> os.environ['CODA_DEFINITION']='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/'
+        >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
+        >>> # read returning a ndarray
+        >>> coda_data = obj.read_data_fields(filename)
+        """
+
+        import time
+        import coda
+
+        # coda uses 2000-01-01T00:00:00 as epoch unfortunately.
+        # so calculate the difference in seconds to the Unix epoch
+        seconds_to_add = np.datetime64('2000-01-01T00:00:00') - np.datetime64('1970-01-01T00:00:00')
+        seconds_to_add = seconds_to_add.astype(np.float_)
+
+        # the same can be achieved using pandas, but we stick to numpy here
+        # base_time = pd.DatetimeIndex(['2000-01-01'])
+        # seconds_to_add = (base_time.view('int64') // pd.Timedelta(1, unit='s'))[0]
+
+        start = time.perf_counter()
+        file_data = {}
+
+        self.logger.info('reading file {}'.format(filename))
+        # read file
+        coda_handle = coda.open(filename)
+        root_field_names = coda.get_field_names(coda_handle)
+        coda_data = {}
+        ret_data = {}
+
+        for root_field_name in root_field_names:
+            if root_field_name in fields_to_read:
+                coda_data[root_field_name] = coda.fetch(coda_handle, root_field_name)
+                if isinstance(coda_data[root_field_name],coda.codapython.Record):
+                    ret_data[root_field_name] = self.codarecord2pythonstruct(coda_data[root_field_name])
+                else:
+                    ret_data[root_field_name] = {}
+                    for name in coda_data[root_field_name]:
+                        dummy = self.codarecord2pythonstruct(name)
+                        ret_data[root_field_name][name] = dummy
+                        # ret_data[root_field_name].append(self.codarecord2pythonstruct(name))
+
+        end_time = time.perf_counter()
+        elapsed_sec = end_time - start
+        temp = 'time for single file read [s]: {:.3f}'.format(elapsed_sec)
+        self.logger.info(temp)
+
+        return ret_data
+
+    ###################################################################################
+
+    def codarecord2pythonstruct(self, codaRec):
+        """small helper routine to turn a coda record struct into a python struct
+
+        calls itself recursively if codaRec is of type numpy.ndarray
+        """
+
+        out_struct = {}
+        import numpy as np
+        for idx in range(len(codaRec)):
+            if isinstance(codaRec[idx],np.ndarray):
+                rec_length = len(codaRec[idx])
+                for idx2 in range(rec_length):
+                    # example dummy:
+                    #  {'extinction': -1000000.0,
+                    # 'backscatter': -1000000.0,
+                    # 'lod': -1.0,
+                    # 'sr': -1.0},
+                    dummy = self.codarecord2pythonstruct(codaRec[idx][idx2])
+                    if idx2 == 0:
+                        # define the returned struct
+                        out_struct[codaRec._registeredFields[idx]] = {}
+                        for str_name in dummy:
+                            if str_name == 'starttime'
+                            out_struct[codaRec._registeredFields[idx]][str_name] = np.zeros(rec_length, dtype=np.float_)
+
+                    for str_name in dummy:
+                        out_struct[codaRec._registeredFields[idx]][str_name][idx2] = dummy[str_name]
+            else:
+                # print(type(codaRec[idx]))
+                # the the dict keys exists: reform to array
+                if codaRec._registeredFields[idx] in out_struct:
+                    if isinstance(codaRec._registeredFields[idx],dict):
+                        #reform to array
+                        ref_dummy = codaRec._registeredFields[idx]
+                        codaRec._registeredFields[idx] = []
+                        codaRec._registeredFields[idx].append(ref_dummy)
+                        codaRec._registeredFields[idx].append(codaRec[idx])
+                    elif isinstance(codaRec._registeredFields[idx],list):
+                        codaRec._registeredFields[idx].append(codaRec[idx])
+                    else:
+                        # might be needed later
+                        pass
+                else:
+                    out_struct[codaRec._registeredFields[idx]] = codaRec[idx]
+
+
+        return out_struct
 
