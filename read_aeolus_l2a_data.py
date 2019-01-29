@@ -44,6 +44,8 @@ import numpy as np
 import logging
 import time
 import geopy.distance
+#import coda
+
 
 
 class ReadAeolusL2aData:
@@ -99,10 +101,20 @@ class ReadAeolusL2aData:
     _LONGITUDENAME = 'longitude'
     _ALTITUDENAME = 'altitude'
     # variable_data
+    # 'unfortunately there's 3 retrievals in the data product
+    # for now we map the sca () product to the aerocom standard names,
+    # but put ica and mca in the data variable of the object as well
     _EC355NAME = 'ec355aer'
     _BS355NAME = 'bs355aer'
     _LODNAME = 'lod'
     _SRNAME = 'sr'
+    #repeat with retrieval name
+    _SCA_EC355NAME = 'ec355aer'
+    _SCA_BS355NAME = 'bs355aer'
+    _SCA_LODNAME = 'lod'
+    _SCA_SRNAME = 'sr'
+
+
 
     GROUP_DELIMITER = '/'
     # data vars
@@ -1305,10 +1317,10 @@ class ReadAeolusL2aData:
                 if isinstance(coda_data[root_field_name],coda.codapython.Record):
                     ret_data[root_field_name] = self.codarecord2pythonstruct(coda_data[root_field_name])
                 else:
-                    ret_data[root_field_name] = {}
-                    for name in coda_data[root_field_name]:
+                    ret_data[root_field_name] = []
+                    for index, name in enumerate(coda_data[root_field_name]):
                         dummy = self.codarecord2pythonstruct(name)
-                        ret_data[root_field_name][name] = dummy
+                        ret_data[root_field_name].append(dummy)
                         # ret_data[root_field_name].append(self.codarecord2pythonstruct(name))
 
         end_time = time.perf_counter()
@@ -1342,8 +1354,7 @@ class ReadAeolusL2aData:
                         # define the returned struct
                         out_struct[codaRec._registeredFields[idx]] = {}
                         for str_name in dummy:
-                            if str_name == 'starttime'
-                            out_struct[codaRec._registeredFields[idx]][str_name] = np.zeros(rec_length, dtype=np.float_)
+                            out_struct[codaRec._registeredFields[idx]][str_name] = np.empty(rec_length, dtype=np.float_)
 
                     for str_name in dummy:
                         out_struct[codaRec._registeredFields[idx]][str_name][idx2] = dummy[str_name]
@@ -1368,3 +1379,95 @@ class ReadAeolusL2aData:
 
         return out_struct
 
+    ###################################################################################
+
+    def to_netcdf_data(self,filename, coda_data, grouping='names', verbose=False):
+        """method to writye coda data into a netcdf file
+
+        Since coda data is has a hierarchy, the user may choos id the data is written into
+        netcdf file using groups (netcdf4), or a flat (netcdf4 classic model) netcdf file
+        where the hierarchy is retained in the variable names
+
+        Example
+        -------
+        >>> import read_aeolus_l2a_data
+        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> import os
+        >>> os.environ['CODA_DEFINITION']='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/'
+        >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
+        >>> # read returning a ndarray
+        >>> coda_data = obj.read_data_fields(filename)
+        """
+
+        if grouping == 'names':
+            # group the data by putting the names with double underscores together
+            # (single underscores are used by coda in its field names already)
+            pass
+
+        else:
+            pass
+            # use netcdf4 groups to build the hierarchy
+    ###################################################################################
+
+
+if __name__ == '__main__':
+    import argparse
+    options = {}
+    parser = argparse.ArgumentParser(
+        description='command line interface to aeolus2netcdf.py\n\n\n')
+    parser.add_argument("file",
+                        help="file(s) to read",nargs="+")
+    parser.add_argument("-v", "--verbose", help="switch on verbosity",
+                        action='store_true')
+    parser.add_argument("--listpaths", help="list the file contents.", action='store_true')
+    parser.add_argument("--readpaths", help="read listed rootpaths. Can be comma seperated",
+                        default='mph,sca_optical_properties')
+    parser.add_argument("-o, --outfile", help="output file")
+    parser.add_argument("-O, --overwrite", help="overwrite output file", action='store_true')
+    parser.add_argument("--codadef", help="set path of CODA_DEFINITION env variable",
+                        default='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/')
+
+    args = parser.parse_args()
+
+    if args.readpaths:
+        options['readpaths'] = args.readpaths.split(',')
+
+    if args.file:
+        options['files'] = args.file
+
+    if args.listpaths:
+        options['listpaths'] = True
+    else:
+        options['listpaths'] = False
+
+    if args.verbose:
+        options['verbose'] = True
+    else:
+        options['verbose'] = False
+
+    if args.overwrite:
+        options['overwrite'] = True
+    else:
+        options['overwrite'] = False
+
+    if args.outfile:
+        options['outfile'] = args.outfile
+
+    if args.codadef:
+            options['codadef'] = args.codadef
+
+    # import read_data_fieldaeolus_l2a_data
+    import os
+    os.environ['CODA_DEFINITION'] = options['codadef']
+    import coda
+
+    for filename in options['files']:
+        if options['listpaths']:
+            coda_handle = coda.open(filename)
+            root_field_names = coda.get_field_names(coda_handle)
+            for field in root_field_names:
+                print(field)
+            coda.close(coda_handle)
+        else:
+            obj = ReadAeolusL2aData(verbose=True)
+            coda_data = obj.read_data_fields(filename)
