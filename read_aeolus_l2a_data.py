@@ -84,14 +84,27 @@ class ReadAeolusL2aData:
     _BS355INDEX = 5
     _SRINDEX = 6
     _LODINDEX = 7
+    _SCA_EC355INDEX = 4
+    _SCA_BS355INDEX = 5
+    _SCA_SRINDEX = 6
+    _SCA_LODINDEX = 7
     # for distance calculations we need the location in radians
     # so store these for speed in self.data
     # the following indexes indicate the column where that is stored
     _RADLATINDEX = 8
     _RADLONINDEX = 9
     _DISTINDEX = 10
+    # ICA
+    _ICA_EC355INDEX = 11
+    _ICA_BS355INDEX = 12
+    _ICA_LODINDEX = 13
+    # MCA
+    _MCA_EC355INDEX = 14
+    _MCA_LODINDEX = 15
+    _MCA_CLIMBERINDEX = 16
 
-    _COLNO = 11
+
+    _COLNO = 17
     _ROWNO = 100000
     _CHUNKSIZE = 10000
 
@@ -113,6 +126,20 @@ class ReadAeolusL2aData:
     _SCA_BS355NAME = 'bs355aer'
     _SCA_LODNAME = 'lod'
     _SCA_SRNAME = 'sr'
+    _SCA_TIMENAME = 'time'
+
+    # ica retriaval
+    _ICA_EC355NAME = 'ica_ec355aer'
+    _ICA_BS355NAME = 'ica_bs355aer'
+    _ICA_LODNAME = 'ica_lod'
+    _ICA_CASENAME = 'ica_case'
+    _ICA_TIMENAME = 'ica_time'
+
+    # mca retriaval
+    _MCA_EC355NAME = 'mca_ec355aer'
+    _MCA_LODNAME = 'mca_lod'
+    _MCA_CLIMBERNAME = 'mca_climber'
+    _MCA_TIMENAME = 'mca_time'
 
 
 
@@ -120,10 +147,18 @@ class ReadAeolusL2aData:
     # data vars
     # will be stored as pandas time series
     DATA_COLNAMES = {}
-    DATA_COLNAMES[_EC355NAME] = 'sca_optical_properties/sca_optical_properties/extinction'
-    DATA_COLNAMES[_BS355NAME] = 'sca_optical_properties/sca_optical_properties/backscatter'
-    DATA_COLNAMES[_LODNAME] = 'sca_optical_properties/sca_optical_properties/lod'
-    DATA_COLNAMES[_SRNAME] = 'sca_optical_properties/sca_optical_properties/sr'
+    DATA_COLNAMES[_SCA_EC355NAME] = 'sca_optical_properties/sca_optical_properties/extinction'
+    DATA_COLNAMES[_SCA_BS355NAME] = 'sca_optical_properties/sca_optical_properties/backscatter'
+    DATA_COLNAMES[_SCA_LODNAME] = 'sca_optical_properties/sca_optical_properties/lod'
+    DATA_COLNAMES[_SCA_SRNAME] = 'sca_optical_properties/sca_optical_properties/sr'
+    DATA_COLNAMES[_ICA_EC355NAME] = 'ica_optical_properties/ica_optical_properties/extinction'
+    DATA_COLNAMES[_ICA_BS355NAME] = 'ica_optical_properties/ica_optical_properties/backscatter'
+    DATA_COLNAMES[_ICA_LODNAME] = 'ica_optical_properties/ica_optical_properties/lod'
+    # DATA_COLNAMES[_ICA_CASENAME] = 'ica_optical_properties/ica_optical_properties/case'
+    DATA_COLNAMES[_MCA_EC355NAME] = 'mca_optical_properties/mca_optical_properties/extinction'
+    DATA_COLNAMES[_MCA_LODNAME] = 'mca_optical_properties/mca_optical_properties/lod'
+    # DATA_COLNAMES[_MCA_CASENAME] = 'mca_optical_properties/mca_optical_properties/case'
+
 
     # meta data vars
     # will be stored as array of strings
@@ -131,6 +166,11 @@ class ReadAeolusL2aData:
     METADATA_COLNAMES[_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
     METADATA_COLNAMES[_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
     METADATA_COLNAMES[_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
+    # Always read the times of the different retrievals
+    METADATA_COLNAMES[_SCA_TIMENAME] = 'sca_optical_properties/starttime'
+    METADATA_COLNAMES[_ICA_TIMENAME] = 'ica_optical_properties/starttime'
+    METADATA_COLNAMES[_MCA_TIMENAME] = 'mca_optical_properties/starttime'
+
 
     # Alle vars to loop over them
     _COLNAMES = DATA_COLNAMES
@@ -151,20 +191,30 @@ class ReadAeolusL2aData:
     INDEX_DICT.update({_LONGITUDENAME: _LONINDEX})
     INDEX_DICT.update({_ALTITUDENAME: _ALTITUDEINDEX})
     INDEX_DICT.update({_TIME_NAME: _TIMEINDEX})
-    INDEX_DICT.update({_EC355NAME: _EC355INDEX})
-    INDEX_DICT.update({_BS355NAME: _BS355INDEX})
-    INDEX_DICT.update({_LODNAME: _LODINDEX})
-    INDEX_DICT.update({_SRNAME: _SRINDEX})
+    INDEX_DICT.update({_SCA_EC355NAME: _SCA_EC355INDEX})
+    INDEX_DICT.update({_SCA_BS355NAME: _SCA_BS355INDEX})
+    INDEX_DICT.update({_SCA_LODNAME: _SCA_LODINDEX})
+    INDEX_DICT.update({_SCA_SRNAME: _SCA_SRINDEX})
+    INDEX_DICT.update({_ICA_EC355NAME: _ICA_EC355INDEX})
+    INDEX_DICT.update({_ICA_BS355NAME: _ICA_BS355INDEX})
+    INDEX_DICT.update({_ICA_LODNAME: _ICA_LODINDEX})
+    INDEX_DICT.update({_MCA_EC355NAME: _MCA_EC355INDEX})
+    INDEX_DICT.update({_MCA_LODNAME: _MCA_LODINDEX})
 
     # NaN values are variable specific
     NAN_DICT = {}
     NAN_DICT.update({_LATITUDENAME: -1.E-6})
     NAN_DICT.update({_LONGITUDENAME: -1.E-6})
     NAN_DICT.update({_ALTITUDENAME: -1.})
-    NAN_DICT.update({_EC355NAME: -1.E6})
-    NAN_DICT.update({_BS355NAME: -1.E6})
-    NAN_DICT.update({_LODNAME: -1.})
-    NAN_DICT.update({_SRNAME: -1.})
+    NAN_DICT.update({_SCA_EC355NAME: -1.E6})
+    NAN_DICT.update({_SCA_BS355NAME: -1.E6})
+    NAN_DICT.update({_SCA_LODNAME: -1.})
+    NAN_DICT.update({_SCA_SRNAME: -1.})
+    NAN_DICT.update({_ICA_EC355NAME: -1.E6})
+    NAN_DICT.update({_ICA_BS355NAME: -1.E6})
+    NAN_DICT.update({_ICA_LODNAME: -1.})
+    NAN_DICT.update({_MCA_EC355NAME: -1.E6})
+    NAN_DICT.update({_MCA_LODNAME: -1.})
 
     PROVIDES_VARIABLES = list(DATA_COLNAMES.keys())
     PROVIDES_VARIABLES.append(list(METADATA_COLNAMES.keys()))
@@ -541,16 +591,21 @@ class ReadAeolusL2aData:
 
         # read data in a simple dictionary
         for var in vars_to_read:
+            print(var)
             groups = self._COLNAMES[var].split(self.GROUP_DELIMITER)
             if len(groups) == 3:
                 file_data[var] = {}
                 for idx, key in enumerate(file_data[self._TIME_NAME]):
-                    file_data[var][key] = coda.fetch(product,
+                    try:
+                        file_data[var][key] = coda.fetch(product,
                                                      groups[0],
                                                      idx,
-                                                     groups[1],
+                                                      groups[1],
                                                      -1,
                                                      groups[2])
+                    except ValueError:
+                        print('idx without data: {}'.format(idx))
+
 
             elif len(groups) == 2:
                 file_data[var] = {}
@@ -1362,6 +1417,8 @@ class ReadAeolusL2aData:
                 # print(type(codaRec[idx]))
                 # the the dict keys exists: reform to array
                 if codaRec._registeredFields[idx] in out_struct:
+                    # this code is not called due to the way the data is organised in the
+                    # ESA binary file right now
                     if isinstance(codaRec._registeredFields[idx],dict):
                         #reform to array
                         ref_dummy = codaRec._registeredFields[idx]
@@ -1397,16 +1454,87 @@ class ReadAeolusL2aData:
         >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
         >>> # read returning a ndarray
         >>> coda_data = obj.read_data_fields(filename)
+        >>> import xarray as xr
+        >>> ds = xr.Dataset()
         """
 
+        start_time = time.perf_counter()
+        import xarray as xr
+        import pandas as pd
+        import numpy as np
+
         if grouping == 'names':
+            ds = xr.Dataset()
             # group the data by putting the names with double underscores together
             # (single underscores are used by coda in its field names already)
             pass
+            for lev1_name in coda_data:
+                # lev1 is alsways a dict
+                if isinstance(coda_data[lev1_name],dict):
+                    for lev2_name in coda_data[lev1_name]:
+                        if isinstance(coda_data[lev1_name][lev2_name],dict):
+                            for lev3_name in coda_data[lev1_name][lev2_name]:
+                                if isinstance(coda_data[lev1_name][lev2_name][lev3_name],dict):
+                                    pass
+                                pass
+                        elif isinstance(coda_data[lev1_name][lev2_name],list):
+                            # assume a list of identical dicts here
+                            for idx, dummy in enumerate(coda_data[lev1_name]):
+                                if idx == 0:
+                                    # create dict containing the data lists
+                                    group_dummy = {}
+                                    for _key in coda_data[lev1_name][idx]:
+                                        group_dummy[_key] = []
+                                # now fill the data list
+                                # do that with python lists for now
 
+                                #starttime is special because we need that several times
+                                try:
+                                    time = coda_data[lev1_name][idx]['starttime']
+                                except KeyError:
+                                    time = -1.E6
+
+                                for _key in coda_data[lev1_name][idx]:
+                                    if isinstance(coda_data[lev1_name][idx][_key],list):
+                                        pass
+
+                        else:
+                            var_name = '__'.join([lev1_name,lev2_name])
+                            ds[var_name] = coda_data[lev1_name][lev2_name]
+
+                else:
+                    # coda_data[lev1_name} is a scalar
+                    pass
+                    var_name = lev1_name
+                    ds[var_name] = coda_data[lev1_name]
+
+
+                    for lev3_name in coda_data[lev1_name][lev2_name]:
+                        pass
         else:
             pass
             # use netcdf4 groups to build the hierarchy
+
+
+
+        # datetimedata = pd.to_datetime(self.data[:, self._TIMEINDEX].astype('datetime64[s]'))
+        # pointnumber = np.arange(0, len(datetimedata))
+        # ds = xr.Dataset()
+        # ds['time'] = ('point'), datetimedata
+        # ds['latitude'] = ('point'), self.data[:, self._LATINDEX]
+        # ds['longitude'] = ('point'), self.data[:, self._LONINDEX]
+        # ds['height'] = ('point'), self.data[:, self._ALTITUDEINDEX]
+        # ds['ec355aer'] = ('point'), self.data[:, self._EC355INDEX]
+        # ds.coords['point'] = pointnumber
+        # ds.to_netcdf(netcdf_filename)
+
+        end_time = time.perf_counter()
+        elapsed_sec = end_time - start_time
+        temp = 'time for netcdf write [s]: {:.3f}'.format(elapsed_sec)
+        self.logger.info(temp)
+        temp = 'file written: {}'.format(netcdf_filename)
+        self.logger.info(temp)
+
     ###################################################################################
 
 
