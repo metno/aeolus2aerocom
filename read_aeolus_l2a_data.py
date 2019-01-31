@@ -76,6 +76,11 @@ class ReadAeolusL2aData:
     # Flag if the dataset contains all years or not
     DATASET_IS_YEARLY = False
 
+    SUPPORTED_RETRIEVALS = []
+    SUPPORTED_RETRIEVALS.append('sca')
+    SUPPORTED_RETRIEVALS.append('ica')
+    SUPPORTED_RETRIEVALS.append('mca')
+
     _TIMEINDEX = 0
     _LATINDEX = 1
     _LONINDEX = 2
@@ -84,10 +89,10 @@ class ReadAeolusL2aData:
     _BS355INDEX = 5
     _SRINDEX = 6
     _LODINDEX = 7
-    _SCA_EC355INDEX = 4
-    _SCA_BS355INDEX = 5
-    _SCA_SRINDEX = 6
-    _SCA_LODINDEX = 7
+    # _SCA_EC355INDEX = 4
+    # _SCA_BS355INDEX = 5
+    # _SCA_SRINDEX = 6
+    # _SCA_LODINDEX = 7
     # for distance calculations we need the location in radians
     # so store these for speed in self.data
     # the following indexes indicate the column where that is stored
@@ -95,16 +100,16 @@ class ReadAeolusL2aData:
     _RADLONINDEX = 9
     _DISTINDEX = 10
     # ICA
-    _ICA_EC355INDEX = 11
-    _ICA_BS355INDEX = 12
-    _ICA_LODINDEX = 13
+    # _ICA_EC355INDEX = 11
+    # _ICA_BS355INDEX = 12
+    # _ICA_LODINDEX = 13
     # MCA
-    _MCA_EC355INDEX = 14
-    _MCA_LODINDEX = 15
-    _MCA_CLIMBERINDEX = 16
+    # _MCA_EC355INDEX = 14
+    # _MCA_LODINDEX = 15
+    # _MCA_CLIMBERINDEX = 16
 
 
-    _COLNO = 17
+    _COLNO = 11
     _ROWNO = 100000
     _CHUNKSIZE = 10000
 
@@ -113,20 +118,60 @@ class ReadAeolusL2aData:
     _LATITUDENAME = 'latitude'
     _LONGITUDENAME = 'longitude'
     _ALTITUDENAME = 'altitude'
-    # variable_data
-    # 'unfortunately there's 3 retrievals in the data product
-    # for now we map the sca () product to the aerocom standard names,
-    # but put ica and mca in the data variable of the object as well
+
     _EC355NAME = 'ec355aer'
     _BS355NAME = 'bs355aer'
     _LODNAME = 'lod'
     _SRNAME = 'sr'
+    _CASENAME = 'case'
+    _TIME_NAME = 'time'
+    #variable names for the different retrievals
+    RETRIEVAL_READ_PARAMETERS = {}
+    RETRIEVAL_READ_PARAMETERS['sca'] = {}
+    RETRIEVAL_READ_PARAMETERS['sca']['metadata'] = {}
+    RETRIEVAL_READ_PARAMETERS['sca']['vars'] = {}
+
+    RETRIEVAL_READ_PARAMETERS['sca']['metadata'][_TIME_NAME] = 'sca_optical_properties/starttime'
+    RETRIEVAL_READ_PARAMETERS['sca']['metadata'][_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
+    RETRIEVAL_READ_PARAMETERS['sca']['metadata'][_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
+    RETRIEVAL_READ_PARAMETERS['sca']['metadata'][_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
+    RETRIEVAL_READ_PARAMETERS['sca']['vars'][_EC355NAME] = 'sca_optical_properties/sca_optical_properties/extinction'
+    RETRIEVAL_READ_PARAMETERS['sca']['vars'][_BS355NAME] = 'sca_optical_properties/sca_optical_properties/backscatter'
+    RETRIEVAL_READ_PARAMETERS['sca']['vars'][_LODNAME] = 'sca_optical_properties/sca_optical_properties/lod'
+    RETRIEVAL_READ_PARAMETERS['sca']['vars'][_SRNAME] = 'sca_optical_properties/sca_optical_properties/sr'
+
+    RETRIEVAL_READ_PARAMETERS['ica'] = {}
+    RETRIEVAL_READ_PARAMETERS['ica']['metadata'] = {}
+    RETRIEVAL_READ_PARAMETERS['ica']['vars'] = {}
+    RETRIEVAL_READ_PARAMETERS['ica']['metadata'][_TIME_NAME] = 'ica_optical_properties/starttime'
+    RETRIEVAL_READ_PARAMETERS['ica']['metadata'][_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
+    RETRIEVAL_READ_PARAMETERS['ica']['metadata'][_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
+    RETRIEVAL_READ_PARAMETERS['ica']['metadata'][_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
+    RETRIEVAL_READ_PARAMETERS['ica']['vars'][_EC355NAME] = 'ica_optical_properties/ica_optical_properties/extinction'
+    RETRIEVAL_READ_PARAMETERS['ica']['vars'][_BS355NAME] = 'ica_optical_properties/ica_optical_properties/backscatter'
+    RETRIEVAL_READ_PARAMETERS['ica']['vars'][_LODNAME] = 'ica_optical_properties/ica_optical_properties/lod'
+    # RETRIEVAL_READ_PARAMETERS['ica']['vars'][_CASENAME] = 'ica_optical_properties/ica_optical_properties/case'
+    RETRIEVAL_READ_PARAMETERS['mca'] = {}
+    RETRIEVAL_READ_PARAMETERS['mca']['metadata'] = {}
+    RETRIEVAL_READ_PARAMETERS['mca']['vars'] = {}
+    RETRIEVAL_READ_PARAMETERS['mca']['metadata'][_TIME_NAME] = 'mca_optical_properties/starttime'
+    RETRIEVAL_READ_PARAMETERS['mca']['metadata'][_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
+    RETRIEVAL_READ_PARAMETERS['mca']['metadata'][_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
+    RETRIEVAL_READ_PARAMETERS['mca']['metadata'][_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
+    RETRIEVAL_READ_PARAMETERS['mca']['vars'][_EC355NAME] = 'mca_optical_properties/mca_optical_properties/extinction'
+    RETRIEVAL_READ_PARAMETERS['mca']['vars'][_LODNAME] = 'mca_optical_properties/mca_optical_properties/lod'
+    # DATA_COLNAMES[_MCA_CASENAME] = 'mca_optical_properties/mca_optical_properties/case'
+
+    # variable_data
+    # 'unfortunately there's 3 retrievals in the data product
+    # for now we map the sca () product to the aerocom standard names,
+    # but put ica and mca in the data variable of the object as well
     #repeat with retrieval name
-    _SCA_EC355NAME = 'ec355aer'
-    _SCA_BS355NAME = 'bs355aer'
-    _SCA_LODNAME = 'lod'
-    _SCA_SRNAME = 'sr'
-    _SCA_TIMENAME = 'time'
+    _SCA_EC355NAME = 'sca_ec355aer'
+    _SCA_BS355NAME = 'sca_bs355aer'
+    _SCA_LODNAME = 'sca_lod'
+    _SCA_SRNAME = 'sca_sr'
+    _SCA_TIMENAME = 'sca_time'
 
     # ica retriaval
     _ICA_EC355NAME = 'ica_ec355aer'
@@ -166,19 +211,20 @@ class ReadAeolusL2aData:
     METADATA_COLNAMES[_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
     METADATA_COLNAMES[_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
     METADATA_COLNAMES[_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
+
     # Always read the times of the different retrievals
-    METADATA_COLNAMES[_SCA_TIMENAME] = 'sca_optical_properties/starttime'
-    METADATA_COLNAMES[_ICA_TIMENAME] = 'ica_optical_properties/starttime'
-    METADATA_COLNAMES[_MCA_TIMENAME] = 'mca_optical_properties/starttime'
+    TIME_COLNAMES = {}
+    TIME_COLNAMES[_SCA_TIMENAME] = 'sca_optical_properties/starttime'
+    TIME_COLNAMES[_ICA_TIMENAME] = 'ica_optical_properties/starttime'
+    TIME_COLNAMES[_MCA_TIMENAME] = 'mca_optical_properties/starttime'
 
 
-    # Alle vars to loop over them
+    # All vars to loop over them
     _COLNAMES = DATA_COLNAMES
     _COLNAMES.update(METADATA_COLNAMES)
 
     # because the time is only stored once for an entire profile, we have to treat that separately
-    _TIME_NAME = 'time'
-    TIME_PATH = 'sca_optical_properties/starttime'
+    #TIME_PATH = 'sca_optical_properties/starttime'
 
     # additional vars
     # calculated
@@ -191,21 +237,25 @@ class ReadAeolusL2aData:
     INDEX_DICT.update({_LONGITUDENAME: _LONINDEX})
     INDEX_DICT.update({_ALTITUDENAME: _ALTITUDEINDEX})
     INDEX_DICT.update({_TIME_NAME: _TIMEINDEX})
-    INDEX_DICT.update({_SCA_EC355NAME: _SCA_EC355INDEX})
-    INDEX_DICT.update({_SCA_BS355NAME: _SCA_BS355INDEX})
-    INDEX_DICT.update({_SCA_LODNAME: _SCA_LODINDEX})
-    INDEX_DICT.update({_SCA_SRNAME: _SCA_SRINDEX})
-    INDEX_DICT.update({_ICA_EC355NAME: _ICA_EC355INDEX})
-    INDEX_DICT.update({_ICA_BS355NAME: _ICA_BS355INDEX})
-    INDEX_DICT.update({_ICA_LODNAME: _ICA_LODINDEX})
-    INDEX_DICT.update({_MCA_EC355NAME: _MCA_EC355INDEX})
-    INDEX_DICT.update({_MCA_LODNAME: _MCA_LODINDEX})
+    INDEX_DICT.update({_EC355NAME: _EC355INDEX})
+    INDEX_DICT.update({_BS355NAME: _BS355INDEX})
+    INDEX_DICT.update({_LODNAME: _LODINDEX})
+    INDEX_DICT.update({_SRNAME: _SRINDEX})
+    # INDEX_DICT.update({_ICA_EC355NAME: _ICA_EC355INDEX})
+    # INDEX_DICT.update({_ICA_BS355NAME: _ICA_BS355INDEX})
+    # INDEX_DICT.update({_ICA_LODNAME: _ICA_LODINDEX})
+    # INDEX_DICT.update({_MCA_EC355NAME: _MCA_EC355INDEX})
+    # INDEX_DICT.update({_MCA_LODNAME: _MCA_LODINDEX})
 
     # NaN values are variable specific
     NAN_DICT = {}
     NAN_DICT.update({_LATITUDENAME: -1.E-6})
     NAN_DICT.update({_LONGITUDENAME: -1.E-6})
     NAN_DICT.update({_ALTITUDENAME: -1.})
+    NAN_DICT.update({_EC355NAME: -1.E6})
+    NAN_DICT.update({_BS355NAME: -1.E6})
+    NAN_DICT.update({_LODNAME: -1.})
+    NAN_DICT.update({_SRNAME: -1.})
     NAN_DICT.update({_SCA_EC355NAME: -1.E6})
     NAN_DICT.update({_SCA_BS355NAME: -1.E6})
     NAN_DICT.update({_SCA_LODNAME: -1.})
@@ -294,7 +344,7 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def read_file(self, filename, vars_to_read=None, return_as='dict', loglevel=None):
+    def read_file(self, filename, vars_to_read=None, read_retrieval='sca', return_as='dict', loglevel=None):
         """method to read an ESA binary data file entirely
 
         Parameters
@@ -570,86 +620,102 @@ class ReadAeolusL2aData:
         self.logger.info('reading file {}'.format(filename))
         # read file
         product = coda.open(filename)
-        if vars_to_read is None:
-            # read all variables
-            vars_to_read = list(self.DATA_COLNAMES.keys())
-        vars_to_read.extend(list(self.METADATA_COLNAMES.keys()))
+        if isinstance(read_retrieval, str):
+            read_retrieval = [read_retrieval]
+        for retrieval in self.SUPPORTED_RETRIEVALS:
+            if retrieval not in read_retrieval:
+                continue
 
-        # read data
-        # start with the time because it is only stored once
-        groups = self.TIME_PATH.split(self.GROUP_DELIMITER)
-        file_data[self._TIME_NAME] = coda.fetch(product,
-                                                groups[0],
+            if vars_to_read is None:
+                # read all variables
+                vars_to_read = list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['vars'].keys())
+            vars_to_read.extend(list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['metadata'].keys()))
+
+            # read data time
+            # do that differently since its only store once per profile
+            coda_groups_to_read = (
+                self.RETRIEVAL_READ_PARAMETERS[retrieval]['metadata'][self._TIME_NAME].split(self.GROUP_DELIMITER))
+
+            file_data[self._TIME_NAME] = coda.fetch(product,
+                                                coda_groups_to_read[0],
                                                 -1,
-                                                groups[1])
-        # epoch is 1 January 2000 at ESA
-        # so add offset to move that to 1 January 1970
-        # and save it into a np.datetime64[ms] object
+                                                coda_groups_to_read[1])
 
-        file_data[self._TIME_NAME] = \
-            ((file_data[self._TIME_NAME] + seconds_to_add) * 1.E3).astype(np.int).astype('datetime64[ms]')
+            # epoch is 1 January 2000 at ESA
+            # so add offset to move that to 1 January 1970
+            # and save it into a np.datetime64[ms] object
 
-        # read data in a simple dictionary
-        for var in vars_to_read:
-            print(var)
-            groups = self._COLNAMES[var].split(self.GROUP_DELIMITER)
-            if len(groups) == 3:
-                file_data[var] = {}
-                for idx, key in enumerate(file_data[self._TIME_NAME]):
-                    try:
+            file_data[self._TIME_NAME] = \
+                ((file_data[self._TIME_NAME] + seconds_to_add) * 1.E3).astype(np.int).astype('datetime64[ms]')
+
+            # read data in a simple dictionary
+            for var in vars_to_read:
+                # time has been read already
+                if var == self._TIME_NAME:
+                    continue
+                self.logger.info('reading var: {}'.format(var))
+                try:
+                    groups = self.RETRIEVAL_READ_PARAMETERS[retrieval]['vars'][var].split(self.GROUP_DELIMITER)
+                except KeyError:
+                    groups = self.RETRIEVAL_READ_PARAMETERS[retrieval]['metadata'][var].split(self.GROUP_DELIMITER)
+
+                if len(groups) == 3:
+                    file_data[var] = {}
+                    for idx, key in enumerate(file_data[self._TIME_NAME]):
                         file_data[var][key] = coda.fetch(product,
                                                      groups[0],
                                                      idx,
                                                       groups[1],
                                                      -1,
                                                      groups[2])
-                    except ValueError:
-                        print('idx without data: {}'.format(idx))
 
+                elif len(groups) == 2:
+                    file_data[var] = {}
+                    for idx, key in enumerate(file_data[self._TIME_NAME]):
+                        file_data[var][key] = coda.fetch(product,
+                                                         groups[0],
+                                                         -1,
+                                                         groups[1])
+                else:
+                    file_data[var] = {}
+                    for idx, key in enumerate(file_data[self._TIME_NAME]):
+                        file_data[var][key] = coda.fetch(product,
+                                                         groups[0])
+            if return_as == 'numpy':
+                # return as one multidimensional numpy array that can be put into self.data directly
+                # (column wise because the column numbers do not match)
+                index_pointer = 0
+                data = np.empty([self._ROWNO, self._COLNO], dtype=np.float_)
 
-            elif len(groups) == 2:
-                file_data[var] = {}
-                for idx, key in enumerate(file_data[self._TIME_NAME]):
-                    file_data[var][key] = coda.fetch(product,
-                                                     groups[0],
-                                                     -1,
-                                                     groups[1])
-            else:
-                file_data[var] = {}
-                for idx, key in enumerate(file_data[self._TIME_NAME]):
-                    file_data[var][key] = coda.fetch(product,
-                                                     groups[0])
-        if return_as == 'numpy':
-            # return as one multidimensional numpy array that can be put into self.data directly
-            # (column wise because the column numbers do not match)
-            index_pointer = 0
-            data = np.empty([self._ROWNO, self._COLNO], dtype=np.float_)
+                for idx, _time in enumerate(file_data['time'].astype(np.float_) / 1000.):
+                    # file_data['time'].astype(np.float_) is milliseconds after the (Unix) epoch
+                    # but we want to save the time as seconds since the epoch
+                    for _index in range(len(file_data['latitude'][file_data['time'][idx]])):
+                        # this works because all variables have to have the same size
+                        # (aka same number of height levels)
+                        # This loop could be avoided using numpy index slicing
+                        # do that in case we need more optimisations
+                        data[index_pointer, self._TIMEINDEX] = _time
+                        for var in vars_to_read:
+                            # time is the index, so skip it here
+                            if var == self._TIME_NAME:
+                                continue
+                            data[index_pointer, self.INDEX_DICT[var]] = file_data[var][file_data['time'][idx]][_index]
+                            # put negative values to np.nan if the variable is not a metadata variable
+                            if data[index_pointer, self.INDEX_DICT[var]] == self.NAN_DICT[var]:
+                                data[index_pointer, self.INDEX_DICT[var]] = np.nan
 
-            for idx, _time in enumerate(file_data['time'].astype(np.float_) / 1000.):
-                # file_data['time'].astype(np.float_) is milliseconds after the (Unix) epoch
-                # but we want to save the time as seconds since the epoch
-                for _index in range(len(file_data['latitude'][file_data['time'][idx]])):
-                    # this works because all variables have to have the same size
-                    # (aka same number of height levels)
-                    # This loop could be avoided using numpy index slicing
-                    # do that in case we need more optimisations
-                    data[index_pointer, self._TIMEINDEX] = _time
-                    for var in vars_to_read:
-                        data[index_pointer, self.INDEX_DICT[var]] = file_data[var][file_data['time'][idx]][_index]
-                        # put negative values to np.nan if the variable is not a metadata variable
-                        if data[index_pointer, self.INDEX_DICT[var]] == self.NAN_DICT[var]:
-                            data[index_pointer, self.INDEX_DICT[var]] = np.nan
+                        index_pointer += 1
+                        if index_pointer >= self._ROWNO:
+                            # add another array chunk to self.data
+                            data = np.append(data, np.empty([self._CHUNKSIZE, self._COLNO], dtype=np.float_),
+                                             axis=0)
+                            self._ROWNO += self._CHUNKSIZE
 
-                    index_pointer += 1
-                    if index_pointer >= self._ROWNO:
-                        # add another array chunk to self.data
-                        data = np.append(data, np.empty([self._CHUNKSIZE, self._COLNO], dtype=np.float_),
-                                         axis=0)
-                        self._ROWNO += self._CHUNKSIZE
+                # return only the needed elements...
+                file_data = data[0:index_pointer]
 
-            # return only the needed elements...
-            file_data = data[0:index_pointer]
-
+        coda.close(product)
         end_time = time.perf_counter()
         elapsed_sec = end_time - start
         temp = 'time for single file read [s]: {:.3f}'.format(elapsed_sec)
