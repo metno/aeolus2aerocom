@@ -83,6 +83,8 @@ class ReadAeolusL2aData:
 
     RETRIEVAL_READ = ''
     GLOBAL_ATTRIBUTES = {}
+    FILE_DIR = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/'
+    FILE_MASK = '*AE_OPER_ALD_U_N_2A*'
 
     _TIMEINDEX = 0
     _LATINDEX = 1
@@ -1013,13 +1015,13 @@ class ReadAeolusL2aData:
             matching_indexes = np.where(ret_data[:, self._LATINDEX] <= lat_max)
             ret_data = ret_data[matching_indexes[0], :]
             # logging.warning('len after lat_max: {}'.format(len(ret_data)))
-            matching_indexes = np.where(ret_data[:, self._LATINDEX] > lat_min)
+            matching_indexes = np.where(ret_data[:, self._LATINDEX] >= lat_min)
             ret_data = ret_data[matching_indexes[0], :]
             # logging.warning('len after lat_min: {}'.format(len(ret_data)))
             matching_indexes = np.where(ret_data[:, self._LONINDEX] <= lon_max)
             ret_data = ret_data[matching_indexes[0], :]
             # logging.warning('len after lon_max: {}'.format(len(ret_data)))
-            matching_indexes = np.where(ret_data[:, self._LONINDEX] > lon_min)
+            matching_indexes = np.where(ret_data[:, self._LONINDEX] >= lon_min)
             ret_data = ret_data[matching_indexes[0], :]
             # logging.warning('len after lon_min: {}'.format(len(ret_data)))
             # matching_length = len(matching_indexes[0])
@@ -1593,7 +1595,7 @@ if __name__ == '__main__':
     options = {}
     parser = argparse.ArgumentParser(
         description='command line interface to aeolus2netcdf.py\n\n\n')
-    parser.add_argument("file",
+    parser.add_argument("--file",
                         help="file(s) to read",nargs="+")
     parser.add_argument("-v", "--verbose", help="switch on verbosity",
                         action='store_true')
@@ -1602,10 +1604,46 @@ if __name__ == '__main__':
                         default='mph,sca_optical_properties')
     parser.add_argument("-o", "--outfile", help="output file")
     parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
+    parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
     parser.add_argument("--codadef", help="set path of CODA_DEFINITION env variable",
                         default='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/')
+    parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
+    parser.add_argument("--latmax", help="max latitude to return", default=np.float_(76.))
+    parser.add_argument("--lonmin", help="min longitude to return", default=np.float_(-30.))
+    parser.add_argument("--lonmax", help="max longitude to return", default=np.float_(-45.))
+    parser.add_argument("--dir", help="work on all files below this directory",
+                        default='/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/AE_OPER_ALD_U_N_2A_*')
+    parser.add_argument("--filemask", help="file mask to find data files",
+                        default='*AE_OPER_ALD_U_N_2A_*')
+    parser.add_argument("--tempdir", help="directory for temporary files",
+                        default=os.path.join(os.environ['HOME'], 'tmp'))
 
     args = parser.parse_args()
+
+    if args.dir:
+        options['dir'] = args.dir
+
+    if args.tempdir:
+        options['tempdir'] = args.tempdir
+
+    if args.emep:
+        options['emepflag'] = args.emep
+        options['latmin'] = np.float(30.)
+        options['latmax'] = np.float(76.)
+        options['lonmin'] = np.float(-30.)
+        options['lonmax'] = np.float(-45.)
+
+    if args.latmin:
+        options['latmin'] = np.float_(args.latmin)
+
+    if args.latmax:
+        options['latmax'] = np.float_(args.latmax)
+
+    if args.lonmin:
+        options['lonmin'] = np.float_(args.lonmin)
+
+    if args.lonmax:
+        options['lonmax'] = np.float_(args.lonmax)
 
     if args.readpaths:
         options['readpaths'] = args.readpaths.split(',')
@@ -1638,8 +1676,28 @@ if __name__ == '__main__':
     import os
     os.environ['CODA_DEFINITION'] = options['codadef']
     import coda
+    import sys
+    import glob
+    import pathlib
+    import tarfile
+
+    options['files'] = glob.glob(options['dir'], recursive=True)
 
     for filename in options['files']:
+        print(filename)
+        suffix = pathlib.Path(filename).suffix
+        if suffix == '.TGZ':
+            # untar *.DBL file first
+            tarhandle = tarfile.open(filename)
+            files_in_tar = tarhandle.getnames()
+            for file_in_tar in files_in_tar:
+                if pathlib.Path(file_in_tar).suffix == '.DBL':
+                    # extract file to tmp path
+                    member = tarhandle.getmember(file_in_tar)
+                    tarhandle.extract(member, path=options['tempdir'],set_attrs=False)
+                    filename = os.path.join(options['tempdir'],file_in_tar)
+                    tarhandle.close()
+                    break
 
         if options['listpaths']:
             coda_handle = coda.open(filename)
@@ -1654,5 +1712,29 @@ if __name__ == '__main__':
             obj.ndarr2data(filedata_numpy)
             # read additional data
             ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
-            # write netcdf
-            obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+
+            # apply emep options for cal / val
+            if options['emepflag']:
+                bbox = [options['latmin'], options['latmax'],options['lonmin'],options['lonmax']]
+                tmp_data = obj.select_bbox(bbox)
+                if len(tmp_data) > 0:
+                    obj.data = tmp_data
+                else:
+                    obj.logger.info('file {} contains no data in emep area! '.format(filename))
+                    obj = None
+                    continue
+
+
+
+
+
+            if 'outfile' in options:
+                # write netcdf
+                if os.path.exists(options['outfile']):
+                    if options['overwrite']:
+                        obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+                    else:
+                        sys.stderr.write('Error: path {} exists'.format(options['outfile']))
+                else:
+                    obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+
