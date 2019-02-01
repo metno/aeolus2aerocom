@@ -81,6 +81,9 @@ class ReadAeolusL2aData:
     SUPPORTED_RETRIEVALS.append('ica')
     SUPPORTED_RETRIEVALS.append('mca')
 
+    RETRIEVAL_READ = ''
+    GLOBAL_ATTRIBUTES = {}
+
     _TIMEINDEX = 0
     _LATINDEX = 1
     _LONINDEX = 2
@@ -151,6 +154,7 @@ class ReadAeolusL2aData:
     RETRIEVAL_READ_PARAMETERS['ica']['vars'][_BS355NAME] = 'ica_optical_properties/ica_optical_properties/backscatter'
     RETRIEVAL_READ_PARAMETERS['ica']['vars'][_LODNAME] = 'ica_optical_properties/ica_optical_properties/lod'
     # RETRIEVAL_READ_PARAMETERS['ica']['vars'][_CASENAME] = 'ica_optical_properties/ica_optical_properties/case'
+
     RETRIEVAL_READ_PARAMETERS['mca'] = {}
     RETRIEVAL_READ_PARAMETERS['mca']['metadata'] = {}
     RETRIEVAL_READ_PARAMETERS['mca']['vars'] = {}
@@ -162,73 +166,7 @@ class ReadAeolusL2aData:
     RETRIEVAL_READ_PARAMETERS['mca']['vars'][_LODNAME] = 'mca_optical_properties/mca_optical_properties/lod'
     # DATA_COLNAMES[_MCA_CASENAME] = 'mca_optical_properties/mca_optical_properties/case'
 
-    # variable_data
-    # 'unfortunately there's 3 retrievals in the data product
-    # for now we map the sca () product to the aerocom standard names,
-    # but put ica and mca in the data variable of the object as well
-    #repeat with retrieval name
-    _SCA_EC355NAME = 'sca_ec355aer'
-    _SCA_BS355NAME = 'sca_bs355aer'
-    _SCA_LODNAME = 'sca_lod'
-    _SCA_SRNAME = 'sca_sr'
-    _SCA_TIMENAME = 'sca_time'
-
-    # ica retriaval
-    _ICA_EC355NAME = 'ica_ec355aer'
-    _ICA_BS355NAME = 'ica_bs355aer'
-    _ICA_LODNAME = 'ica_lod'
-    _ICA_CASENAME = 'ica_case'
-    _ICA_TIMENAME = 'ica_time'
-
-    # mca retriaval
-    _MCA_EC355NAME = 'mca_ec355aer'
-    _MCA_LODNAME = 'mca_lod'
-    _MCA_CLIMBERNAME = 'mca_climber'
-    _MCA_TIMENAME = 'mca_time'
-
-
-
     GROUP_DELIMITER = '/'
-    # data vars
-    # will be stored as pandas time series
-    DATA_COLNAMES = {}
-    DATA_COLNAMES[_SCA_EC355NAME] = 'sca_optical_properties/sca_optical_properties/extinction'
-    DATA_COLNAMES[_SCA_BS355NAME] = 'sca_optical_properties/sca_optical_properties/backscatter'
-    DATA_COLNAMES[_SCA_LODNAME] = 'sca_optical_properties/sca_optical_properties/lod'
-    DATA_COLNAMES[_SCA_SRNAME] = 'sca_optical_properties/sca_optical_properties/sr'
-    DATA_COLNAMES[_ICA_EC355NAME] = 'ica_optical_properties/ica_optical_properties/extinction'
-    DATA_COLNAMES[_ICA_BS355NAME] = 'ica_optical_properties/ica_optical_properties/backscatter'
-    DATA_COLNAMES[_ICA_LODNAME] = 'ica_optical_properties/ica_optical_properties/lod'
-    # DATA_COLNAMES[_ICA_CASENAME] = 'ica_optical_properties/ica_optical_properties/case'
-    DATA_COLNAMES[_MCA_EC355NAME] = 'mca_optical_properties/mca_optical_properties/extinction'
-    DATA_COLNAMES[_MCA_LODNAME] = 'mca_optical_properties/mca_optical_properties/lod'
-    # DATA_COLNAMES[_MCA_CASENAME] = 'mca_optical_properties/mca_optical_properties/case'
-
-
-    # meta data vars
-    # will be stored as array of strings
-    METADATA_COLNAMES = {}
-    METADATA_COLNAMES[_LATITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/latitude'
-    METADATA_COLNAMES[_LONGITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/longitude'
-    METADATA_COLNAMES[_ALTITUDENAME] = 'sca_optical_properties/geolocation_middle_bins/altitude'
-
-    # Always read the times of the different retrievals
-    TIME_COLNAMES = {}
-    TIME_COLNAMES[_SCA_TIMENAME] = 'sca_optical_properties/starttime'
-    TIME_COLNAMES[_ICA_TIMENAME] = 'ica_optical_properties/starttime'
-    TIME_COLNAMES[_MCA_TIMENAME] = 'mca_optical_properties/starttime'
-
-
-    # All vars to loop over them
-    _COLNAMES = DATA_COLNAMES
-    _COLNAMES.update(METADATA_COLNAMES)
-
-    # because the time is only stored once for an entire profile, we have to treat that separately
-    #TIME_PATH = 'sca_optical_properties/starttime'
-
-    # additional vars
-    # calculated
-    AUX_COLNAMES = []
 
     # create a dict with the aerocom variable name as key and the index number in the
     # resulting numpy array as value.
@@ -256,18 +194,9 @@ class ReadAeolusL2aData:
     NAN_DICT.update({_BS355NAME: -1.E6})
     NAN_DICT.update({_LODNAME: -1.})
     NAN_DICT.update({_SRNAME: -1.})
-    NAN_DICT.update({_SCA_EC355NAME: -1.E6})
-    NAN_DICT.update({_SCA_BS355NAME: -1.E6})
-    NAN_DICT.update({_SCA_LODNAME: -1.})
-    NAN_DICT.update({_SCA_SRNAME: -1.})
-    NAN_DICT.update({_ICA_EC355NAME: -1.E6})
-    NAN_DICT.update({_ICA_BS355NAME: -1.E6})
-    NAN_DICT.update({_ICA_LODNAME: -1.})
-    NAN_DICT.update({_MCA_EC355NAME: -1.E6})
-    NAN_DICT.update({_MCA_LODNAME: -1.})
 
-    PROVIDES_VARIABLES = list(DATA_COLNAMES.keys())
-    PROVIDES_VARIABLES.append(list(METADATA_COLNAMES.keys()))
+    PROVIDES_VARIABLES = list(RETRIEVAL_READ_PARAMETERS['sca']['metadata'].keys())
+    PROVIDES_VARIABLES.extend(RETRIEVAL_READ_PARAMETERS['sca']['vars'].keys())
 
     # max distance between point on the earth's surface for a match
     # in meters
@@ -275,6 +204,35 @@ class ReadAeolusL2aData:
     EARTH_RADIUS = geopy.distance.EARTH_RADIUS
     NANVAL_META = -1.E-6
     NANVAL_DATA = -1.E6
+
+    # these are the variable specific attributes written into a netcdf file
+    NETCDF_VAR_ATTRIBUTES = {}
+    NETCDF_VAR_ATTRIBUTES['latitude'] = {}
+    # NETCDF_VAR_ATTRIBUTES['latitude']['_FillValue'] = {}
+    NETCDF_VAR_ATTRIBUTES['latitude']['long_name'] = 'latitude'
+    NETCDF_VAR_ATTRIBUTES['latitude']['standard_name'] = 'latitude'
+    NETCDF_VAR_ATTRIBUTES['latitude']['units'] = 'degrees north'
+    NETCDF_VAR_ATTRIBUTES['longitude'] = {}
+    # NETCDF_VAR_ATTRIBUTES['longitude']['_FillValue'] = {}
+    NETCDF_VAR_ATTRIBUTES['longitude']['long_name'] = 'longitude'
+    NETCDF_VAR_ATTRIBUTES['longitude']['standard_name'] = 'longitude'
+    NETCDF_VAR_ATTRIBUTES['longitude']['units'] = 'degrees_east'
+    NETCDF_VAR_ATTRIBUTES['altitude'] = {}
+    # NETCDF_VAR_ATTRIBUTES['altitude']['_FillValue'] = {}
+    NETCDF_VAR_ATTRIBUTES['altitude']['long_name'] = 'altitude'
+    NETCDF_VAR_ATTRIBUTES['altitude']['standard_name'] = 'altitude'
+    NETCDF_VAR_ATTRIBUTES['altitude']['units'] = 'm'
+    NETCDF_VAR_ATTRIBUTES['bs355aer'] = {}
+    NETCDF_VAR_ATTRIBUTES['bs355aer']['_FillValue'] = np.nan
+    NETCDF_VAR_ATTRIBUTES['bs355aer']['long_name'] = 'backscatter @ 355nm'
+    # NETCDF_VAR_ATTRIBUTES['bs355aer']['standard_name'] = 'volume_extinction_coefficient_in_air_due_to_ambient_aerosol_particles'
+    NETCDF_VAR_ATTRIBUTES['bs355aer']['units'] = '1'
+    NETCDF_VAR_ATTRIBUTES['ec355aer'] = {}
+    NETCDF_VAR_ATTRIBUTES['ec355aer']['_FillValue'] = np.nan
+    NETCDF_VAR_ATTRIBUTES['ec355aer']['long_name'] = 'extinction @ 355nm'
+    NETCDF_VAR_ATTRIBUTES['ec355aer']['standard_name'] = 'volume_extinction_coefficient_in_air_due_to_ambient_aerosol_particles'
+    NETCDF_VAR_ATTRIBUTES['ec355aer']['units'] = '1/m'
+
 
     def __init__(self, index_pointer=0, loglevel=logging.INFO, verbose=False):
         self.verbose = verbose
@@ -345,7 +303,7 @@ class ReadAeolusL2aData:
     ###################################################################################
 
     def read_file(self, filename, vars_to_read=None, read_retrieval='sca', return_as='dict', loglevel=None):
-        """method to read an ESA binary data file entirely
+        """method to read the file partially
 
         Parameters
         ----------
@@ -721,6 +679,7 @@ class ReadAeolusL2aData:
         temp = 'time for single file read [s]: {:.3f}'.format(elapsed_sec)
         self.logger.info(temp)
         # self.logger.info('{} points read'.format(index_pointer))
+        self.RETRIEVAL_READ = read_retrieval
         return file_data
 
     ###################################################################################
@@ -1119,7 +1078,8 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def to_netcdf_simple(self, netcdf_filename='/home/jang/tmp/to_netcdf_simple.nc'):
+    def to_netcdf_simple(self, netcdf_filename='/home/jang/tmp/to_netcdf_simple.nc',
+                         global_attributes=None, vars_to_read=['ec355aer']):
 
         """method to store the file contents in a very basic netcdf file
         >>> import read_aeolus_l2a_data
@@ -1132,6 +1092,10 @@ class ReadAeolusL2aData:
         >>> obj.ndarr2data(filedata_numpy)
         >>> obj.to_netcdf_simple()
 
+        Parameters:
+        ----------
+            global_attributes : dict
+            dictionary with things to put into the global attributes of a netcdf file
 
         """
 
@@ -1139,15 +1103,33 @@ class ReadAeolusL2aData:
         import xarray as xr
         import pandas as pd
         import numpy as np
+        if isinstance(vars_to_read, str):
+            vars_to_read = [vars_to_read]
+        vars_to_read.extend(list(self.RETRIEVAL_READ_PARAMETERS[self.RETRIEVAL_READ[0]]['metadata'].keys()))
+
         datetimedata = pd.to_datetime(self.data[:, self._TIMEINDEX].astype('datetime64[s]'))
         pointnumber = np.arange(0, len(datetimedata))
         ds = xr.Dataset()
-        ds['time'] = ('point'), datetimedata
-        ds['latitude'] = ('point'), self.data[:, self._LATINDEX]
-        ds['longitude'] = ('point'), self.data[:, self._LONINDEX]
-        ds['height'] = ('point'), self.data[:, self._ALTITUDEINDEX]
-        ds['ec355aer'] = ('point'), self.data[:, self._EC355INDEX]
         ds.coords['point'] = pointnumber
+        # time is a special variable that needs special treatment
+        ds['time'] = ('point'), datetimedata
+        for var in vars_to_read:
+            if var == self._TIME_NAME:
+                continue
+            ds[var] = ('point'), self.data[:, self.INDEX_DICT[var]]
+            try:
+                for attrib in self.NETCDF_VAR_ATTRIBUTES[var]:
+                    ds[var].attrs[attrib] = self.NETCDF_VAR_ATTRIBUTES[var][attrib]
+
+            except KeyError:
+                pass
+
+        try:
+            for name in global_attributes:
+                ds.attrs[name] = global_attributes[name]
+        except:
+            pass
+
         ds.to_netcdf(netcdf_filename)
 
         end_time = time.perf_counter()
@@ -1159,7 +1141,8 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def read_data_fields(self, filename, fields_to_read=['mph','sca_optical_properties'], loglevel=None):
+    def read_data_fields(self, filename, coda_handle=None,
+                         fields_to_read=['mph','sca_optical_properties'], loglevel=None):
         """method to read certain fields of an ESA binary data file
 
         Parameters
@@ -1427,7 +1410,8 @@ class ReadAeolusL2aData:
 
         self.logger.info('reading file {}'.format(filename))
         # read file
-        coda_handle = coda.open(filename)
+        if coda_handle is None:
+            coda_handle = coda.open(filename)
         root_field_names = coda.get_field_names(coda_handle)
         coda_data = {}
         ret_data = {}
@@ -1616,8 +1600,8 @@ if __name__ == '__main__':
     parser.add_argument("--listpaths", help="list the file contents.", action='store_true')
     parser.add_argument("--readpaths", help="read listed rootpaths. Can be comma seperated",
                         default='mph,sca_optical_properties')
-    parser.add_argument("-o, --outfile", help="output file")
-    parser.add_argument("-O, --overwrite", help="overwrite output file", action='store_true')
+    parser.add_argument("-o", "--outfile", help="output file")
+    parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
     parser.add_argument("--codadef", help="set path of CODA_DEFINITION env variable",
                         default='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/')
 
@@ -1656,6 +1640,7 @@ if __name__ == '__main__':
     import coda
 
     for filename in options['files']:
+
         if options['listpaths']:
             coda_handle = coda.open(filename)
             root_field_names = coda.get_field_names(coda_handle)
@@ -1664,4 +1649,10 @@ if __name__ == '__main__':
             coda.close(coda_handle)
         else:
             obj = ReadAeolusL2aData(verbose=True)
-            coda_data = obj.read_data_fields(filename)
+            # read sca retrieval data
+            filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer', 'bs355aer'], return_as='numpy')
+            obj.ndarr2data(filedata_numpy)
+            # read additional data
+            ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
+            # write netcdf
+            obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])

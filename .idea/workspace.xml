@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="635" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="642" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="547" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1118" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,29 +22,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="717" column="26" selection-start-line="717" selection-start-column="26" selection-end-line="717" selection-end-column="26" />
+            <state relative-caret-position="522">
+              <caret line="1117" column="24" selection-start-line="1117" selection-start-column="24" selection-end-line="1117" selection-end-column="24" />
               <folding>
                 <element signature="e#1355#1364#0" expanded="true" />
+                <element signature="e#9588#10611#0" />
+                <element signature="e#14346#33358#0" />
+                <element signature="e#33578#35035#0" />
+                <element signature="e#35177#35884#0" />
+                <element signature="e#36067#40759#0" />
+                <element signature="e#40944#47225#0" />
+                <element signature="e#47362#50099#0" />
+                <element signature="e#50226#51749#0" />
+                <element signature="e#51059#65461#0" />
+                <element signature="e#68324#70567#0" />
+                <element signature="e#66544#70912#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/coda/codapython.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1015">
-              <caret line="649" selection-start-line="649" selection-end-line="649" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/interactiveshell.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="3184" selection-start-line="3184" selection-end-line="3184" />
             </state>
           </provider>
         </entry>
@@ -62,12 +54,14 @@
       <find>_ICA</find>
       <find>_SCA</find>
       <find>_TIME_NAME</find>
+      <find>latitude</find>
     </findStrings>
     <replaceStrings>
       <replace>355</replace>
       <replace>self</replace>
       <replace>mca_</replace>
       <replace>_MCA</replace>
+      <replace>longitude</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -237,20 +231,20 @@
     <frame x="77" y="-2" width="3764" height="2163" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.29886913" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.29886913" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32889733" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35691318" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3285102" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.35691318" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32827324" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3279743" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50026923" side_tool="true" weight="0.54608786" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" visible="true" weight="0.34619507" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34619507" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -261,23 +255,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1141</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1487</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1658</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>683</line>
-          <option name="timeStamp" value="25" />
+          <line>1132</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -300,10 +279,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="717" column="26" selection-start-line="717" selection-start-column="26" selection-end-line="717" selection-end-column="26" />
+        <state relative-caret-position="522">
+          <caret line="1117" column="24" selection-start-line="1117" selection-start-column="24" selection-end-line="1117" selection-end-column="24" />
           <folding>
             <element signature="e#1355#1364#0" expanded="true" />
+            <element signature="e#9588#10611#0" />
+            <element signature="e#14346#33358#0" />
+            <element signature="e#33578#35035#0" />
+            <element signature="e#35177#35884#0" />
+            <element signature="e#36067#40759#0" />
+            <element signature="e#40944#47225#0" />
+            <element signature="e#47362#50099#0" />
+            <element signature="e#50226#51749#0" />
+            <element signature="e#51059#65461#0" />
+            <element signature="e#68324#70567#0" />
+            <element signature="e#66544#70912#0" />
           </folding>
         </state>
       </provider>
