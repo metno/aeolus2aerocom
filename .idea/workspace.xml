@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="549" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1120" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="550" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1125" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/aeolus2netcdf.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aeolus2netcdf.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,31 +25,27 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="1700" lean-forward="true" selection-start-line="1700" selection-end-line="1700" />
+            <state relative-caret-position="18">
+              <caret line="1747" column="31" lean-forward="true" selection-start-line="1747" selection-start-column="31" selection-end-line="1747" selection-end-column="31" />
               <folding>
                 <element signature="e#1355#1364#0" expanded="true" />
-                <element signature="e#8181#9054#0" />
-                <element signature="e#9588#10611#0" />
-                <element signature="e#33578#35035#0" />
-                <element signature="e#35177#35884#0" />
-                <element signature="e#36067#40759#0" />
-                <element signature="e#40944#47225#0" />
-                <element signature="e#50226#51749#0" />
-                <element signature="e#51935#53570#0" />
-                <element signature="e#51059#65461#0" />
-                <element signature="e#68324#70567#0" />
-                <element signature="e#66544#70912#0" />
+                <element signature="e#34953#35660#0" />
+                <element signature="e#35843#40535#0" />
+                <element signature="e#40720#47001#0" />
+                <element signature="e#47138#50348#0" />
+                <element signature="e#54827#69265#0" />
+                <element signature="e#69412#71655#0" />
+                <element signature="e#71837#76225#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="308" selection-start-line="308" selection-end-line="308" />
+            <state relative-caret-position="207">
+              <caret line="309" selection-start-line="309" selection-end-line="309" />
             </state>
           </provider>
         </entry>
@@ -65,6 +64,7 @@
       <find>_TIME_NAME</find>
       <find>latitude</find>
       <find>longitude</find>
+      <find>vars_to_read</find>
     </findStrings>
     <replaceStrings>
       <replace>355</replace>
@@ -115,7 +115,7 @@
   <component name="PropertiesComponent">
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -180,7 +180,7 @@
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
-      <option name="PARAMETERS" value="--emep --dir /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2019-01/02/AE_OPER_ALD_U_N_2A*" />
+      <option name="PARAMETERS" value="--emep --outdir ~/tmp/aeolus2netcdf.out  --dir /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2018-09/05/" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -261,23 +261,23 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="-2" width="3764" height="2163" extended-state="6" />
+    <frame x="1919" y="-11" width="1922" height="1212" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.29886913" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.29836583" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3285102" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35691318" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32794678" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35646388" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3279743" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.43441063" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50026923" side_tool="true" weight="0.54608786" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34619507" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34600762" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -288,13 +288,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1134</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1724</line>
-          <option name="timeStamp" value="45" />
+          <line>603</line>
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -308,44 +303,29 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/async_helpers.py" />
-    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/coda/codapython.py">
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/coda/codapython.py" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/interactiveshell.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1015">
-          <caret line="649" selection-start-line="649" selection-end-line="649" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/interactiveshell.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="3184" selection-start-line="3184" selection-end-line="3184" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        <state relative-caret-position="207">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="1700" lean-forward="true" selection-start-line="1700" selection-end-line="1700" />
+        <state relative-caret-position="18">
+          <caret line="1747" column="31" lean-forward="true" selection-start-line="1747" selection-start-column="31" selection-end-line="1747" selection-end-column="31" />
           <folding>
             <element signature="e#1355#1364#0" expanded="true" />
-            <element signature="e#8181#9054#0" />
-            <element signature="e#9588#10611#0" />
-            <element signature="e#33578#35035#0" />
-            <element signature="e#35177#35884#0" />
-            <element signature="e#36067#40759#0" />
-            <element signature="e#40944#47225#0" />
-            <element signature="e#50226#51749#0" />
-            <element signature="e#51935#53570#0" />
-            <element signature="e#51059#65461#0" />
-            <element signature="e#68324#70567#0" />
-            <element signature="e#66544#70912#0" />
+            <element signature="e#34953#35660#0" />
+            <element signature="e#35843#40535#0" />
+            <element signature="e#40720#47001#0" />
+            <element signature="e#47138#50348#0" />
+            <element signature="e#54827#69265#0" />
+            <element signature="e#69412#71655#0" />
+            <element signature="e#71837#76225#0" />
           </folding>
         </state>
       </provider>

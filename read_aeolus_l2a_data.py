@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ################################################################
 # read_aeolus_l2a_data.py
 #
@@ -589,10 +590,14 @@ class ReadAeolusL2aData:
             if retrieval not in read_retrieval:
                 continue
 
+            vars_to_read_in = None
+            vars_to_read_in = vars_to_read.copy()
             if vars_to_read is None:
                 # read all variables
-                vars_to_read = list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['vars'].keys())
-            vars_to_read.extend(list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['metadata'].keys()))
+                vars_to_read_in = list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['vars'].keys())
+            vars_to_read_in.extend(list(self.RETRIEVAL_READ_PARAMETERS[retrieval]['metadata'].keys()))
+            #get rid of duplicates
+            vars_to_read_in = list(set(vars_to_read_in))
 
             # read data time
             # do that differently since its only store once per profile
@@ -612,7 +617,7 @@ class ReadAeolusL2aData:
                 ((file_data[self._TIME_NAME] + seconds_to_add) * 1.E3).astype(np.int).astype('datetime64[ms]')
 
             # read data in a simple dictionary
-            for var in vars_to_read:
+            for var in vars_to_read_in:
                 # time has been read already
                 if var == self._TIME_NAME:
                     continue
@@ -659,7 +664,7 @@ class ReadAeolusL2aData:
                         # This loop could be avoided using numpy index slicing
                         # do that in case we need more optimisations
                         data[index_pointer, self._TIMEINDEX] = _time
-                        for var in vars_to_read:
+                        for var in vars_to_read_in:
                             # time is the index, so skip it here
                             if var == self._TIME_NAME:
                                 continue
@@ -1121,9 +1126,11 @@ class ReadAeolusL2aData:
         import xarray as xr
         import pandas as pd
         import numpy as np
-        if isinstance(vars_to_read, str):
-            vars_to_read = [vars_to_read]
-        vars_to_read.extend(list(self.RETRIEVAL_READ_PARAMETERS[self.RETRIEVAL_READ[0]]['metadata'].keys()))
+
+        vars_to_read_in = vars_to_read.copy()
+        if isinstance(vars_to_read_in, str):
+            vars_to_read_in = [vars_to_read_in]
+        vars_to_read_in.extend(list(self.RETRIEVAL_READ_PARAMETERS[self.RETRIEVAL_READ[0]]['metadata'].keys()))
 
         datetimedata = pd.to_datetime(self.data[:, self._TIMEINDEX].astype('datetime64[s]'))
         pointnumber = np.arange(0, len(datetimedata))
@@ -1131,7 +1138,7 @@ class ReadAeolusL2aData:
         ds.coords['point'] = pointnumber
         # time is a special variable that needs special treatment
         ds['time'] = ('point'), datetimedata
-        for var in vars_to_read:
+        for var in vars_to_read_in:
             if var == self._TIME_NAME:
                 continue
             ds[var] = ('point'), self.data[:, self.INDEX_DICT[var]]
@@ -1619,9 +1626,10 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--verbose", help="switch on verbosity",
                         action='store_true')
     parser.add_argument("--listpaths", help="list the file contents.", action='store_true')
-    parser.add_argument("--readpaths", help="read listed rootpaths. Can be comma seperated",
+    parser.add_argument("--readpaths", help="read listed rootpaths of DBL file. Can be comma separated",
                         default='mph,sca_optical_properties')
     parser.add_argument("-o", "--outfile", help="output file")
+    parser.add_argument("--outdir", help="output directory; the filename will be extended with the string '.nc'")
     parser.add_argument("--logfile", help="logfile; defaults to /home/jang/tmp/aeolus2netcdf.log",
                         default="/home/jang/tmp/aeolus2netcdf.log")
     parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
@@ -1638,6 +1646,10 @@ if __name__ == '__main__':
                         default='*AE_OPER_ALD_U_N_2A_*')
     parser.add_argument("--tempdir", help="directory for temporary files",
                         default=os.path.join(os.environ['HOME'], 'tmp'))
+    parser.add_argument("--plotmap", help="flag to plot a map of the data points; files will be put in outdir",
+                        action='store_true')
+    parser.add_argument("--variables", help="comma separated list of variables to write; default: ec355aer,bs355aer",
+                        default='ec355aer,bs355aer')
 
     args = parser.parse_args()
 
@@ -1647,6 +1659,14 @@ if __name__ == '__main__':
 
     if args.dir:
         options['dir'] = args.dir
+
+    if args.outdir:
+        options['outdir'] = args.outdir
+
+    if args.plotmap:
+        options['plotmap'] = True
+    else:
+        options['plotmap'] = False
 
     if args.tempdir:
         options['tempdir'] = args.tempdir
@@ -1672,6 +1692,9 @@ if __name__ == '__main__':
 
     if args.readpaths:
         options['readpaths'] = args.readpaths.split(',')
+
+    if args.variables:
+        options['variables'] = args.variables.split(',')
 
     if args.file:
         options['files'] = args.file
@@ -1706,7 +1729,9 @@ if __name__ == '__main__':
     import pathlib
     import tarfile
 
-    options['files'] = glob.glob(options['dir'], recursive=True)
+
+    if 'files' not in options:
+        options['files'] = glob.glob(options['dir']+'/**/*', recursive=True)
 
     for filename in options['files']:
         print(filename)
@@ -1723,6 +1748,9 @@ if __name__ == '__main__':
                     filename = os.path.join(options['tempdir'],file_in_tar)
                     tarhandle.close()
                     break
+        elif suffix != '.DBL':
+            print('ignoring file {}'.format(filename))
+            continue
 
         if options['listpaths']:
             coda_handle = coda.open(filename)
@@ -1733,7 +1761,8 @@ if __name__ == '__main__':
         else:
             obj = ReadAeolusL2aData(verbose=True)
             # read sca retrieval data
-            filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer', 'bs355aer'], return_as='numpy')
+            vars_to_read = options['variables'].copy()
+            filedata_numpy = obj.read_file(filename, vars_to_read=vars_to_read, return_as='numpy')
             obj.ndarr2data(filedata_numpy)
             # read additional data
             ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
@@ -1750,17 +1779,30 @@ if __name__ == '__main__':
                     obj = None
                     continue
 
-
-
-
-
+            # single outfile
             if 'outfile' in options:
-                # write netcdf
-                if os.path.exists(options['outfile']):
-                    if options['overwrite']:
-                        obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+                if len(options['files']) == 1:
+                    # write netcdf
+                    if os.path.exists(options['outfile']):
+                        if options['overwrite']:
+                            obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+                        else:
+                            sys.stderr.write('Error: path {} exists'.format(options['outfile']))
                     else:
-                        sys.stderr.write('Error: path {} exists'.format(options['outfile']))
+                        obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
                 else:
-                    obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
+                    sys.stderr.write("error: multiple input files, but only on output file given\n"
+                                     "Please use the --outdir option instead\n")
 
+            # outdir
+            if 'outdir' in options:
+                outfile_name = os.path.join(options['outdir'], os.path.basename(filename) + '.nc')
+                obj.logger.info('writing file {}'.format(outfile_name))
+                global_attributes = ancilliary_data['mph']
+                global_attributes['Aeolus_Retrieval'] = obj.RETRIEVAL_READ
+                obj.to_netcdf_simple(outfile_name, global_attributes=global_attributes,
+                                     vars_to_read=vars_to_read)
+
+            #plot a map of the lowest layer
+            if options['plotmap']:
+                pass
