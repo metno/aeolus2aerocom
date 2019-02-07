@@ -250,6 +250,9 @@ class ReadAeolusL2aData:
 
         if loglevel is not None:
             self.logger = logging.getLogger(__name__)
+            if self.logger.hasHandlers():
+                # Logger is already configured, remove all handlers
+                self.logger.handlers = []
             # self.logger = logging.getLogger('pyaerocom')
             default_formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
             console_handler = logging.StreamHandler()
@@ -660,7 +663,14 @@ class ReadAeolusL2aData:
                             # time is the index, so skip it here
                             if var == self._TIME_NAME:
                                 continue
-                            data[index_pointer, self.INDEX_DICT[var]] = file_data[var][file_data['time'][idx]][_index]
+                            # logitudes are 0 based for Aeolus, but -18- based for model data
+                            # adjust Aeolus to model data
+                            if var == self._LONGITUDENAME:
+                                data[index_pointer, self.INDEX_DICT[var]] = \
+                                    file_data[var][file_data['time'][idx]][_index] - 180.
+                            else:
+                                data[index_pointer, self.INDEX_DICT[var]] = \
+                                    file_data[var][file_data['time'][idx]][_index]
                             # put negative values to np.nan if the variable is not a metadata variable
                             if data[index_pointer, self.INDEX_DICT[var]] == self.NAN_DICT[var]:
                                 data[index_pointer, self.INDEX_DICT[var]] = np.nan
@@ -1034,6 +1044,12 @@ class ReadAeolusL2aData:
             # unique_times = np.unique(self.data[matching_indexes,self._TIMEINDEX]).astype('datetime64[s]')
             # self.logger.info('matching times:')
             # self.logger.info(unique_times)
+            # if len(ret_data) == 0:
+            #     data_lat_min = np.nanmin(self.data[:,self._LATINDEX])
+            #     data_lat_max = np.nanmax(self.data[:,self._LATINDEX])
+            #     data_lon_min = np.nanmin(self.data[:,self._LONINDEX])
+            #     data_lon_max = np.nanmax(self.data[:,self._LONINDEX])
+            #     logging.info('[lat_min, lat_max, lon_min, lon_max in data]: '.format([data_lat_min, data_lat_max, data_lon_min, data_lon_max]))
             return ret_data
 
     ###################################################################################
@@ -1510,6 +1526,7 @@ class ReadAeolusL2aData:
         >>> ds = xr.Dataset()
         """
 
+        import time
         start_time = time.perf_counter()
         import xarray as xr
         import pandas as pd
@@ -1591,6 +1608,8 @@ class ReadAeolusL2aData:
 
 
 if __name__ == '__main__':
+    import logging
+
     import argparse
     options = {}
     parser = argparse.ArgumentParser(
@@ -1603,6 +1622,8 @@ if __name__ == '__main__':
     parser.add_argument("--readpaths", help="read listed rootpaths. Can be comma seperated",
                         default='mph,sca_optical_properties')
     parser.add_argument("-o", "--outfile", help="output file")
+    parser.add_argument("--logfile", help="logfile; defaults to /home/jang/tmp/aeolus2netcdf.log",
+                        default="/home/jang/tmp/aeolus2netcdf.log")
     parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
     parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
     parser.add_argument("--codadef", help="set path of CODA_DEFINITION env variable",
@@ -1610,7 +1631,7 @@ if __name__ == '__main__':
     parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
     parser.add_argument("--latmax", help="max latitude to return", default=np.float_(76.))
     parser.add_argument("--lonmin", help="min longitude to return", default=np.float_(-30.))
-    parser.add_argument("--lonmax", help="max longitude to return", default=np.float_(-45.))
+    parser.add_argument("--lonmax", help="max longitude to return", default=np.float_(45.))
     parser.add_argument("--dir", help="work on all files below this directory",
                         default='/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/AE_OPER_ALD_U_N_2A_*')
     parser.add_argument("--filemask", help="file mask to find data files",
@@ -1619,6 +1640,10 @@ if __name__ == '__main__':
                         default=os.path.join(os.environ['HOME'], 'tmp'))
 
     args = parser.parse_args()
+
+    if args.logfile:
+        options['logfile'] = args.logfile
+        logging.basicConfig(filename=options['logfile'], level=logging.INFO)
 
     if args.dir:
         options['dir'] = args.dir
@@ -1631,7 +1656,7 @@ if __name__ == '__main__':
         options['latmin'] = np.float(30.)
         options['latmax'] = np.float(76.)
         options['lonmin'] = np.float(-30.)
-        options['lonmax'] = np.float(-45.)
+        options['lonmax'] = np.float(45.)
 
     if args.latmin:
         options['latmin'] = np.float_(args.latmin)
@@ -1719,6 +1744,7 @@ if __name__ == '__main__':
                 tmp_data = obj.select_bbox(bbox)
                 if len(tmp_data) > 0:
                     obj.data = tmp_data
+                    obj.logger.info('file {} contains {} points in emep area! '.format(filename, len(tmp_data)))
                 else:
                     obj.logger.info('file {} contains no data in emep area! '.format(filename))
                     obj = None
