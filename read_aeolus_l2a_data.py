@@ -1613,6 +1613,12 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
+    def plot_location_map(self, plotfilename):
+        """small routine to plot the satellite track on a map"""
+
+
+    ###################################################################################
+
 
 if __name__ == '__main__':
     import logging
@@ -1736,6 +1742,7 @@ if __name__ == '__main__':
     for filename in options['files']:
         print(filename)
         suffix = pathlib.Path(filename).suffix
+        temp_file_flag = False
         if suffix == '.TGZ':
             # untar *.DBL file first
             tarhandle = tarfile.open(filename)
@@ -1747,6 +1754,7 @@ if __name__ == '__main__':
                     tarhandle.extract(member, path=options['tempdir'],set_attrs=False)
                     filename = os.path.join(options['tempdir'],file_in_tar)
                     tarhandle.close()
+                    temp_file_flag = True
                     break
         elif suffix != '.DBL':
             print('ignoring file {}'.format(filename))
@@ -1766,6 +1774,9 @@ if __name__ == '__main__':
             obj.ndarr2data(filedata_numpy)
             # read additional data
             ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
+            if temp_file_flag:
+                obj.logger.info('removing temp file {}'.format(filename))
+                os.remove(filename)
 
             # apply emep options for cal / val
             if options['emepflag']:
