@@ -1614,7 +1614,45 @@ class ReadAeolusL2aData:
     ###################################################################################
 
     def plot_location_map(self, plotfilename):
-        """small routine to plot the satellite track on a map"""
+        """small routine to plot the satellite track on a map
+
+        >>> import matplotlib.pyplot as plt
+        >>> from mpl_toolkits.basemap import Basemap
+        >>> lats=obj.data[:,obj._LATINDEX]
+        >>> lons=obj.data[:,obj._LONINDEX]
+        >>> m = Basemap(projection='merc',lon_0=0)
+        >>> x, y = m(lons,lats)
+        >>> m.drawmapboundary(fill_color='#99ffff')
+        >>> m.fillcontinents(color='#cc9966',lake_color='#99ffff')
+        >>> m.scatter(x,y,3,marker='o',color='k')
+        >>> plt.show()
+        """
+
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.basemap import Basemap
+        lats = self.data[:,self._LATINDEX]
+        lons = self.data[:,self._LONINDEX]
+        lat_low = -90.
+        lat_high = 90.
+        lon_low = -180.
+        lon_high = 180.
+
+
+        m = Basemap(projection='cyl', llcrnrlat=lat_low, urcrnrlat=lat_high,
+                    llcrnrlon=lon_low, urcrnrlon=lon_high, resolution='c', fix_aspect=False)
+
+        x, y = m(lons, lats)
+        # m.drawmapboundary(fill_color='#99ffff')
+        # m.fillcontinents(color='#cc9966', lake_color='#99ffff')
+        plot = m.scatter(x, y, 4, marker='o', color='r', )
+        m.drawmeridians(np.arange(-180, 220, 40), labels=[0, 0, 0, 1], fontsize=10)
+        m.drawparallels(np.arange(-90, 120, 30), labels=[1, 1, 0, 0], fontsize=10)
+        # axis = plt.axis([LatsToPlot.min(), LatsToPlot.max(), LonsToPlot.min(), LonsToPlot.max()])
+        ax = plot.axes
+        m.drawcoastlines()
+
+        plt.savefig(plotfilename, dpi=300)
+        plt.close()
 
 
     ###################################################################################
