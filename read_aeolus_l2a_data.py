@@ -1067,6 +1067,21 @@ class ReadAeolusL2aData:
         """plot sample profile plot
 
         >>> import read_aeolus_l2a_data
+        >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
+        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> import os
+        >>> os.environ['CODA_DEFINITION']='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/'
+        >>> # read returning a ndarray
+        >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
+        >>> time_as_numpy_datetime64 = filedata_numpy[:,obj._TIMEINDEX].astype('datetime64[s]')
+        >>> ec355data = filedata_numpy[:,obj._EC355INDEX]
+        >>> altitudedata = filedata_numpy[:,obj._ALTITUDEINDEX]
+
+
+
+
+
+
         >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
@@ -1696,6 +1711,8 @@ if __name__ == '__main__':
                         default=os.path.join(os.environ['HOME'], 'tmp'))
     parser.add_argument("--plotmap", help="flag to plot a map of the data points; files will be put in outdir",
                         action='store_true')
+    parser.add_argument("--plotprofile", help="flag to plot the profiles; files will be put in outdir",
+                        action='store_true')
     parser.add_argument("--variables", help="comma separated list of variables to write; default: ec355aer,bs355aer",
                         default='ec355aer,bs355aer')
 
@@ -1715,6 +1732,11 @@ if __name__ == '__main__':
         options['plotmap'] = True
     else:
         options['plotmap'] = False
+
+    if args.plotprofile:
+        options['plotprofile'] = True
+    else:
+        options['plotprofile'] = False
 
     if args.tempdir:
         options['tempdir'] = args.tempdir
@@ -1859,7 +1881,8 @@ if __name__ == '__main__':
                                      vars_to_read=vars_to_read)
 
             #plot a map of the lowest layer
-            if options['plotmap']:
-                plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.png')
-                obj.plot_location_map(plotfilename)
-                pass
+            if options['plotprofile']:
+                plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
+                obj.plot_profile(plotfilename)
+
+            
