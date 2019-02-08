@@ -672,7 +672,11 @@ class ReadAeolusL2aData:
                             # adjust Aeolus to model data
                             if var == self._LONGITUDENAME:
                                 data[index_pointer, self.INDEX_DICT[var]] = \
-                                    file_data[var][file_data['time'][idx]][_index] - 180.
+                                    file_data[var][file_data['time'][idx]][_index]
+                                if file_data[var][file_data['time'][idx]][_index] > 180.:
+                                    data[index_pointer, self.INDEX_DICT[var]] = \
+                                        file_data[var][file_data['time'][idx]][_index] - 360.
+
                             else:
                                 data[index_pointer, self.INDEX_DICT[var]] = \
                                     file_data[var][file_data['time'][idx]][_index]
@@ -1721,6 +1725,8 @@ if __name__ == '__main__':
         options['latmax'] = np.float(76.)
         options['lonmin'] = np.float(-30.)
         options['lonmax'] = np.float(45.)
+    else:
+        options['emepflag'] = False
 
     if args.latmin:
         options['latmin'] = np.float_(args.latmin)
@@ -1854,4 +1860,6 @@ if __name__ == '__main__':
 
             #plot a map of the lowest layer
             if options['plotmap']:
+                plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.png')
+                obj.plot_location_map(plotfilename)
                 pass
