@@ -1063,38 +1063,40 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def plot_profile(self):
+    def plot_profile(self, plotfilename, vars_to_plot = ['ec355aer']):
         """plot sample profile plot
 
         >>> import read_aeolus_l2a_data
-        >>> filename = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL'
-        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> filename = '/lustre/storeb/project/fou/kl/admaeolus/data.rev.2a02/ae_oper_ald_u_n_2a_20181201t033526026_005423993_001590_0001.dbl'
+        >>> obj = read_aeolus_l2a_data.readaeolusl2adata(verbose=true)
         >>> import os
-        >>> os.environ['CODA_DEFINITION']='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/'
+        >>> os.environ['coda_definition']='/lustre/storea/project/aerocom/aerocom1/adm_calipso_test/'
         >>> # read returning a ndarray
         >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
-        >>> time_as_numpy_datetime64 = filedata_numpy[:,obj._TIMEINDEX].astype('datetime64[s]')
-        >>> ec355data = filedata_numpy[:,obj._EC355INDEX]
-        >>> altitudedata = filedata_numpy[:,obj._ALTITUDEINDEX]
+        >>> time_as_numpy_datetime64 = filedata_numpy[:,obj._timeindex].astype('datetime64[s]')
+        >>> import numpy as np
+        >>> unique_times = np.unique(time_as_numpy_datetime64)
+        >>> ec355data = filedata_numpy[:,obj._ec355index]
+        >>> altitudedata = filedata_numpy[:,obj._altitudeindex]
 
 
 
 
 
 
-        >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
+        >>> obj = read_aeolus_l2a_data.readaeolusl2adata(verbose=true)
         >>> import numpy as np
         >>> import matplotlib.pyplot as plt
-        >>> filename = '/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/download/AE_OPER_ALD_U_N_2A_20070101T002249149_002772000_003606_0001.DBL'
+        >>> filename = '/lustre/storea/project/aerocom/aerocom1/adm_calipso_test/download/ae_oper_ald_u_n_2a_20070101t002249149_002772000_003606_0001.dbl'
         >>> # read returning a ndarray
         >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
         >>> obj.ndarr2data(file_data=filedata_numpy)
         >>> import pyaerocom.plot.plotprofile
         >>> pyaerocom.plot.plotprofile.plotcurtain(obj, filename='/home/jang/tmp/curtaintest.png',var_to_plot='ec355aer', what='mpl_scatter_density')
 
-        >>> nonnan_indexes = np.where(np.isfinite(filedata_numpy[:,obj._ALTITUDEINDEX]))[0]
-        >>> ec = filedata_numpy[nonnan_indexes,obj._EC355INDEX]
-        >>> altitudes = filedata_numpy[nonnan_indexes,obj._ALTITUDEINDEX]
+        >>> nonnan_indexes = np.where(np.isfinite(filedata_numpy[:,obj._altitudeindex]))[0]
+        >>> ec = filedata_numpy[nonnan_indexes,obj._ec355index]
+        >>> altitudes = filedata_numpy[nonnan_indexes,obj._altitudeindex]
         >>> plot = plt.hist2d(altitudes, ec, cmap='jet', vmin=2., vmax=500.)
         >>> #nan_indexes = np.where(np.isnan(ec))
         >>> height_lev_no = 24
@@ -1106,17 +1108,100 @@ class ReadAeolusL2aData:
         >>> plot.axes.set_title('title')
         >>> plt.show()
 
-
-
-
-
-
-
-
-
-
-
         """
+        import matplotlib.pyplot as plt
+        # read returning a ndarray
+        time = self.data[:,obj._TIMEINDEX].astype('datetime64[s]')
+        prof_field = {}
+        unique_times = np.unique(time)
+        vars_to_plot_arr = ['altitude']
+        vars_to_plot_arr.extend(vars_to_plot)
+        height_step_no = 24
+        time_step_no = int(len(self.data[:,self._TIMEINDEX]) / height_step_no)
+        altitudes = self.data[:,self._ALTITUDEINDEX].reshape(time_step_no, height_step_no)
+        altitudes_mask = np.isnan(altitudes)
+        ec355aer = self.data[:,self._EC355INDEX].reshape(time_step_no, height_step_no)
+        ec355mask = np.isnan(ec355aer)
+        ec355aer[ec355mask] = 0.
+
+
+
+        # plot_simple = plt.pcolormesh(ec355aer.transpose(), cmap='jet', vmin=2., vmax=2000.)
+        # plot_simple.axes.set_xlabel('time step number')
+        # plot_simple.axes.set_ylabel('height step number')
+        # plot_simple.axes.set_title('title')
+        # plt.show()
+
+
+        target_height_no = 201
+        target_heights = np.arange(0,target_height_no)*100
+        target_heights = np.flip(target_heights)
+        target_x = np.arange(0,time_step_no)
+        out_arr = np.empty([time_step_no, target_height_no])
+        from scipy import interpolate
+
+        for time_step_no in range(len(unique_times)):
+            # scipy.interpolate cannot cope with nans in the data
+            # work only on profiles with a nansum > 0
+            var_data = ec355aer[time_step_no,:]
+            if np.nansum(var_data) > 0:
+                #var_data = var_data[~ec355mask[time_step_no,:]]
+                height_data = altitudes[time_step_no,:]
+                height_data = height_data[~altitudes_mask[time_step_no,:]]
+                var_data = var_data[~altitudes_mask[time_step_no,:]]
+
+
+                f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
+                interpolated = f(target_heights)
+                out_arr[time_step_no,:] = interpolated
+
+        plot_simple2 = plt.pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
+        plot_simple2.axes.set_xlabel('time step number')
+        plot_simple2.axes.set_ylabel('height step number')
+        plot_simple2.axes.set_title('title')
+        plt.show()
+        print('test')
+
+
+
+        # # reform the point cloud to profiles in a manner so that we do not depend on the number of layers to be always 24
+        # # for now
+        # # for speed this will likely be changed to a simple reform at some point
+        # # but we want to know the data better at this point
+        # non_nan_profiles = {}
+        #
+        # for prof_time in unique_times:
+        #     prof_indexes = np.where(time == prof_time)
+        #     height_step_no = len(prof_indexes[0])
+        #     if len(prof_indexes) > 0:
+        #         for var in vars_to_plot_arr:
+        #             try:
+        #                 prof_field[var].append(self.data[prof_indexes,self.index_dict[var]])
+        #                 if var != 'altitude' and np.nansum(self.data[prof_indexes,self.index_dict[var]]) > 0:
+        #                     non_nan_profiles[prof_time] = {}
+        #                     vals = self.data[prof_indexes,self.index_dict[var]].reshape(height_step_no)
+        #                     # remove 0s and nans
+        #                     non_zero_indexes = vals > 0.
+        #                     # non_nan_profiles[prof_time][var] = self.data[prof_indexes,self.index_dict[var]]
+        #                     # non_nan_profiles[prof_time]['altitude'] = self.data[prof_indexes,self.index_dict['altitude']]
+        #                     if len(non_zero_indexes) > 0:
+        #                         non_nan_profiles[prof_time][var] = \
+        #                             vals[non_zero_indexes]
+        #                             # self.data[prof_indexes[non_zero_indexes],self.index_dict[var]]
+        #                         altitudes = self.data[prof_indexes,self.index_dict['altitude']].reshape(height_step_no)
+        #                         non_nan_profiles[prof_time]['altitude'] = \
+        #                             altitudes[non_zero_indexes]
+        #                             # self.data[prof_indexes[non_zero_indexes],self.index_dict['altitude']]
+        #
+        #
+        #                     # print('{} {}'.format(prof_time,self.data[prof_indexes,self.index_dict[var]]))
+        #             except keyerror:
+        #                 prof_field[var] = []
+        #                 prof_field[var].append(self.data[prof_indexes,self.index_dict[var]])
+
+
+
+
 
     ###################################################################################
 
@@ -1880,7 +1965,7 @@ if __name__ == '__main__':
                 obj.to_netcdf_simple(outfile_name, global_attributes=global_attributes,
                                      vars_to_read=vars_to_read)
 
-            #plot a map of the lowest layer
+            #plot the profile
             if options['plotprofile']:
                 plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
                 obj.plot_profile(plotfilename)

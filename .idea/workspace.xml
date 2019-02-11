@@ -2,11 +2,12 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="550" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1144" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1084" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1229" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1115" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,15 +24,44 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="1078" selection-start-line="1078" selection-end-line="1078" />
-              <folding>
-                <element signature="e#52592#54973#0" />
-                <element signature="e#55221#69659#0" />
-                <element signature="e#69806#72049#0" />
-                <element signature="e#72231#76619#0" />
-                <element signature="e#76645#78197#0" />
-              </folding>
+            <state relative-caret-position="362">
+              <caret line="1157" column="57" selection-start-line="1157" selection-start-column="57" selection-end-line="1157" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/polyint.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2484">
+              <caret line="77" selection-start-line="77" selection-end-line="77" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/interpolate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15552">
+              <caret line="432" selection-start-line="432" selection-end-line="432" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/numpy/lib/arraysetops.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8208">
+              <caret line="230" selection-start-line="230" selection-end-line="230" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="11088">
+              <caret line="308" selection-start-line="308" selection-end-line="308" />
             </state>
           </provider>
         </entry>
@@ -52,6 +82,7 @@
       <find>longitude</find>
       <find>vars_to_read</find>
       <find>-180</find>
+      <find>&gt;&gt;&gt;</find>
     </findStrings>
     <replaceStrings>
       <replace>355</replace>
@@ -132,7 +163,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.read_aeolus_l2a_data read domain">
+  <component name="RunManager" selected="Python.read_aeolus_l2a_data plot test">
     <configuration name="read_aeolus_l2a_data list" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,6 +178,27 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
       <option name="PARAMETERS" value="--listpaths /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data plot test" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda.2018/envs/aeolus/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--plotprofile --outdir ./ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -218,6 +270,7 @@
       <item itemvalue="Python.read_aeolus_l2a_data list" />
       <item itemvalue="Python.read_aeolus_l2a_data read" />
       <item itemvalue="Python.read_aeolus_l2a_data read domain" />
+      <item itemvalue="Python.read_aeolus_l2a_data plot test" />
       <item itemvalue="Python tests.Doctest ReadAeolusL2aData.read_file" />
     </list>
     <recent_temporary>
@@ -256,14 +309,14 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32794678" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.35646388" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35637727" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.4340836" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50026923" side_tool="true" weight="0.54608786" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" visible="true" weight="0.34565917" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34565917" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -274,13 +327,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>603</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1859</line>
-          <option name="timeStamp" value="54" />
+          <line>1162</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -296,19 +344,39 @@
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/async_helpers.py" />
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/coda/codapython.py" />
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/interactiveshell.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py" />
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="1078" selection-start-line="1078" selection-end-line="1078" />
-          <folding>
-            <element signature="e#52592#54973#0" />
-            <element signature="e#55221#69659#0" />
-            <element signature="e#69806#72049#0" />
-            <element signature="e#72231#76619#0" />
-            <element signature="e#76645#78197#0" />
-          </folding>
+        <state relative-caret-position="362">
+          <caret line="1157" column="57" selection-start-line="1157" selection-start-column="57" selection-end-line="1157" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/polyint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2484">
+          <caret line="77" selection-start-line="77" selection-end-line="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/interpolate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15552">
+          <caret line="432" selection-start-line="432" selection-end-line="432" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/numpy/lib/arraysetops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8208">
+          <caret line="230" selection-start-line="230" selection-end-line="230" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11088">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
         </state>
       </provider>
     </entry>
