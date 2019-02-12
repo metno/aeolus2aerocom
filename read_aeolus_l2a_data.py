@@ -1063,7 +1063,7 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def plot_profile(self, plotfilename, vars_to_plot = ['ec355aer']):
+    def plot_profile(self, plotfilename, vars_to_plot = ['ec355aer'], title=None, ):
         """plot sample profile plot
 
         >>> import read_aeolus_l2a_data
@@ -1133,8 +1133,8 @@ class ReadAeolusL2aData:
         # plt.show()
 
 
-        target_height_no = 201
-        target_heights = np.arange(0,target_height_no)*100
+        target_height_no = 2001
+        target_heights = np.arange(0,target_height_no)*10
         target_heights = np.flip(target_heights)
         target_x = np.arange(0,time_step_no)
         out_arr = np.empty([time_step_no, target_height_no])
@@ -1157,10 +1157,19 @@ class ReadAeolusL2aData:
 
         plot_simple2 = plt.pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
         plot_simple2.axes.set_xlabel('time step number')
-        plot_simple2.axes.set_ylabel('height step number')
-        plot_simple2.axes.set_title('title')
-        plt.show()
-        print('test')
+        plot_simple2.axes.set_ylabel('height [km]')
+        yticklabels = plot_simple2.axes.set_yticklabels(['0','5', '10', '15', '20'])
+        unit = '10^-6 m^-1'
+        if title:
+            plot_simple2.axes.set_title(title, fontsize='small')
+        else:
+            plot_simple2.axes.set_title('title')
+        plot_simple2.axes.set_aspect(0.05)
+        # plt.show()
+        plt.colorbar(plot_simple2, orientation='horizontal')
+        plt.savefig(plotfilename, dpi=300)
+        plt.close()
+        # print('test')
 
 
 
@@ -1803,6 +1812,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    if args.filemask:
+        options['filemask'] = args.filemask
+
     if args.logfile:
         options['logfile'] = args.logfile
         logging.basicConfig(filename=options['logfile'], level=logging.INFO)
@@ -1888,7 +1900,7 @@ if __name__ == '__main__':
 
 
     if 'files' not in options:
-        options['files'] = glob.glob(options['dir']+'/**/*', recursive=True)
+        options['files'] = glob.glob(options['dir']+'/**/'+options['filemask'], recursive=True)
 
     for filename in options['files']:
         print(filename)
@@ -1968,6 +1980,7 @@ if __name__ == '__main__':
             #plot the profile
             if options['plotprofile']:
                 plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
-                obj.plot_profile(plotfilename)
+                title = os.path.basename(filename)
+                obj.plot_profile(plotfilename, title=title)
 
             
