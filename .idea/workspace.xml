@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="550" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1238" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1166" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="556" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1228" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1191" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="239" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/example_files/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/aeolus2netcdf.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aeolus2netcdf.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.nc" beforeDir="false" afterPath="$PROJECT_DIR$/example_files/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.nc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.nc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,17 +29,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="675">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="1161" column="23" selection-start-line="1161" selection-start-column="23" selection-end-line="1161" selection-end-column="23" />
+            <state relative-caret-position="828">
+              <caret line="1981" column="45" selection-start-line="1981" selection-start-column="45" selection-end-line="1981" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
+        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="792">
+              <caret line="22" column="44" lean-forward="true" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example_files/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
@@ -56,6 +76,7 @@
       <find>&gt;&gt;&gt;</find>
       <find>dpi</find>
       <find>filemask</find>
+      <find>glob.</find>
     </findStrings>
     <replaceStrings>
       <replace>355</replace>
@@ -75,21 +96,22 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/readaeolusl2adata.py" />
         <option value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf.sh" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="77" />
-    <option name="y" value="-2" />
-    <option name="width" value="3764" />
-    <option name="height" value="2163" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="78" />
+    <option name="y" value="33" />
+    <option name="width" value="3762" />
+    <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -97,16 +119,39 @@
               <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
               <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (aeolus) (2) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (aeolus) (2) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Python3" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (aeolus) (2) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="Python3" type="462c0819:PsiDirectoryNode" />
+              <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -121,6 +166,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/example_files" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -136,7 +182,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.read_aeolus_l2a_data plot test">
+  <component name="RunManager" selected="Python.read_aeolus_l2a_data plot test DBL">
     <configuration name="read_aeolus_l2a_data list" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -158,7 +204,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="read_aeolus_l2a_data plot test" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="read_aeolus_l2a_data plot test DBL" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--plotprofile --outdir ./ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/download/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data plot test TGZ" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -243,7 +310,8 @@
       <item itemvalue="Python.read_aeolus_l2a_data list" />
       <item itemvalue="Python.read_aeolus_l2a_data read" />
       <item itemvalue="Python.read_aeolus_l2a_data read domain" />
-      <item itemvalue="Python.read_aeolus_l2a_data plot test" />
+      <item itemvalue="Python.read_aeolus_l2a_data plot test TGZ" />
+      <item itemvalue="Python.read_aeolus_l2a_data plot test DBL" />
       <item itemvalue="Python tests.Doctest ReadAeolusL2aData.read_file" />
     </list>
     <recent_temporary>
@@ -274,22 +342,22 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1919" y="-11" width="1922" height="1212" extended-state="6" />
+    <frame x="78" y="33" width="3762" height="2127" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.2978387" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.4063005" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32794678" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.3555133" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.334428" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.35522714" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.4334601" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.42966613" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007907" side_tool="true" weight="0.3555133" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34505704" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34458736" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -300,7 +368,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1170</line>
+          <line>1198</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
       </breakpoints>
@@ -321,30 +389,38 @@
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/interpolate.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/numpy/lib/arraysetops.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/site-packages/matplotlib/artist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="202" selection-start-line="202" selection-end-line="202" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/site-packages/matplotlib/artist.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py" />
     <entry file="file://$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py">
+    <entry file="file://$PROJECT_DIR$/example_files/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001.DBL.profile.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        <state relative-caret-position="252">
+          <caret line="7" column="57" selection-start-line="7" selection-start-column="57" selection-end-line="7" selection-end-column="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="1161" column="23" selection-start-line="1161" selection-start-column="23" selection-end-line="1161" selection-end-column="23" />
+        <state relative-caret-position="828">
+          <caret line="1981" column="45" selection-start-line="1981" selection-start-column="45" selection-end-line="1981" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="22" column="44" lean-forward="true" selection-start-line="22" selection-start-column="2" selection-end-line="22" selection-end-column="44" />
         </state>
       </provider>
     </entry>

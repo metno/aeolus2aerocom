@@ -234,7 +234,13 @@ class ReadAeolusL2aData:
     NETCDF_VAR_ATTRIBUTES['ec355aer']['_FillValue'] = np.nan
     NETCDF_VAR_ATTRIBUTES['ec355aer']['long_name'] = 'extinction @ 355nm'
     NETCDF_VAR_ATTRIBUTES['ec355aer']['standard_name'] = 'volume_extinction_coefficient_in_air_due_to_ambient_aerosol_particles'
-    NETCDF_VAR_ATTRIBUTES['ec355aer']['units'] = '1/m'
+    NETCDF_VAR_ATTRIBUTES['ec355aer']['units'] = '1/Mm'
+
+    TEX_UNITS = {}
+    TEX_UNITS['ec355aer'] = r'$10^{-6} \cdot m^{-1}$'
+    TEX_UNITS['bs355aer'] = ''
+
+
 
 
     def __init__(self, index_pointer=0, loglevel=logging.INFO, verbose=False):
@@ -1110,22 +1116,29 @@ class ReadAeolusL2aData:
 
         """
         import matplotlib.pyplot as plt
+        from scipy import interpolate
         # read returning a ndarray
         time = self.data[:,obj._TIMEINDEX].astype('datetime64[s]')
-        prof_field = {}
+        plot_data = {}
+        plot_data_masks = {}
         unique_times = np.unique(time)
         vars_to_plot_arr = ['altitude']
         vars_to_plot_arr.extend(vars_to_plot)
         height_step_no = 24
         time_step_no = int(len(self.data[:,self._TIMEINDEX]) / height_step_no)
-        altitudes = self.data[:,self._ALTITUDEINDEX].reshape(time_step_no, height_step_no)
-        altitudes_mask = np.isnan(altitudes)
-        ec355aer = self.data[:,self._EC355INDEX].reshape(time_step_no, height_step_no)
-        ec355mask = np.isnan(ec355aer)
-        ec355aer[ec355mask] = 0.
+
+        for data_var in vars_to_plot_arr:
+            plot_data[data_var] = self.data[:,self.INDEX_DICT[data_var]].reshape(time_step_no, height_step_no)
+            plot_data_masks[data_var] = np.isnan(plot_data[data_var])
+            if data_var in vars_to_plot:
+                plot_data[data_var][plot_data_masks[data_var]] = 0.
 
 
-
+        # altitudes = self.data[:,self._ALTITUDEINDEX].reshape(time_step_no, height_step_no)
+        # altitudes_mask = np.isnan(altitudes)
+        # ec355aer = self.data[:,self._EC355INDEX].reshape(time_step_no, height_step_no)
+        # ec355mask = np.isnan(ec355aer)
+        # ec355aer[ec355mask] = 0.
         # plot_simple = plt.pcolormesh(ec355aer.transpose(), cmap='jet', vmin=2., vmax=2000.)
         # plot_simple.axes.set_xlabel('time step number')
         # plot_simple.axes.set_ylabel('height step number')
@@ -1137,77 +1150,54 @@ class ReadAeolusL2aData:
         target_heights = np.arange(0,target_height_no)*10
         target_heights = np.flip(target_heights)
         target_x = np.arange(0,time_step_no)
-        out_arr = np.empty([time_step_no, target_height_no])
-        from scipy import interpolate
-
-        for time_step_no in range(len(unique_times)):
-            # scipy.interpolate cannot cope with nans in the data
-            # work only on profiles with a nansum > 0
-            var_data = ec355aer[time_step_no,:]
-            if np.nansum(var_data) > 0:
-                #var_data = var_data[~ec355mask[time_step_no,:]]
-                height_data = altitudes[time_step_no,:]
-                height_data = height_data[~altitudes_mask[time_step_no,:]]
-                var_data = var_data[~altitudes_mask[time_step_no,:]]
-
-
-                f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
-                interpolated = f(target_heights)
-                out_arr[time_step_no,:] = interpolated
-
-        plot_simple2 = plt.pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
-        plot_simple2.axes.set_xlabel('time step number')
-        plot_simple2.axes.set_ylabel('height [km]')
-        yticklabels = plot_simple2.axes.set_yticklabels(['0','5', '10', '15', '20'])
-        unit = '10^-6 m^-1'
-        if title:
-            plot_simple2.axes.set_title(title, fontsize='small')
-        else:
-            plot_simple2.axes.set_title('title')
-        plot_simple2.axes.set_aspect(0.05)
-        # plt.show()
-        plt.colorbar(plot_simple2, orientation='horizontal')
-        plt.savefig(plotfilename, dpi=300)
-        plt.close()
-        # print('test')
 
 
 
-        # # reform the point cloud to profiles in a manner so that we do not depend on the number of layers to be always 24
-        # # for now
-        # # for speed this will likely be changed to a simple reform at some point
-        # # but we want to know the data better at this point
-        # non_nan_profiles = {}
-        #
-        # for prof_time in unique_times:
-        #     prof_indexes = np.where(time == prof_time)
-        #     height_step_no = len(prof_indexes[0])
-        #     if len(prof_indexes) > 0:
-        #         for var in vars_to_plot_arr:
-        #             try:
-        #                 prof_field[var].append(self.data[prof_indexes,self.index_dict[var]])
-        #                 if var != 'altitude' and np.nansum(self.data[prof_indexes,self.index_dict[var]]) > 0:
-        #                     non_nan_profiles[prof_time] = {}
-        #                     vals = self.data[prof_indexes,self.index_dict[var]].reshape(height_step_no)
-        #                     # remove 0s and nans
-        #                     non_zero_indexes = vals > 0.
-        #                     # non_nan_profiles[prof_time][var] = self.data[prof_indexes,self.index_dict[var]]
-        #                     # non_nan_profiles[prof_time]['altitude'] = self.data[prof_indexes,self.index_dict['altitude']]
-        #                     if len(non_zero_indexes) > 0:
-        #                         non_nan_profiles[prof_time][var] = \
-        #                             vals[non_zero_indexes]
-        #                             # self.data[prof_indexes[non_zero_indexes],self.index_dict[var]]
-        #                         altitudes = self.data[prof_indexes,self.index_dict['altitude']].reshape(height_step_no)
-        #                         non_nan_profiles[prof_time]['altitude'] = \
-        #                             altitudes[non_zero_indexes]
-        #                             # self.data[prof_indexes[non_zero_indexes],self.index_dict['altitude']]
-        #
-        #
-        #                     # print('{} {}'.format(prof_time,self.data[prof_indexes,self.index_dict[var]]))
-        #             except keyerror:
-        #                 prof_field[var] = []
-        #                 prof_field[var].append(self.data[prof_indexes,self.index_dict[var]])
+        for var in vars_to_plot:
+            # this loop has not been optimised for several variables
+            out_arr = np.zeros([time_step_no, target_height_no])
+            for time_step_no in range(len(unique_times)):
+                # scipy.interpolate cannot cope with nans in the data
+                # work only on profiles with a nansum > 0
 
+                var_data = plot_data[var][time_step_no,:]
+                if np.nansum(var_data) > 0:
+                    #var_data = var_data[~ec355mask[time_step_no,:]]
+                    height_data = plot_data['altitude'][time_step_no,:]
+                    height_data = height_data[~plot_data_masks['altitude'][time_step_no,:]]
+                    var_data = var_data[~plot_data_masks[var][time_step_no,:]]
+
+
+                    f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
+                    interpolated = f(target_heights)
+                    out_arr[time_step_no,:] = interpolated
+
+            # enable TeX
+            # plt.rc('text', usetex=True)
+            # plt.rc('font', family='serif')
+            fig, _axs = plt.subplots(nrows=1, ncols=1)
+            fig.subplots_adjust(hspace=0.3)
+            try:
+                axs = _axs.flatten()
+            except:
+                axs = [_axs]
+            plot_simple2 = axs[0].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
+            plot_simple2.axes.set_xlabel('time step number')
+            plot_simple2.axes.set_ylabel('height [km]')
+            yticklabels = plot_simple2.axes.set_yticklabels(['0','5', '10', '15', '20'])
+            if title:
+                plot_simple2.axes.set_title(title, fontsize='small')
+            else:
+                plot_simple2.axes.set_title('title')
+            plot_simple2.axes.set_aspect(0.05)
+            # plt.show()
+            clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
+                               pad=0.2, aspect=30, anchor=(0.5, 0.8))
+            clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
+
+            plt.savefig(plotfilename, dpi=300)
+            plt.close()
+            # print('test')
 
 
 
@@ -1980,7 +1970,14 @@ if __name__ == '__main__':
             #plot the profile
             if options['plotprofile']:
                 plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
+                obj.logger.info('profile plot file: {}'.format(plotfilename))
                 title = os.path.basename(filename)
                 obj.plot_profile(plotfilename, title=title)
 
-            
+            #plot the map
+            if options['plotmap']:
+                plotmapfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.map.png')
+                obj.logger.info('map plot file: {}'.format(plotmapfilename))
+                #title = os.path.basename(filename)
+                obj.plot_location_map(plotmapfilename)
+
