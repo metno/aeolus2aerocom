@@ -71,7 +71,7 @@ class ReadAeolusL2aData:
 
     """
     _FILEMASK = '*.DBL'
-    __version__ = "0.01"
+    __version__ = "0.1"
     DATASET_NAME = 'AEOLUS-L2A'
     DATASET_PATH = '/lustre/storeB/project/fou/kl/admaeolus/'
     # Flag if the dataset contains all years or not
@@ -118,6 +118,7 @@ class ReadAeolusL2aData:
     _COLNO = 11
     _ROWNO = 100000
     _CHUNKSIZE = 10000
+    _HEIGHTSTEPNO = 24
 
     # variable names
     # dimension data
@@ -1086,34 +1087,6 @@ class ReadAeolusL2aData:
         >>> altitudedata = filedata_numpy[:,obj._altitudeindex]
 
 
-
-
-
-
-        >>> obj = read_aeolus_l2a_data.readaeolusl2adata(verbose=true)
-        >>> import numpy as np
-        >>> import matplotlib.pyplot as plt
-        >>> filename = '/lustre/storea/project/aerocom/aerocom1/adm_calipso_test/download/ae_oper_ald_u_n_2a_20070101t002249149_002772000_003606_0001.dbl'
-        >>> # read returning a ndarray
-        >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
-        >>> obj.ndarr2data(file_data=filedata_numpy)
-        >>> import pyaerocom.plot.plotprofile
-        >>> pyaerocom.plot.plotprofile.plotcurtain(obj, filename='/home/jang/tmp/curtaintest.png',var_to_plot='ec355aer', what='mpl_scatter_density')
-
-        >>> nonnan_indexes = np.where(np.isfinite(filedata_numpy[:,obj._altitudeindex]))[0]
-        >>> ec = filedata_numpy[nonnan_indexes,obj._ec355index]
-        >>> altitudes = filedata_numpy[nonnan_indexes,obj._altitudeindex]
-        >>> plot = plt.hist2d(altitudes, ec, cmap='jet', vmin=2., vmax=500.)
-        >>> #nan_indexes = np.where(np.isnan(ec))
-        >>> height_lev_no = 24
-        >>> times = np.int(len(ec) / height_lev_no)
-        >>> ec = ec.reshape(times,height_lev_no).transpose()
-        >>> plot = plt.pcolormesh(ec, cmap='jet', vmin=2., vmax=500.)
-        >>> plot.axes.set_xlabel('time step number')
-        >>> plot.axes.set_ylabel('height step number')
-        >>> plot.axes.set_title('title')
-        >>> plt.show()
-
         """
         import matplotlib.pyplot as plt
         from scipy import interpolate
@@ -1133,25 +1106,10 @@ class ReadAeolusL2aData:
             if data_var in vars_to_plot:
                 plot_data[data_var][plot_data_masks[data_var]] = 0.
 
-
-        # altitudes = self.data[:,self._ALTITUDEINDEX].reshape(time_step_no, height_step_no)
-        # altitudes_mask = np.isnan(altitudes)
-        # ec355aer = self.data[:,self._EC355INDEX].reshape(time_step_no, height_step_no)
-        # ec355mask = np.isnan(ec355aer)
-        # ec355aer[ec355mask] = 0.
-        # plot_simple = plt.pcolormesh(ec355aer.transpose(), cmap='jet', vmin=2., vmax=2000.)
-        # plot_simple.axes.set_xlabel('time step number')
-        # plot_simple.axes.set_ylabel('height step number')
-        # plot_simple.axes.set_title('title')
-        # plt.show()
-
-
         target_height_no = 2001
         target_heights = np.arange(0,target_height_no)*10
         target_heights = np.flip(target_heights)
         target_x = np.arange(0,time_step_no)
-
-
 
         for var in vars_to_plot:
             # this loop has not been optimised for several variables
@@ -1199,13 +1157,11 @@ class ReadAeolusL2aData:
             plt.close()
             # print('test')
 
-
-
-
     ###################################################################################
 
     def to_netcdf_simple(self, netcdf_filename='/home/jang/tmp/to_netcdf_simple.nc',
-                         global_attributes=None, vars_to_read=['ec355aer']):
+                         global_attributes=None, vars_to_read=['ec355aer'],
+                         data_to_write=None):
 
         """method to store the file contents in a very basic netcdf file
         >>> import read_aeolus_l2a_data
@@ -1233,9 +1189,15 @@ class ReadAeolusL2aData:
         vars_to_read_in = vars_to_read.copy()
         if isinstance(vars_to_read_in, str):
             vars_to_read_in = [vars_to_read_in]
+
+        if data_to_write is None:
+            _data = self.data
+        else:
+            _data = data_to_write
+
         vars_to_read_in.extend(list(self.RETRIEVAL_READ_PARAMETERS[self.RETRIEVAL_READ[0]]['metadata'].keys()))
 
-        datetimedata = pd.to_datetime(self.data[:, self._TIMEINDEX].astype('datetime64[s]'))
+        datetimedata = pd.to_datetime(_data[:, self._TIMEINDEX].astype('datetime64[s]'))
         pointnumber = np.arange(0, len(datetimedata))
         ds = xr.Dataset()
         ds.coords['point'] = pointnumber
@@ -1244,7 +1206,7 @@ class ReadAeolusL2aData:
         for var in vars_to_read_in:
             if var == self._TIME_NAME:
                 continue
-            ds[var] = ('point'), self.data[:, self.INDEX_DICT[var]]
+            ds[var] = ('point'), _data[:, self.INDEX_DICT[var]]
             try:
                 for attrib in self.NETCDF_VAR_ATTRIBUTES[var]:
                     ds[var].attrs[attrib] = self.NETCDF_VAR_ATTRIBUTES[var][attrib]
@@ -1619,12 +1581,15 @@ class ReadAeolusL2aData:
     def to_netcdf_data(self,filename, coda_data, grouping='names', verbose=False):
         """method to writye coda data into a netcdf file
 
-        Since coda data is has a hierarchy, the user may choos id the data is written into
+        Since coda data is has a hierarchy, the user may choose if the data is written into
         netcdf file using groups (netcdf4), or a flat (netcdf4 classic model) netcdf file
         where the hierarchy is retained in the variable names
 
         Example
         -------
+
+        DONOTUSE!
+
         >>> import read_aeolus_l2a_data
         >>> obj = read_aeolus_l2a_data.ReadAeolusL2aData(verbose=True)
         >>> import os
@@ -1760,6 +1725,7 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
+    # def
 
 if __name__ == '__main__':
     import logging
@@ -1799,11 +1765,23 @@ if __name__ == '__main__':
                         action='store_true')
     parser.add_argument("--variables", help="comma separated list of variables to write; default: ec355aer,bs355aer",
                         default='ec355aer,bs355aer')
+    parser.add_argument("--netcdfcolocate", help="flag to add colocation with a netcdf file",
+                        action='store_true')
+    parser.add_argument("--modeloutdir", help="directory for colocated model files; will have a similar filename as aeolus input file",
+                        default=os.path.join(os.environ['HOME'], 'tmp'))
 
     args = parser.parse_args()
 
+    if args.netcdfcolocate:
+        options['netcdfcolocate'] = True
+    else:
+        options['netcdfcolocate'] = False
+
     if args.filemask:
         options['filemask'] = args.filemask
+
+    if args.modeloutdir:
+        options['modeloutdir'] = args.modeloutdir
 
     if args.logfile:
         options['logfile'] = args.logfile
@@ -1980,4 +1958,88 @@ if __name__ == '__main__':
                 obj.logger.info('map plot file: {}'.format(plotmapfilename))
                 #title = os.path.basename(filename)
                 obj.plot_location_map(plotmapfilename)
+
+
+
+            # work with emep data and do some colocation
+            if options['netcdfcolocate']:
+                start_time = time.perf_counter()
+
+                netcdf_indir = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel'
+                import xarray as xr
+                #truncate Aeolus times to hour
+                aeolus_times = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]').astype('datetime64[h]')
+                aeolus_profile_no = int(len(aeolus_times)/obj._HEIGHTSTEPNO)
+                unique_aeolus_times, unique_aeolus_time_indexes = np.unique(aeolus_times, return_index=True)
+                last_netcdf_file = ''
+                for time_idx in range(len(unique_aeolus_time_indexes)):
+                    ae_year, ae_month, ae_dummy = \
+                        aeolus_times[unique_aeolus_time_indexes[time_idx]].astype('str').split('-')
+                    ae_day, ae_dummy = ae_dummy.split('T')
+                    netcdf_infile = 'CWF_12ST-{}{}{}_hourInst.nc'.format(ae_year, ae_month, ae_day)
+                    netcdf_infile = os.path.join(netcdf_indir, netcdf_infile)
+                    # read netcdf file if it has not yet been loaded
+                    if netcdf_infile != last_netcdf_file:
+                        obj.logger.info('reading and co-locating on model file {}'.format(netcdf_infile))
+                        last_netcdf_file = netcdf_infile
+                        nc_data = xr.open_dataset(netcdf_infile)
+                        nc_times = nc_data.time.data.astype('datetime64[h]')
+                        nc_latitudes = nc_data['lat'].data
+                        nc_longitudes = nc_data['lon'].data
+                        nc_lev_no = len(nc_data['lev'])
+                        nc_colocated_data = np.zeros([aeolus_profile_no * nc_lev_no, obj._COLNO], dtype=np.float_)
+
+                    # locate current rounded Aeolus time in netcdf file
+                    nc_ts_no = np.where(nc_times == unique_aeolus_times[time_idx])
+                    if len(nc_ts_no) != 1:
+                        # something is wrong here!
+                        pass
+
+                    # locate current profile's location index in lats and lons
+                    # Has to be done on original aeolus data
+                    for aeolus_profile_index in range(aeolus_profile_no):
+
+                        data_idx = aeolus_profile_index * obj._HEIGHTSTEPNO
+                        data_idx_arr = np.arange(obj._HEIGHTSTEPNO) + data_idx
+                        aeolus_lat = np.nanmean(obj.data[data_idx_arr, obj._LATINDEX])
+                        aeolus_lon = np.nanmean(obj.data[data_idx_arr, obj._LONINDEX])
+                        aeolus_altitudes = obj.data[data_idx_arr, obj._ALTITUDEINDEX]
+                        diff_dummy = nc_latitudes - aeolus_lat
+                        min_lat_index = np.argmin(np.abs(diff_dummy))
+                        diff_dummy = nc_longitudes - aeolus_lon
+                        min_lon_index = np.argmin(np.abs(diff_dummy))
+
+                        nc_data_idx = aeolus_profile_index * nc_lev_no
+                        nc_index_arr = np.arange(nc_lev_no) + nc_data_idx
+                        nc_colocated_data[nc_index_arr,obj._EC355INDEX] = \
+                            nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index]
+                            # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
+                        nc_colocated_data[nc_index_arr,obj._ALTITUDEINDEX] = \
+                            nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index]
+                            # nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
+                        nc_colocated_data[nc_index_arr,obj._TIMEINDEX] = \
+                            obj.data[data_idx, obj._TIMEINDEX]
+                        pass
+                end_time = time.perf_counter()
+                elapsed_sec = end_time - start_time
+                temp = 'time for colocation all time steps [s]: {:.3f}'.format(elapsed_sec)
+                obj.logger.info(temp)
+                obj.logger.info('{} is colocated model output directory'.format(options['modeloutdir']))
+                model_file_name = os.path.join(options['modeloutdir'], os.path.basename(filename) + '.colocated.nc')
+                obj.to_netcdf_simple(model_file_name, data_to_write=nc_colocated_data)
+                pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
