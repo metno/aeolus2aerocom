@@ -6,15 +6,16 @@ datadir="${basedir}data.rev.2A02/"
 downloaddir="${datadir}download/"
 downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181120T144402034_005448000_001423_0001/"
 downloaddir="${datadir}download/2018-11/"
-netcdfdir="${datadir}netcdf/"
+#netcdfdir="${datadir}netcdf/"
+netcdfdir="${datadir}netcdf_emep_domain/"
 
-jobfile="./2A02.run.txt"
+jobfile="./2A02_201811_emep.run.txt"
 rm -f "${jobfile}"
 
 mkdir -p "${netcdfdir}"
-for file in `find ${downloaddir} -name '*ALD_U_N_2A*.TGZ'`
+for file in `find ${downloaddir} -name '*ALD_U_N_2A*.TGZ' | sort`
     do echo ${file}
-    cmd="./read_aeolus_l2a_data.py --outdir ${netcdfdir} --plotmap --plotprofile --tempdir /tmp/ --file ${file}"
+    cmd="./read_aeolus_l2a_data.py --emep --outdir ${netcdfdir} --plotmap --plotprofile --tempdir /tmp/ --file ${file}"
     echo ${cmd}
     echo ${cmd} >> "${jobfile}"
 done

@@ -1095,13 +1095,32 @@ class ReadAeolusL2aData:
         plot_data = {}
         plot_data_masks = {}
         unique_times = np.unique(time)
+        unique_time_no = len(unique_times)
         vars_to_plot_arr = ['altitude']
         vars_to_plot_arr.extend(vars_to_plot)
         height_step_no = 24
-        time_step_no = int(len(self.data[:,self._TIMEINDEX]) / height_step_no)
+
+        # in case of a cut out area, there might not be all the height steps
+        # in self.data (since the Aeolus line of sight is tilted 35 degrees
+        # count the # of height steps for the 1st and the last time and set
+        # index limits according to that
+        start_index = 0
+        end_index = len(self.data[:,self._TIMEINDEX]) -1
+        time_no_start = len(np.where(self.data[0:height_step_no,self._TIMEINDEX] == self.data[0,self._TIMEINDEX])[0])
+        if time_no_start != height_step_no:
+            start_index = time_no_start
+            unique_times = unique_times[1:]
+
+        time_no_end = len(np.where(self.data[end_index-height_step_no:,self._TIMEINDEX] == self.data[-1,self._TIMEINDEX])[0]) * -1
+        if time_no_end != height_step_no:
+            end_index = time_no_end - 1
+            unique_times = unique_times[0:-1]
+
+        time_step_no = int(len(self.data[start_index:end_index,self._TIMEINDEX]) / height_step_no)
 
         for data_var in vars_to_plot_arr:
-            plot_data[data_var] = self.data[:,self.INDEX_DICT[data_var]].reshape(time_step_no, height_step_no)
+            plot_data[data_var] = \
+                self.data[start_index:end_index,self.INDEX_DICT[data_var]].reshape(time_step_no, height_step_no)
             plot_data_masks[data_var] = np.isnan(plot_data[data_var])
             if data_var in vars_to_plot:
                 plot_data[data_var][plot_data_masks[data_var]] = 0.
