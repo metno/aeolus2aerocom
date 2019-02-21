@@ -193,8 +193,11 @@ class ReadCoLocationData:
 
         >>> import read_colocation_files
         >>> obj=read_colocation_files.ReadCoLocationData()
-        >>> aeolus_file = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf/AE_TD01_ALD_U_N_2A_20181101T010502038_006599995_001112_0002.DBL.nc'
-        >>> model_file = ''
+        >>> aeolus_file = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc'
+        >>> model_file = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc'
+        >>> import xarray as xr
+        >>> aeolus_data = xr.open_dataset(aeolus_file)
+        >>> model_data - xr.open_dataset(model_file)
 
         """
         pass

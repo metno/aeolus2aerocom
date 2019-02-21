@@ -1070,7 +1070,8 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def plot_profile(self, plotfilename, vars_to_plot = ['ec355aer'], title=None, ):
+    def plot_profile(self, plotfilename, vars_to_plot = ['ec355aer'], title=None,
+                     linear_time=False):
         """plot sample profile plot
 
         >>> import read_aeolus_l2a_data
@@ -1091,63 +1092,72 @@ class ReadAeolusL2aData:
         import matplotlib.pyplot as plt
         from scipy import interpolate
         # read returning a ndarray
-        time = self.data[:,obj._TIMEINDEX].astype('datetime64[s]')
+        times = self.data[:,obj._TIMEINDEX]
+        times_no = len(times)
         plot_data = {}
         plot_data_masks = {}
-        unique_times = np.unique(time)
-        unique_time_no = len(unique_times)
+        unique_times = np.unique(times)
+        time_step_no = len(unique_times)
         vars_to_plot_arr = ['altitude']
         vars_to_plot_arr.extend(vars_to_plot)
-        height_step_no = 24
-
-        # in case of a cut out area, there might not be all the height steps
-        # in self.data (since the Aeolus line of sight is tilted 35 degrees
-        # count the # of height steps for the 1st and the last time and set
-        # index limits according to that
-        start_index = 0
-        end_index = len(self.data[:,self._TIMEINDEX]) -1
-        time_no_start = len(np.where(self.data[0:height_step_no,self._TIMEINDEX] == self.data[0,self._TIMEINDEX])[0])
-        if time_no_start != height_step_no:
-            start_index = time_no_start
-            unique_times = unique_times[1:]
-
-        time_no_end = len(np.where(self.data[end_index-height_step_no:,self._TIMEINDEX] == self.data[-1,self._TIMEINDEX])[0]) * -1
-        if time_no_end != height_step_no:
-            end_index = time_no_end - 1
-            unique_times = unique_times[0:-1]
-
-        time_step_no = int(len(self.data[start_index:end_index,self._TIMEINDEX]) / height_step_no)
-
-        for data_var in vars_to_plot_arr:
-            plot_data[data_var] = \
-                self.data[start_index:end_index,self.INDEX_DICT[data_var]].reshape(time_step_no, height_step_no)
-            plot_data_masks[data_var] = np.isnan(plot_data[data_var])
-            if data_var in vars_to_plot:
-                plot_data[data_var][plot_data_masks[data_var]] = 0.
+        height_step_no = self._HEIGHTSTEPNO
 
         target_height_no = 2001
         target_heights = np.arange(0,target_height_no)*10
         target_heights = np.flip(target_heights)
         target_x = np.arange(0,time_step_no)
 
+        for data_var in vars_to_plot_arr:
+            # plot_data[data_var] = \
+            #     self.data[:, self.INDEX_DICT[data_var]]
+            plot_data_masks[data_var] = np.isnan(self.data[:, self.INDEX_DICT[data_var]])
+
+        # in case of a cut out area, there might not be all the height steps
+        # in self.data (since the Aeolus line of sight is tilted 35 degrees)
+        # or due to the fact the the slection removes points where longitude or
+        # latitude are NaN
+        # unfortunately the number of height steps per time code is not necessarily equal
+        # to self._HEIGHTSTEPNO anymore
+        # e.g. due to an area based selection or due to NaNs in the profile
+        # we therefore have to go through the times and look for changes
+
+        idx_time = times[0]
+        time_cut_start_index = 0
+        time_cut_end_index = 0
+        time_index_dict = {}
+        for idx, time in enumerate(times):
+            if time == idx_time:
+                time_cut_end_index = idx
+            else:
+                time_cut_end_index = idx
+                time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index )
+                time_cut_start_index = idx
+                idx_time = time
+        time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index + 1)
+
         for var in vars_to_plot:
             # this loop has not been optimised for several variables
             out_arr = np.zeros([time_step_no, target_height_no])
-            for time_step_no in range(len(unique_times)):
+            out_arr[:] = np.nan
+            for time_step_idx, unique_time in enumerate(unique_times):
+                var_data = self.data[time_index_dict[unique_time],self.INDEX_DICT[var]]
                 # scipy.interpolate cannot cope with nans in the data
                 # work only on profiles with a nansum > 0
 
-                var_data = plot_data[var][time_step_no,:]
-                if np.nansum(var_data) > 0:
-                    #var_data = var_data[~ec355mask[time_step_no,:]]
-                    height_data = plot_data['altitude'][time_step_no,:]
-                    height_data = height_data[~plot_data_masks['altitude'][time_step_no,:]]
-                    var_data = var_data[~plot_data_masks[var][time_step_no,:]]
+                nansum = np.nansum(var_data)
+                if nansum > 0:
+                    height_data = self.data[time_index_dict[unique_time],self.INDEX_DICT['altitude']]
+                    if np.isnan(np.sum(var_data)):
+                        height_data = height_data[~plot_data_masks[var][time_index_dict[unique_time]]]
+                        var_data = var_data[~plot_data_masks[var][time_index_dict[unique_time]]]
 
 
                     f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
                     interpolated = f(target_heights)
-                    out_arr[time_step_no,:] = interpolated
+                    out_arr[time_step_idx,:] = interpolated
+                elif nansum == 0:
+                    # set all heights of the plotted profile to 0 since nothing was detected
+                    out_arr[time_step_idx,:] = 0.
 
             # enable TeX
             # plt.rc('text', usetex=True)
@@ -1166,7 +1176,7 @@ class ReadAeolusL2aData:
                 plot_simple2.axes.set_title(title, fontsize='small')
             else:
                 plot_simple2.axes.set_title('title')
-            plot_simple2.axes.set_aspect(0.05)
+            #plot_simple2.axes.set_aspect(0.05)
             # plt.show()
             clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
                                pad=0.2, aspect=30, anchor=(0.5, 0.8))
@@ -1595,8 +1605,8 @@ class ReadAeolusL2aData:
 
         return out_struct
 
-    ###################################################################################
 
+    ###################################################################################
     def to_netcdf_data(self,filename, coda_data, grouping='names', verbose=False):
         """method to writye coda data into a netcdf file
 
