@@ -115,6 +115,10 @@ class ReadCoLocationData:
     NAN_DICT.update({_LODNAME: -1.})
     NAN_DICT.update({_SRNAME: -1.})
 
+    TEX_UNITS = {}
+    TEX_UNITS['ec355aer'] = r'$10^{-6} \cdot m^{-1}$'
+    TEX_UNITS['bs355aer'] = ''
+
     PROVIDES_VARIABLES = list(INDEX_DICT.keys())
 
 
@@ -205,7 +209,7 @@ class ReadCoLocationData:
 
         """
 
-        vars_to_read_arr = [self._TIME_NAME, self._LATITUDENAME, self._LONGITUDENAME]
+        vars_to_read_arr = [self._TIME_NAME, self._LATITUDENAME, self._LONGITUDENAME, self._ALTITUDENAME]
         vars_to_read_arr.extend(vars_to_read)
 
         if engine == 'xarray':
@@ -263,11 +267,13 @@ class ReadCoLocationData:
         # plt.rc('text', usetex=True)
         # plt.rc('font', family='serif')
         fig, _axs = plt.subplots(nrows=plot_row_no, ncols=1)
-        fig.subplots_adjust(hspace=0.3)
+        # fig.subplots_adjust(hspace=0.3)
         try:
             axs = _axs.flatten()
         except:
             axs = [_axs]
+
+        plot_handle = []
 
         for plot_index, data_name in enumerate(data_dict):
             # read returning a ndarray
@@ -335,25 +341,25 @@ class ReadCoLocationData:
                         # set all heights of the plotted profile to 0 since nothing was detected
                         out_arr[time_step_idx,:] = 0.
 
-                plot_simple2 = axs[0].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
-                plot_simple2.axes.set_xlabel('time step number')
-                plot_simple2.axes.set_ylabel('height [km]')
-                yticklabels = plot_simple2.axes.set_yticklabels(['0','5', '10', '15', '20'])
+                plot_handle.append(axs[plot_index].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.))
+                plot_handle[plot_index].axes.set_xlabel('time step number')
+                plot_handle[plot_index].axes.set_ylabel('height [km]')
+                yticklabels = plot_handle[plot_index].axes.set_yticklabels(['0','5', '10', '15', '20'])
                 if title:
-                    plot_simple2.axes.set_title(title, fontsize='small')
+                    plot_handle[plot_index].axes.set_title(title, fontsize='small')
                 else:
-                    plot_simple2.axes.set_title('title')
+                    plot_handle[plot_index].axes.set_title('title')
                 #plot_simple2.axes.set_aspect(0.05)
                 # plt.show()
 
-            # clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
-            #                    pad=0.2, aspect=30, anchor=(0.5, 0.8))
-            clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
-                               pad=0.2, aspect=30, anchor=(0.5, 0.8))
-            clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
+        # clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
+        #                    pad=0.2, aspect=30, anchor=(0.5, 0.8))
+        clb = plt.colorbar(plot_handle[0], ax=axs, orientation='horizontal', fraction=0.05,
+                           pad=0.2, aspect=30)
+        clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
 
-            plt.savefig(plotfilename, dpi=300)
-            plt.close()
+        plt.savefig(plotfilename, dpi=300)
+        plt.close()
             # print('test')
 
     ###################################################################################
@@ -456,6 +462,7 @@ if __name__ == '__main__':
     import pathlib
 
     obj = ReadCoLocationData()
+    plotfile = './test.png'
     # aeolus_file = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc'
     # model_file = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc'
     data_dict = {}
@@ -463,7 +470,10 @@ if __name__ == '__main__':
     data_dict['aeolus'] = obj.read_file(options['aeolusfile'])
     obj.logger.info('reading model file: {}'.format(options['modelfile']))
     data_dict['emep'] = obj.read_file(options['modelfile'])
-    obj.plot_profile(data_dict, './test.png')
+    # adjust extinction value
+    data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] = data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] *1E6
+    obj.logger.info('plotted file: {}'.format(plotfile))
+    obj.plot_profile(data_dict, plotfile)
 
     # if 'files' not in options:
     #     options['files'] = glob.glob(options['dir']+'/**/'+options['filemask'], recursive=True)

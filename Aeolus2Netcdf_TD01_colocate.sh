@@ -5,10 +5,10 @@ basedir='/lustre/storeB/project/fou/kl/admaeolus/'
 datadir="${basedir}data.rev.TD01/"
 #downloaddir="${datadir}download/"
 #downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181120T144402034_005448000_001423_0001/"
-downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181*/"
+downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181[1-2]*/"
 #netcdfdir="${datadir}netcdf/"
 netcdfdir="${datadir}netcdf_emep_domain/"
-modeloutdir="${basedir}/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/"
+modeloutdir="${basedir}EMEPmodel.colocated/"
 
 jobfile="./TD01.run.emep.colocation.txt"
 rm -f "${jobfile}"
