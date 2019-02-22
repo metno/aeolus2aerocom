@@ -21,4 +21,4 @@ for file in `find ${downloaddir} -name '*.DBL' | sort`
 done
 
 # command to start using gnu parallel
-# /usr/bin/parallel -vk -j 4 -a "${jobfile}"
+/usr/bin/parallel -vk -j 4 -a "${jobfile}"
