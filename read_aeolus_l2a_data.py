@@ -2007,6 +2007,9 @@ if __name__ == '__main__':
                     ae_day, ae_dummy = ae_dummy.split('T')
                     netcdf_infile = 'CWF_12ST-{}{}{}_hourInst.nc'.format(ae_year, ae_month, ae_day)
                     netcdf_infile = os.path.join(netcdf_indir, netcdf_infile)
+                    if not os.path.exists(netcdf_infile):
+                        obj.logger.info('file does not exist: {}. skipping colocation ...'.format(netcdf_infile))
+                        continue
                     # read netcdf file if it has not yet been loaded
                     if netcdf_infile != last_netcdf_file:
                         obj.logger.info('reading and co-locating on model file {}'.format(netcdf_infile))
@@ -2056,10 +2059,11 @@ if __name__ == '__main__':
                 end_time = time.perf_counter()
                 elapsed_sec = end_time - start_time
                 temp = 'time for colocation all time steps [s]: {:.3f}'.format(elapsed_sec)
-                obj.logger.info(temp)
-                obj.logger.info('{} is colocated model output directory'.format(options['modeloutdir']))
-                model_file_name = os.path.join(options['modeloutdir'], os.path.basename(filename) + '.colocated.nc')
-                obj.to_netcdf_simple(model_file_name, data_to_write=nc_colocated_data)
+                if 'nc_colocated_data' in locals():
+                    obj.logger.info(temp)
+                    obj.logger.info('{} is colocated model output directory'.format(options['modeloutdir']))
+                    model_file_name = os.path.join(options['modeloutdir'], os.path.basename(filename) + '.colocated.nc')
+                    obj.to_netcdf_simple(model_file_name, data_to_write=nc_colocated_data)
                 pass
 
 

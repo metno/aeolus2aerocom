@@ -5,9 +5,9 @@ basedir='/lustre/storeB/project/fou/kl/admaeolus/'
 datadir="${basedir}data.rev.TD01/"
 downloaddir="${datadir}download/"
 downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181120T144402034_005448000_001423_0001/"
-downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_201811*/"
+downloaddir="${datadir}download/AE_TD01_ALD_U_N_2A_20181*/"
 netcdfdir="${datadir}netcdf/"
-netcdfdir="${datadir}netcdf_emep_domain/"
+#netcdfdir="${datadir}netcdf_emep_domain/"
 
 jobfile="./TD01.run.txt"
 rm -f "${jobfile}"
@@ -21,4 +21,4 @@ for file in `find ${downloaddir} -name '*.DBL' | sort`
 done
 
 # command to start using gnu parallel
-# /usr/bin/parallel -vk -j 4 -a TD01.run.txt
+# /usr/bin/parallel -vk -j 4 -a "${jobfile}"
