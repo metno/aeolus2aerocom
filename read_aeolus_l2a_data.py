@@ -2045,10 +2045,14 @@ if __name__ == '__main__':
                             # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
                         nc_colocated_data[nc_index_arr,obj._ALTITUDEINDEX] = \
                             nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index]
+                        nc_colocated_data[nc_index_arr,obj._LATINDEX] = \
+                            nc_data['lat'].data[min_lat_index]
+                        nc_colocated_data[nc_index_arr,obj._LONINDEX] = \
+                            nc_data['lon'].data[min_lon_index]
                             # nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
                         nc_colocated_data[nc_index_arr,obj._TIMEINDEX] = \
                             obj.data[data_idx, obj._TIMEINDEX]
-                        pass
+
                 end_time = time.perf_counter()
                 elapsed_sec = end_time - start_time
                 temp = 'time for colocation all time steps [s]: {:.3f}'.format(elapsed_sec)
