@@ -257,6 +257,9 @@ class ReadCoLocationData:
         """
         import matplotlib.pyplot as plt
         from scipy import interpolate
+        from matplotlib.colors import BoundaryNorm
+        from matplotlib.ticker import MaxNLocator
+
 
         height_step_no = self._HEIGHTSTEPNO
         target_height_no = 2001
@@ -266,7 +269,7 @@ class ReadCoLocationData:
         # enable TeX
         # plt.rc('text', usetex=True)
         # plt.rc('font', family='serif')
-        fig, _axs = plt.subplots(nrows=plot_row_no, ncols=1)
+        fig, _axs = plt.subplots(nrows=plot_row_no, ncols=1, constrained_layout=True )
         # fig.subplots_adjust(hspace=0.3)
         try:
             axs = _axs.flatten()
@@ -274,21 +277,32 @@ class ReadCoLocationData:
             axs = [_axs]
 
         plot_handle = []
+        levels = []
+        cmap = []
+        norm = []
+        yticks = []
+        times = {}
+        times_no = {}
+        unique_times = {}
+        unique_indexes = {}
+        unique_height_step_no = {}
+        time_step_no = {}
 
+        vars_to_plot_arr = ['altitude']
+        vars_to_plot_arr.extend(vars_to_plot)
         for plot_index, data_name in enumerate(data_dict):
             # read returning a ndarray
             data = data_dict[data_name]
 
-            times = data[:,self._TIMEINDEX]
-            times_no = len(times)
+            times[data_name] = data[:,self._TIMEINDEX]
+            times_no[data_name] = len(times)
             plot_data = {}
             plot_data_masks = {}
-            unique_times = np.unique(times)
-            time_step_no = len(unique_times)
-            vars_to_plot_arr = ['altitude']
-            vars_to_plot_arr.extend(vars_to_plot)
+            unique_times[data_name], unique_indexes[data_name], unique_height_step_no[data_name] = \
+                np.unique(times[data_name], return_index=True, return_counts=True)
+            time_step_no[data_name] = len(unique_times[data_name])
 
-            target_x = np.arange(0,time_step_no)
+            target_x = np.arange(0,time_step_no[data_name])
 
             for data_var in vars_to_plot_arr:
                 # plot_data[data_var] = \
@@ -304,32 +318,36 @@ class ReadCoLocationData:
             # e.g. due to an area based selection or due to NaNs in the profile
             # we therefore have to go through the times and look for changes
 
-            idx_time = times[0]
-            time_cut_start_index = 0
-            time_cut_end_index = 0
+            # idx_time = times[0]
+            # time_cut_start_index = 0
+            # time_cut_end_index = 0
             time_index_dict = {}
-            for idx, time in enumerate(times):
-                if time == idx_time:
-                    time_cut_end_index = idx
-                else:
-                    time_cut_end_index = idx
-                    time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index )
-                    time_cut_start_index = idx
-                    idx_time = time
-            time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index + 1)
+            for idx, time in enumerate(unique_times[data_name]):
+                time_index_dict[time] = np.arange(unique_indexes[data_name][idx],
+                                                  unique_indexes[data_name][idx]+unique_height_step_no[data_name][idx])
+            #     if time == idx_time:
+            #         time_cut_end_index = idx
+            #     else:
+            #         time_cut_end_index = idx
+            #         time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index )
+            #         time_cut_start_index = idx
+            #         idx_time = time
+            # time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index + 1)
+            # time_index_dict[idx_time] = np.arange(unique_indexes[data_name]time_cut_start_index, time_cut_end_index + 1)
 
             for var in vars_to_plot:
                 # this loop has not been optimised for several variables
-                out_arr = np.zeros([time_step_no, target_height_no])
+                out_arr = np.zeros([time_step_no[data_name], target_height_no])
                 out_arr[:] = np.nan
-                for time_step_idx, unique_time in enumerate(unique_times):
+                for time_step_idx, unique_time in enumerate(unique_times[data_name]):
                     var_data = data[time_index_dict[unique_time],self.INDEX_DICT[var]]
+                    var_data = data_dict[data_name][time_index_dict[unique_time],self.INDEX_DICT[var]]
                     # scipy.interpolate cannot cope with nans in the data
                     # work only on profiles with a nansum > 0
 
                     nansum = np.nansum(var_data)
                     if nansum > 0:
-                        height_data = data[time_index_dict[unique_time],self.INDEX_DICT['altitude']]
+                        height_data = data_dict[data_name][time_index_dict[unique_time],self.INDEX_DICT['altitude']]
                         if np.isnan(np.sum(var_data)):
                             height_data = height_data[~plot_data_masks[var][time_index_dict[unique_time]]]
                             var_data = var_data[~plot_data_masks[var][time_index_dict[unique_time]]]
@@ -341,10 +359,17 @@ class ReadCoLocationData:
                         # set all heights of the plotted profile to 0 since nothing was detected
                         out_arr[time_step_idx,:] = 0.
 
-                plot_handle.append(axs[plot_index].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.))
+                # levels = MaxNLocator(nbins=15).tick_values(np.nanmin(out_arr), np.nanmax(out_arr))
+                levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
+                # cmap = plt.get_cmap('PiYG')
+                cmap = plt.get_cmap('jet')
+                norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+
+                plot_handle.append(axs[plot_index].pcolormesh(out_arr.transpose(), cmap=cmap, norm=norm))
+                yticks.append(plot_handle[plot_index].axes.get_yticks())
+                yticklabels = plot_handle[plot_index].axes.set_yticklabels(yticks[-1]/100.)
                 plot_handle[plot_index].axes.set_xlabel('time step number')
                 plot_handle[plot_index].axes.set_ylabel('height [km]')
-                yticklabels = plot_handle[plot_index].axes.set_yticklabels(['0','5', '10', '15', '20'])
                 if title:
                     plot_handle[plot_index].axes.set_title(title, fontsize='small')
                 else:
@@ -352,12 +377,9 @@ class ReadCoLocationData:
                 #plot_simple2.axes.set_aspect(0.05)
                 # plt.show()
 
-        # clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
-        #                    pad=0.2, aspect=30, anchor=(0.5, 0.8))
-        clb = plt.colorbar(plot_handle[0], ax=axs, orientation='horizontal', fraction=0.05,
-                           pad=0.2, aspect=30)
+        clb = plt.colorbar(plot_handle[0], ax=axs, orientation='vertical', fraction=0.05,
+                           aspect=30)
         clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
-
         plt.savefig(plotfilename, dpi=300)
         plt.close()
             # print('test')

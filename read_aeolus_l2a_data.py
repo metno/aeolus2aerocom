@@ -1753,6 +1753,144 @@ class ReadAeolusL2aData:
 
 
     ###################################################################################
+    def plot_profile_v2(self, plotfilename, vars_to_plot = ['ec355aer'], title=None,
+                     linear_time=False):
+        """plot sample profile plot
+
+        >>> import read_aeolus_l2a_data
+        >>> filename = '/lustre/storeb/project/fou/kl/admaeolus/data.rev.2a02/ae_oper_ald_u_n_2a_20181201t033526026_005423993_001590_0001.dbl'
+        >>> obj = read_aeolus_l2a_data.readaeolusl2adata(verbose=true)
+        >>> import os
+        >>> os.environ['coda_definition']='/lustre/storea/project/aerocom/aerocom1/adm_calipso_test/'
+        >>> # read returning a ndarray
+        >>> filedata_numpy = obj.read_file(filename, vars_to_read=['ec355aer'], return_as='numpy')
+        >>> time_as_numpy_datetime64 = filedata_numpy[:,obj._timeindex].astype('datetime64[s]')
+        >>> import numpy as np
+        >>> unique_times = np.unique(time_as_numpy_datetime64)
+        >>> ec355data = filedata_numpy[:,obj._ec355index]
+        >>> altitudedata = filedata_numpy[:,obj._altitudeindex]
+
+
+        """
+        import matplotlib.pyplot as plt
+        import matplotlib
+        from matplotlib.colors import BoundaryNorm
+        from matplotlib.ticker import MaxNLocator
+
+        from scipy import interpolate
+        # read returning a ndarray
+        times = self.data[:,obj._TIMEINDEX]
+        times_no = len(times)
+        plot_data = {}
+        plot_data_masks = {}
+        unique_times = np.unique(times)
+        time_step_no = len(unique_times)
+        vars_to_plot_arr = ['altitude']
+        vars_to_plot_arr.extend(vars_to_plot)
+        height_step_no = self._HEIGHTSTEPNO
+
+        target_height_no = 2001
+        target_heights = np.arange(0,target_height_no)*10
+        target_heights = np.flip(target_heights)
+        target_x = np.arange(0,time_step_no)
+
+        for data_var in vars_to_plot_arr:
+            # plot_data[data_var] = \
+            #     self.data[:, self.INDEX_DICT[data_var]]
+            plot_data_masks[data_var] = np.isnan(self.data[:, self.INDEX_DICT[data_var]])
+
+        # in case of a cut out area, there might not be all the height steps
+        # in self.data (since the Aeolus line of sight is tilted 35 degrees)
+        # or due to the fact the the slection removes points where longitude or
+        # latitude are NaN
+        # unfortunately the number of height steps per time code is not necessarily equal
+        # to self._HEIGHTSTEPNO anymore
+        # e.g. due to an area based selection or due to NaNs in the profile
+        # we therefore have to go through the times and look for changes
+
+        idx_time = times[0]
+        time_cut_start_index = 0
+        time_cut_end_index = 0
+        time_index_dict = {}
+
+        for idx, time in enumerate(times):
+            if time == idx_time:
+                time_cut_end_index = idx
+            else:
+                time_cut_end_index = idx
+                time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index )
+                time_cut_start_index = idx
+                idx_time = time
+        time_index_dict[idx_time] = np.arange(time_cut_start_index, time_cut_end_index + 1)
+
+        for var in vars_to_plot:
+            # this loop has not been optimised for several variables
+            out_arr = np.zeros([time_step_no, target_height_no])
+            out_arr[:] = np.nan
+            for time_step_idx, unique_time in enumerate(unique_times):
+                var_data = self.data[time_index_dict[unique_time],self.INDEX_DICT[var]]
+                # scipy.interpolate cannot cope with nans in the data
+                # work only on profiles with a nansum > 0
+
+                nansum = np.nansum(var_data)
+                if nansum > 0:
+                    height_data = self.data[time_index_dict[unique_time],self.INDEX_DICT['altitude']]
+                    if np.isnan(np.sum(var_data)):
+                        height_data = height_data[~plot_data_masks[var][time_index_dict[unique_time]]]
+                        var_data = var_data[~plot_data_masks[var][time_index_dict[unique_time]]]
+
+
+                    f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
+                    interpolated = f(target_heights)
+                    out_arr[time_step_idx,:] = interpolated
+                elif nansum == 0:
+                    # set all heights of the plotted profile to 0 since nothing was detected
+                    out_arr[time_step_idx,:] = 0.
+
+            # enable TeX
+            # plt.rc('text', usetex=True)
+            # plt.rc('font', family='serif')
+            fig, _axs = plt.subplots(nrows=1, ncols=1)
+            fig.subplots_adjust(hspace=0.3)
+            try:
+                axs = _axs.flatten()
+            except:
+                axs = [_axs]
+
+            # levels = MaxNLocator(nbins=15).tick_values(np.nanmin(out_arr), np.nanmax(out_arr))
+            levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
+            # cmap = plt.get_cmap('PiYG')
+            cmap = plt.get_cmap('jet')
+            norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+
+            # plot_simple2 = axs[0].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
+            plot_simple2 = axs[0].pcolormesh(out_arr.transpose(), cmap=cmap, norm=norm)
+            plot_simple2.axes.set_xlabel('time step number')
+
+            plot_simple2.axes.set_ylabel('height [km]')
+            yticks = plot_simple2.axes.get_yticks()
+
+            yticklabels = plot_simple2.axes.set_yticklabels(yticks/100.)
+            # yticklabels = plot_simple2.axes.set_yticklabels(['0','5', '10', '15', '20'])
+            if title:
+                plot_simple2.axes.set_title(title, fontsize='small')
+            else:
+                plot_simple2.axes.set_title('title')
+            #plot_simple2.axes.set_aspect(0.05)
+            # plt.show()
+            clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
+                               pad=0.2, aspect=30, anchor=(0.5, 0.8))
+            clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
+
+            fig.tight_layout()
+            plt.savefig(plotfilename, dpi=300)
+            plt.close()
+            # print('test')
+
+    ###################################################################################
+
+
+    ###################################################################################
 
     # def
 
@@ -1979,7 +2117,7 @@ if __name__ == '__main__':
                 plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
                 obj.logger.info('profile plot file: {}'.format(plotfilename))
                 title = os.path.basename(filename)
-                obj.plot_profile(plotfilename, title=title)
+                obj.plot_profile_v2(plotfilename, title=title)
 
             #plot the map
             if options['plotmap']:
@@ -1997,9 +2135,12 @@ if __name__ == '__main__':
                 netcdf_indir = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel'
                 import xarray as xr
                 #truncate Aeolus times to hour
-                aeolus_times = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]').astype('datetime64[h]')
-                aeolus_profile_no = int(len(aeolus_times)/obj._HEIGHTSTEPNO)
+
+                aeolus_times_rounded = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]').astype('datetime64[h]')
+                aeolus_times = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]')
                 unique_aeolus_times, unique_aeolus_time_indexes = np.unique(aeolus_times, return_index=True)
+                aeolus_profile_no = len(unique_aeolus_times)
+                # aeolus_profile_no = int(len(aeolus_times)/obj._HEIGHTSTEPNO)
                 last_netcdf_file = ''
                 for time_idx in range(len(unique_aeolus_time_indexes)):
                     ae_year, ae_month, ae_dummy = \
@@ -2022,7 +2163,7 @@ if __name__ == '__main__':
                         nc_colocated_data = np.zeros([aeolus_profile_no * nc_lev_no, obj._COLNO], dtype=np.float_)
 
                     # locate current rounded Aeolus time in netcdf file
-                    nc_ts_no = np.where(nc_times == unique_aeolus_times[time_idx])
+                    nc_ts_no = np.where(nc_times == unique_aeolus_times[time_idx].astype('datetime64[h]'))
                     if len(nc_ts_no) != 1:
                         # something is wrong here!
                         pass
@@ -2030,9 +2171,14 @@ if __name__ == '__main__':
                     # locate current profile's location index in lats and lons
                     # Has to be done on original aeolus data
                     for aeolus_profile_index in range(aeolus_profile_no):
+                        data_idx = unique_aeolus_time_indexes[aeolus_profile_index]
+                        try:
+                            data_idx_end = unique_aeolus_time_indexes[aeolus_profile_index+1]
+                        except:
+                            data_idx_end = len(aeolus_times)
 
-                        data_idx = aeolus_profile_index * obj._HEIGHTSTEPNO
-                        data_idx_arr = np.arange(obj._HEIGHTSTEPNO) + data_idx
+                        data_idx_arr = np.arange(data_idx_end - data_idx) + data_idx
+
                         aeolus_lat = np.nanmean(obj.data[data_idx_arr, obj._LATINDEX])
                         aeolus_lon = np.nanmean(obj.data[data_idx_arr, obj._LONINDEX])
                         aeolus_altitudes = obj.data[data_idx_arr, obj._ALTITUDEINDEX]
