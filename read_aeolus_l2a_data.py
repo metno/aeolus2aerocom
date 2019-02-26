@@ -2191,7 +2191,7 @@ if __name__ == '__main__':
                         nc_index_arr = np.arange(nc_lev_no) + nc_data_idx
                         nc_colocated_data[nc_index_arr,obj._EC355INDEX] = \
                             nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index]
-                            # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
+                        # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
                         nc_colocated_data[nc_index_arr,obj._ALTITUDEINDEX] = \
                             nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index]
                         nc_colocated_data[nc_index_arr,obj._LATINDEX] = \
