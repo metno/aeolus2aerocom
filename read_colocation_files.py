@@ -242,6 +242,9 @@ class ReadCoLocationData:
     ###################################################################################
 
     def plot_profile(self, data_dict, plotfilename, vars_to_plot = ['ec355aer'], title=None,
+                     retrieval_name=None,
+                     plot_range=(0., 2000.),
+                     plot_nbins=20.,
                      linear_time=False):
         """plot sample profile plot
 
@@ -264,7 +267,7 @@ class ReadCoLocationData:
         height_step_no = self._HEIGHTSTEPNO
         target_height_no = 2001
         target_heights = np.arange(0, target_height_no) * 10
-        target_heights = np.flip(target_heights)
+        # target_heights = np.flip(target_heights)
         plot_row_no = len(data_dict)
         # enable TeX
         # plt.rc('text', usetex=True)
@@ -360,9 +363,10 @@ class ReadCoLocationData:
                         out_arr[time_step_idx,:] = 0.
 
                 # levels = MaxNLocator(nbins=15).tick_values(np.nanmin(out_arr), np.nanmax(out_arr))
-                levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
+                # levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
+                levels = MaxNLocator(nbins=plot_nbins).tick_values(plot_range[0],plot_range[1])
                 # cmap = plt.get_cmap('PiYG')
-                cmap = plt.get_cmap('jet')
+                cmap = plt.get_cmap('autumn_r')
                 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
                 plot_handle.append(axs[plot_index].pcolormesh(out_arr.transpose(), cmap=cmap, norm=norm))
@@ -373,13 +377,17 @@ class ReadCoLocationData:
                 if title:
                     plot_handle[plot_index].axes.set_title(title, fontsize='small')
                 else:
-                    plot_handle[plot_index].axes.set_title('title')
+                    plot_handle[plot_index].axes.set_title(data_name)
                 #plot_simple2.axes.set_aspect(0.05)
                 # plt.show()
 
         clb = plt.colorbar(plot_handle[0], ax=axs, orientation='vertical', fraction=0.05,
                            aspect=30)
-        clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
+        if retrieval_name:
+            clb.set_label('{} [{}] {} retrieval'.format(var, self.TEX_UNITS[var], retrieval_name),
+                             )
+        else:
+            clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small', orientation='vertical')
         plt.savefig(plotfilename, dpi=300)
         plt.close()
             # print('test')
@@ -495,7 +503,8 @@ if __name__ == '__main__':
     # adjust extinction value
     data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] = data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] *1E6
     obj.logger.info('plotted file: {}'.format(plotfile))
-    obj.plot_profile(data_dict, plotfile)
+    obj.plot_profile(data_dict, plotfile,retrieval_name='mca',
+                                    plot_range=(0.,200.))
 
     # if 'files' not in options:
     #     options['files'] = glob.glob(options['dir']+'/**/'+options['filemask'], recursive=True)

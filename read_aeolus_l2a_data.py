@@ -1753,8 +1753,11 @@ class ReadAeolusL2aData:
 
 
     ###################################################################################
-    def plot_profile_v2(self, plotfilename, vars_to_plot = ['ec355aer'], title=None,
-                     linear_time=False):
+    def plot_profile_v2(self, plotfilename, vars_to_plot = ['ec355aer'], retrieval_name=None,
+                        title=None,
+                        plot_range=(0.,2000.),
+                        plot_nbins=20.,
+                        linear_time=False):
         """plot sample profile plot
 
         >>> import read_aeolus_l2a_data
@@ -1791,7 +1794,7 @@ class ReadAeolusL2aData:
 
         target_height_no = 2001
         target_heights = np.arange(0,target_height_no)*10
-        target_heights = np.flip(target_heights)
+        #target_heights = np.flip(target_heights)
         target_x = np.arange(0,time_step_no)
 
         for data_var in vars_to_plot_arr:
@@ -1858,9 +1861,11 @@ class ReadAeolusL2aData:
                 axs = [_axs]
 
             # levels = MaxNLocator(nbins=15).tick_values(np.nanmin(out_arr), np.nanmax(out_arr))
-            levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
+            levels = MaxNLocator(nbins=plot_nbins).tick_values(plot_range[0],plot_range[1])
             # cmap = plt.get_cmap('PiYG')
-            cmap = plt.get_cmap('jet')
+            # cmap = plt.get_cmap('jet')
+            # cmap = plt.get_cmap('YlOrRd')
+            cmap = plt.get_cmap('autumn_r')
             norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
             # plot_simple2 = axs[0].pcolormesh(out_arr.transpose(), cmap='jet', vmin=2., vmax=2000.)
@@ -1880,9 +1885,35 @@ class ReadAeolusL2aData:
             # plt.show()
             clb = plt.colorbar(plot_simple2, ax=axs[0], orientation='horizontal',
                                pad=0.2, aspect=30, anchor=(0.5, 0.8))
-            clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
+            if retrieval_name:
+                clb.ax.set_title('{} [{}] {} retrieval'.format(var, self.TEX_UNITS[var], retrieval_name), fontsize='small')
+            else:
+                clb.ax.set_title('{} [{}]'.format(var, self.TEX_UNITS[var]), fontsize='small')
 
             fig.tight_layout()
+            # put the start and end time as string on the plot
+            # plt.text(0.001, 0.02, '{}'.format(unique_times[0].astype('datetime64[s]')), transform=axs[0].transAxes, fontsize=12)
+            plt.annotate('start={}'.format(unique_times[0].astype('datetime64[s]')),
+                         (0.05, 0.27),
+                         xycoords='figure fraction',
+                         fontsize=9,
+                         horizontalalignment='left')
+            plt.annotate('end={}'.format(unique_times[-1].astype('datetime64[s]')),
+                         (0.98, 0.27),
+                         xycoords='figure fraction',
+                         fontsize=9,
+                         horizontalalignment='right')
+            plt.annotate('max val={0:.2f}'.format(np.nanmax(out_arr)),
+                         (0.98, 0.24),
+                         xycoords='figure fraction',
+                         fontsize=9,
+                         horizontalalignment='right')
+            plt.annotate('median val={0:.2f}'.format(np.nanmedian(out_arr)),
+                         (0.05, 0.24),
+                         xycoords='figure fraction',
+                         fontsize=9,
+                         horizontalalignment='left')
+
             plt.savefig(plotfilename, dpi=300)
             plt.close()
             # print('test')
@@ -1931,7 +1962,8 @@ if __name__ == '__main__':
     parser.add_argument("--plotprofile", help="flag to plot the profiles; files will be put in outdir",
                         action='store_true')
     parser.add_argument("--variables", help="comma separated list of variables to write; default: ec355aer,bs355aer",
-                        default='ec355aer,bs355aer')
+                        default='ec355aer')
+    parser.add_argument("--retrieval", help="retrieval to read; supported: sca, ica, mca; default: sca", default='sca')
     parser.add_argument("--netcdfcolocate", help="flag to add colocation with a netcdf file",
                         action='store_true')
     parser.add_argument("--modeloutdir", help="directory for colocated model files; will have a similar filename as aeolus input file",
@@ -1946,6 +1978,9 @@ if __name__ == '__main__':
 
     if args.filemask:
         options['filemask'] = args.filemask
+
+    if args.retrieval:
+        options['retrieval'] = args.retrieval
 
     if args.modeloutdir:
         options['modeloutdir'] = args.modeloutdir
@@ -2068,7 +2103,8 @@ if __name__ == '__main__':
             obj = ReadAeolusL2aData(verbose=True)
             # read sca retrieval data
             vars_to_read = options['variables'].copy()
-            filedata_numpy = obj.read_file(filename, vars_to_read=vars_to_read, return_as='numpy')
+            filedata_numpy = obj.read_file(filename, vars_to_read=vars_to_read, return_as='numpy',
+                                           read_retrieval=options['retrieval'])
             obj.ndarr2data(filedata_numpy)
             # read additional data
             ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
@@ -2114,10 +2150,14 @@ if __name__ == '__main__':
 
             #plot the profile
             if options['plotprofile']:
-                plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
+                plotfilename = os.path.join(options['outdir'], os.path.basename(filename)
+                                            + '.'+options['retrieval']+'.profile.png')
                 obj.logger.info('profile plot file: {}'.format(plotfilename))
-                title = os.path.basename(filename)
-                obj.plot_profile_v2(plotfilename, title=title)
+                # title = '{} {}'.format(options['retrieval'], os.path.basename(filename))
+                title = '{}'.format(os.path.basename(filename))
+                obj.plot_profile_v2(plotfilename, title=title,
+                                    retrieval_name=options['retrieval'],
+                                    plot_range=(0.,200.))
 
             #plot the map
             if options['plotmap']:
