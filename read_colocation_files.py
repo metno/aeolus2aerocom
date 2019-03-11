@@ -380,6 +380,16 @@ class ReadCoLocationData:
                     plot_handle[plot_index].axes.set_title(data_name)
                 #plot_simple2.axes.set_aspect(0.05)
                 # plt.show()
+                plt.annotate('start={}'.format(unique_times[data_name][0].astype('datetime64[s]')),
+                             (-0.12, -0.24),
+                             xycoords=plot_handle[plot_index].axes.transAxes,
+                             fontsize=8,
+                             horizontalalignment='left')
+                plt.annotate('end={}'.format(unique_times[data_name][-1].astype('datetime64[s]')),
+                             (1.02, -0.24),
+                             xycoords=plot_handle[plot_index].axes.transAxes,
+                             fontsize=8,
+                             horizontalalignment='right')
 
         clb = plt.colorbar(plot_handle[0], ax=axs, orientation='vertical', fraction=0.05,
                            aspect=30)
@@ -400,26 +410,40 @@ class ReadCoLocationData:
 if __name__ == '__main__':
     import logging
 
+    default_plot_file = './out.png'
+    default_topo_file = '/lustre/storeB/project/fou/kl/admaeolus/EMEP.topo/MACC14_topo_v1.nc'
+    default_aeolus_dir = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain_mca'
+    default_model_dir = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated'
+
     import argparse
     options = {}
     parser = argparse.ArgumentParser(
         description='command line interface to aeolus2netcdf.py\n\n\n')
-    parser.add_argument("aeolusfile", help="aeolus file to read")
-    parser.add_argument("modelfile", help="model file to read")
+    parser.add_argument("--aeolusfile", help="aeolus file to read")
+    parser.add_argument("--modelfile", help="model file to read")
     parser.add_argument("-v", "--verbose", help="switch on verbosity",
                         action='store_true')
-    parser.add_argument("-o", "--outfile", help="output file")
-    parser.add_argument("--outdir", help="output directory; the filename will be extended with the string '.nc'")
+    parser.add_argument("--starttime",
+                        help="startdate as time string understood by numpy's datetime64; defaults to None; example: 2018-12-11T00:00:00",
+                        default=None)
+    parser.add_argument("--endtime",
+                        help="enddate as time string; defaults to None.",
+                        default=None)
+    # parser.add_argument("--outdir", help="output directory; the filename will be extended with the string '.nc'")
     parser.add_argument("--logfile", help="logfile; defaults to /home/jang/tmp/aeolus2netcdf.log",
-                        default="/home/jang/tmp/aeolus2netcdf.log")
-    parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
-    parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
-    parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
-    parser.add_argument("--latmax", help="max latitude to return", default=np.float_(76.))
-    parser.add_argument("--lonmin", help="min longitude to return", default=np.float_(-30.))
-    parser.add_argument("--lonmax", help="max longitude to return", default=np.float_(45.))
-    # parser.add_argument("--dir", help="work on all files below this directory",
-    #                     default='/lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/AE_OPER_ALD_U_N_2A_*')
+                        default="/home/jang/tmp/plot_colocation_files.log")
+
+    # parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
+    # parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
+    # parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
+    # parser.add_argument("--latmax", help="max latitude to return", default=np.float_(76.))
+    # parser.add_argument("--lonmin", help="min longitude to return", default=np.float_(-30.))
+    # parser.add_argument("--lonmax", help="max longitude to return", default=np.float_(45.))
+    parser.add_argument("--aeolusdir",
+                        help="base directory of the aeolus files; defaults to {}/".format(default_aeolus_dir),
+                        default=default_aeolus_dir)
+    parser.add_argument("--modeldir", help="base directory of the model files; defaults to {}/".format(default_model_dir),
+                        default=default_model_dir)
     # parser.add_argument("--filemask", help="file mask to find data files",
     #                     default='*AE_OPER_ALD_U_N_2A_*')
     # parser.add_argument("--tempdir", help="directory for temporary files",
@@ -428,10 +452,15 @@ if __name__ == '__main__':
     #                     action='store_true')
     # parser.add_argument("--plotprofile", help="flag to plot the profiles; files will be put in outdir",
     #                     action='store_true')
+    parser.add_argument("--plotfile", help="plot file name (abs. path); defaults to {}.".format(default_plot_file),
+                        action='store_true',default=default_plot_file)
     parser.add_argument("--variables", help="comma separated list of variables to write; default: ec355aer,bs355aer",
                         default='ec355aer,bs355aer')
 
     args = parser.parse_args()
+
+    if args.plotfile:
+        options['plotfile'] = args.plotfile
 
     if args.aeolusfile:
         options['aeolusfile'] = args.aeolusfile
@@ -443,8 +472,11 @@ if __name__ == '__main__':
         options['logfile'] = args.logfile
         logging.basicConfig(filename=options['logfile'], level=logging.INFO)
 
-    # if args.dir:
-    #     options['dir'] = args.dir
+    if args.starttime:
+        options['starttime'] = args.starttime
+
+    if args.endtime:
+        options['endtime'] = args.endtime
 
     # if args.outdir:
     #     options['outdir'] = args.outdir
@@ -490,180 +522,23 @@ if __name__ == '__main__':
     import sys
     import glob
     import pathlib
+    import xarray as xr
 
+
+
+    aeolus_name = 'aeolus TD01'
+    model_name = 'EMEP_MSC-W'
     obj = ReadCoLocationData()
-    plotfile = './test.png'
-    # aeolus_file = '/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc'
-    # model_file = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc'
     data_dict = {}
     obj.logger.info('reading aeolus file: {}'.format(options['aeolusfile']))
-    data_dict['aeolus'] = obj.read_file(options['aeolusfile'])
+
+    data_dict[aeolus_name] = obj.read_file(options['aeolusfile'])
     obj.logger.info('reading model file: {}'.format(options['modelfile']))
-    data_dict['emep'] = obj.read_file(options['modelfile'])
+    data_dict[model_name] = obj.read_file(options['modelfile'])
     # adjust extinction value
-    data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] = data_dict['emep'][:,obj.INDEX_DICT['ec355aer']] *1E6
-    obj.logger.info('plotted file: {}'.format(plotfile))
-    obj.plot_profile(data_dict, plotfile,retrieval_name='mca',
+    data_dict[model_name][:,obj.INDEX_DICT['ec355aer']] = data_dict[model_name][:,obj.INDEX_DICT['ec355aer']] *1E6
+
+    obj.logger.info('plotted file: {}'.format(options['plotfile']))
+    obj.plot_profile(data_dict, options['plotfile'],retrieval_name='mca',
                                     plot_range=(0.,200.))
 
-    # if 'files' not in options:
-    #     options['files'] = glob.glob(options['dir']+'/**/'+options['filemask'], recursive=True)
-    # 
-    # for filename in options['files']:
-    #     print(filename)
-    #     suffix = pathlib.Path(filename).suffix
-    #     temp_file_flag = False
-    #     if suffix == '.TGZ':
-    #         # untar *.DBL file first
-    #         tarhandle = tarfile.open(filename)
-    #         files_in_tar = tarhandle.getnames()
-    #         for file_in_tar in files_in_tar:
-    #             if pathlib.Path(file_in_tar).suffix == '.DBL':
-    #                 # extract file to tmp path
-    #                 member = tarhandle.getmember(file_in_tar)
-    #                 tarhandle.extract(member, path=options['tempdir'],set_attrs=False)
-    #                 filename = os.path.join(options['tempdir'],file_in_tar)
-    #                 tarhandle.close()
-    #                 temp_file_flag = True
-    #                 break
-    #     elif suffix != '.DBL':
-    #         print('ignoring file {}'.format(filename))
-    #         continue
-    # 
-    #     if options['listpaths']:
-    #         coda_handle = coda.open(filename)
-    #         root_field_names = coda.get_field_names(coda_handle)
-    #         for field in root_field_names:
-    #             print(field)
-    #         coda.close(coda_handle)
-    #     else:
-    #         obj = ReadAeolusL2aData(verbose=True)
-    #         # read sca retrieval data
-    #         vars_to_read = options['variables'].copy()
-    #         filedata_numpy = obj.read_file(filename, vars_to_read=vars_to_read, return_as='numpy')
-    #         obj.ndarr2data(filedata_numpy)
-    #         # read additional data
-    #         ancilliary_data = obj.read_data_fields(filename, fields_to_read=['mph'])
-    #         if temp_file_flag:
-    #             obj.logger.info('removing temp file {}'.format(filename))
-    #             os.remove(filename)
-    # 
-    #         # apply emep options for cal / val
-    #         if options['emepflag']:
-    #             bbox = [options['latmin'], options['latmax'],options['lonmin'],options['lonmax']]
-    #             tmp_data = obj.select_bbox(bbox)
-    #             if len(tmp_data) > 0:
-    #                 obj.data = tmp_data
-    #                 obj.logger.info('file {} contains {} points in emep area! '.format(filename, len(tmp_data)))
-    #             else:
-    #                 obj.logger.info('file {} contains no data in emep area! '.format(filename))
-    #                 obj = None
-    #                 continue
-    # 
-    #         # single outfile
-    #         if 'outfile' in options:
-    #             if len(options['files']) == 1:
-    #                 # write netcdf
-    #                 if os.path.exists(options['outfile']):
-    #                     if options['overwrite']:
-    #                         obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
-    #                     else:
-    #                         sys.stderr.write('Error: path {} exists'.format(options['outfile']))
-    #                 else:
-    #                     obj.to_netcdf_simple(options['outfile'], global_attributes=ancilliary_data['mph'])
-    #             else:
-    #                 sys.stderr.write("error: multiple input files, but only on output file given\n"
-    #                                  "Please use the --outdir option instead\n")
-    # 
-    #         # outdir
-    #         if 'outdir' in options:
-    #             outfile_name = os.path.join(options['outdir'], os.path.basename(filename) + '.nc')
-    #             obj.logger.info('writing file {}'.format(outfile_name))
-    #             global_attributes = ancilliary_data['mph']
-    #             global_attributes['Aeolus_Retrieval'] = obj.RETRIEVAL_READ
-    #             obj.to_netcdf_simple(outfile_name, global_attributes=global_attributes,
-    #                                  vars_to_read=vars_to_read)
-    # 
-    #         #plot the profile
-    #         if options['plotprofile']:
-    #             plotfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.profile.png')
-    #             obj.logger.info('profile plot file: {}'.format(plotfilename))
-    #             title = os.path.basename(filename)
-    #             obj.plot_profile(plotfilename, title=title)
-    # 
-    #         #plot the map
-    #         if options['plotmap']:
-    #             plotmapfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.map.png')
-    #             obj.logger.info('map plot file: {}'.format(plotmapfilename))
-    #             #title = os.path.basename(filename)
-    #             obj.plot_location_map(plotmapfilename)
-    # 
-    # 
-    # 
-    #         # work with emep data and do some colocation
-    #         if options['netcdfcolocate']:
-    #             start_time = time.perf_counter()
-    # 
-    #             netcdf_indir = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel'
-    #             import xarray as xr
-    #             #truncate Aeolus times to hour
-    #             aeolus_times = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]').astype('datetime64[h]')
-    #             aeolus_profile_no = int(len(aeolus_times)/obj._HEIGHTSTEPNO)
-    #             unique_aeolus_times, unique_aeolus_time_indexes = np.unique(aeolus_times, return_index=True)
-    #             last_netcdf_file = ''
-    #             for time_idx in range(len(unique_aeolus_time_indexes)):
-    #                 ae_year, ae_month, ae_dummy = \
-    #                     aeolus_times[unique_aeolus_time_indexes[time_idx]].astype('str').split('-')
-    #                 ae_day, ae_dummy = ae_dummy.split('T')
-    #                 netcdf_infile = 'CWF_12ST-{}{}{}_hourInst.nc'.format(ae_year, ae_month, ae_day)
-    #                 netcdf_infile = os.path.join(netcdf_indir, netcdf_infile)
-    #                 # read netcdf file if it has not yet been loaded
-    #                 if netcdf_infile != last_netcdf_file:
-    #                     obj.logger.info('reading and co-locating on model file {}'.format(netcdf_infile))
-    #                     last_netcdf_file = netcdf_infile
-    #                     nc_data = xr.open_dataset(netcdf_infile)
-    #                     nc_times = nc_data.time.data.astype('datetime64[h]')
-    #                     nc_latitudes = nc_data['lat'].data
-    #                     nc_longitudes = nc_data['lon'].data
-    #                     nc_lev_no = len(nc_data['lev'])
-    #                     nc_colocated_data = np.zeros([aeolus_profile_no * nc_lev_no, obj._COLNO], dtype=np.float_)
-    # 
-    #                 # locate current rounded Aeolus time in netcdf file
-    #                 nc_ts_no = np.where(nc_times == unique_aeolus_times[time_idx])
-    #                 if len(nc_ts_no) != 1:
-    #                     # something is wrong here!
-    #                     pass
-    # 
-    #                 # locate current profile's location index in lats and lons
-    #                 # Has to be done on original aeolus data
-    #                 for aeolus_profile_index in range(aeolus_profile_no):
-    # 
-    #                     data_idx = aeolus_profile_index * obj._HEIGHTSTEPNO
-    #                     data_idx_arr = np.arange(obj._HEIGHTSTEPNO) + data_idx
-    #                     aeolus_lat = np.nanmean(obj.data[data_idx_arr, obj._LATINDEX])
-    #                     aeolus_lon = np.nanmean(obj.data[data_idx_arr, obj._LONINDEX])
-    #                     aeolus_altitudes = obj.data[data_idx_arr, obj._ALTITUDEINDEX]
-    #                     diff_dummy = nc_latitudes - aeolus_lat
-    #                     min_lat_index = np.argmin(np.abs(diff_dummy))
-    #                     diff_dummy = nc_longitudes - aeolus_lon
-    #                     min_lon_index = np.argmin(np.abs(diff_dummy))
-    # 
-    #                     nc_data_idx = aeolus_profile_index * nc_lev_no
-    #                     nc_index_arr = np.arange(nc_lev_no) + nc_data_idx
-    #                     nc_colocated_data[nc_index_arr,obj._EC355INDEX] = \
-    #                         nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index]
-    #                         # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
-    #                     nc_colocated_data[nc_index_arr,obj._ALTITUDEINDEX] = \
-    #                         nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index]
-    #                         # nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
-    #                     nc_colocated_data[nc_index_arr,obj._TIMEINDEX] = \
-    #                         obj.data[data_idx, obj._TIMEINDEX]
-    #                     pass
-    #             end_time = time.perf_counter()
-    #             elapsed_sec = end_time - start_time
-    #             temp = 'time for colocation all time steps [s]: {:.3f}'.format(elapsed_sec)
-    #             obj.logger.info(temp)
-    #             obj.logger.info('{} is colocated model output directory'.format(options['modeloutdir']))
-    #             model_file_name = os.path.join(options['modeloutdir'], os.path.basename(filename) + '.colocated.nc')
-    #             obj.to_netcdf_simple(model_file_name, data_to_write=nc_colocated_data)
-    #             pass

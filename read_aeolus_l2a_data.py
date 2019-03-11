@@ -1930,6 +1930,8 @@ if __name__ == '__main__':
 
     import argparse
     options = {}
+    default_topo_file = '/lustre/storeB/project/fou/kl/admaeolus/EMEP.topo/MACC14_topo_v1.nc'
+
     parser = argparse.ArgumentParser(
         description='command line interface to aeolus2netcdf.py\n\n\n')
     parser.add_argument("--file",
@@ -1968,6 +1970,8 @@ if __name__ == '__main__':
                         action='store_true')
     parser.add_argument("--modeloutdir", help="directory for colocated model files; will have a similar filename as aeolus input file",
                         default=os.path.join(os.environ['HOME'], 'tmp'))
+    parser.add_argument("--topofile", help="topography file; defaults to {}.".format(default_topo_file),
+                        default=default_topo_file)
 
     args = parser.parse_args()
 
@@ -2058,6 +2062,9 @@ if __name__ == '__main__':
 
     if args.codadef:
             options['codadef'] = args.codadef
+
+    if args.topofile:
+        options['topofile'] = args.topofile
 
     # import read_data_fieldaeolus_l2a_data
     import os
@@ -2174,6 +2181,11 @@ if __name__ == '__main__':
 
                 netcdf_indir = '/lustre/storeB/project/fou/kl/admaeolus/EMEPmodel'
                 import xarray as xr
+                # read topography since that needs to be added to the ground following height of the model
+                obj.logger.info('reading topography file {}'.format(options['topofile']))
+                topo_data = xr.open_dataset(options['topofile'])
+
+
                 #truncate Aeolus times to hour
 
                 aeolus_times_rounded = obj.data[:,obj._TIMEINDEX].astype('datetime64[s]').astype('datetime64[h]')
@@ -2233,7 +2245,8 @@ if __name__ == '__main__':
                             nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index]
                             # nc_data['EXT_350nm'].data[nc_ts_no,:,min_lat_index,min_lon_index].reshape(nc_lev_no)
                         nc_colocated_data[nc_index_arr,obj._ALTITUDEINDEX] = \
-                            nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index]
+                            nc_data['Z_MID'].data[nc_ts_no,:,min_lat_index,min_lon_index] + \
+                            topo_data['topography'].data[0,min_lat_index,min_lon_index]
                         nc_colocated_data[nc_index_arr,obj._LATINDEX] = \
                             nc_data['lat'].data[min_lat_index]
                         nc_colocated_data[nc_index_arr,obj._LONINDEX] = \
