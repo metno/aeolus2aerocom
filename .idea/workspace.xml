@@ -3,13 +3,15 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="557" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="240" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="2162" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="2214" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1213" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1178" />
-    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="379" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="393" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="" />
+    <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/out.png" beforeDir="false" afterPath="$PROJECT_DIR$/out.png" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,16 +23,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="675">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="2193" column="66" selection-start-line="2193" selection-start-column="66" selection-end-line="2193" selection-end-column="66" />
+            <state relative-caret-position="1195">
+              <caret line="2245" column="66" selection-start-line="2245" selection-start-column="66" selection-end-line="2245" selection-end-column="66" />
               <folding>
                 <element signature="e#1378#1387#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-8107" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/out.png">
+          <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
     </leaf>
@@ -150,7 +164,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.read_aeolus_l2a_data colocate test">
+  <component name="RunManager" selected="Python.read_colocation_files">
     <configuration name="read_aeolus_l2a_data colocate test error" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -311,7 +325,7 @@
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_colocation_files.py" />
-      <option name="PARAMETERS" value="/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc /lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc" />
+      <option name="PARAMETERS" value="--aeolusfile /lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc --modelfile /lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -372,9 +386,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1919" y="-11" width="1922" height="1212" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.185029" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.185029" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -385,9 +398,9 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32583067" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32509506" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007907" side_tool="true" weight="0.3555133" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.3434535" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.3431559" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -398,22 +411,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>2168</line>
+          <line>2220</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
-          <line>383</line>
+          <line>401</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1872</line>
+          <line>1877</line>
           <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>2211</line>
+          <line>2264</line>
           <option name="timeStamp" value="103" />
         </line-breakpoint>
       </breakpoints>
@@ -489,15 +502,22 @@
     <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
     <entry file="file://$PROJECT_DIR$/TD01.run.all.txt" />
     <entry file="file://$PROJECT_DIR$/test.png" />
-    <entry file="file://$PROJECT_DIR$/read_colocation_files.py" />
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="2193" column="66" selection-start-line="2193" selection-start-column="66" selection-end-line="2193" selection-end-column="66" />
+        <state relative-caret-position="1195">
+          <caret line="2245" column="66" selection-start-line="2245" selection-start-column="66" selection-end-line="2245" selection-end-column="66" />
           <folding>
             <element signature="e#1378#1387#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8107" />
       </provider>
     </entry>
   </component>
