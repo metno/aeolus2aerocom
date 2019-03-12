@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="557" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="240" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="2162" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1213" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1178" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="379" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="aeolus2netcdf" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="675">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="2193" column="66" selection-start-line="2193" selection-start-column="66" selection-end-line="2193" selection-end-column="66" />
+              <folding>
+                <element signature="e#1378#1387#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>const</find>
+      <find>550</find>
+      <find>pyaerocom.io.</find>
+      <find>obj</find>
+      <find>ica_</find>
+      <find>_ICA</find>
+      <find>_SCA</find>
+      <find>_TIME_NAME</find>
+      <find>latitude</find>
+      <find>longitude</find>
+      <find>vars_to_read</find>
+      <find>-180</find>
+      <find>&gt;&gt;&gt;</find>
+      <find>dpi</find>
+      <find>filemask</find>
+      <find>glob.</find>
+      <find>24</find>
+      <find>&gt;&gt; &gt;</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>355</replace>
+      <replace>self</replace>
+      <replace>mca_</replace>
+      <replace>_MCA</replace>
+      <replace>longitude</replace>
+      <replace>altitude</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/readaeolusl2adata.py" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf.sh" />
+        <option value="$PROJECT_DIR$/2A02_201811_emep.run.txt" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh" />
+        <option value="$PROJECT_DIR$/Run.All.TD01.sh" />
+        <option value="$PROJECT_DIR$/read_colocation_files.py" />
+        <option value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1919" />
+    <option name="y" value="-11" />
+    <option name="width" value="1922" />
+    <option name="height" value="1212" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/read_colocation_files.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="aeolus2netcdf" is-module-sdk="true" working-directory="$PROJECT_DIR$">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="aeolus2netcdf" />
+        <option name="myWorkingDirectory" value="$PROJECT_DIR$" />
+        <option name="myAddContentRoots" value="false" />
+      </console-settings>
+    </option>
+    <option name="myUseExistingConsole" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/example_files" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.read_aeolus_l2a_data colocate test">
+    <configuration name="read_aeolus_l2a_data colocate test error" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--emep --outdir /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/netcdf_emep_domain/ --plotmap --plotprofile --tempdir /tmp/ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2018-11/30/AE_OPER_ALD_U_N_2A_20181130T182502037_008507995_001584_0001.TGZ" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data colocate test" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--emep --netcdfcolocate --modeloutdir ./ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/download/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data list" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--listpaths /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data plot test DBL" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--plotprofile --outdir ./ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/download/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data plot test TGZ" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--plotprofile --outdir ./ --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2018-12/01/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.TGZ" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data read domain" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--emep --outdir ~/tmp/aeolus2netcdf.out  --dir /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2018-09/05/" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data read" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="-o test.nc -O /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_colocation_files" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda.2018/envs/aeolus/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_colocation_files.py" />
+      <option name="PARAMETERS" value="/lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/netcdf_emep_domain/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.nc /lustre/storeB/project/fou/kl/admaeolus/EMEPmodel.colocated/AE_TD01_ALD_U_N_2A_20181130T032226039_005423993_001574_0001.DBL.colocated.nc" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Doctest ReadAeolusL2aData.read_file" type="tests" factoryName="Doctests" nameIsGenerated="true">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="CLASS_NAME" value="ReadAeolusL2aData" />
+      <option name="METHOD_NAME" value="read_file" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.read_aeolus_l2a_data list" />
+      <item itemvalue="Python.read_colocation_files" />
+      <item itemvalue="Python.read_aeolus_l2a_data read" />
+      <item itemvalue="Python.read_aeolus_l2a_data read domain" />
+      <item itemvalue="Python.read_aeolus_l2a_data plot test TGZ" />
+      <item itemvalue="Python.read_aeolus_l2a_data plot test DBL" />
+      <item itemvalue="Python.read_aeolus_l2a_data colocate test" />
+      <item itemvalue="Python.read_aeolus_l2a_data colocate test error" />
+      <item itemvalue="Python tests.Doctest ReadAeolusL2aData.read_file" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="" />
+      <created>1546605079533</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546605079533</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Doctest_ReadAeolusL2aData_read_file - 2019.01.04 at 14h 19m 08s.xml">
+      <configuration name="Doctest ReadAeolusL2aData.read_file" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Doctest_ReadAeolusL2aData_read_file - 2019.01.25 at 15h 06m 19s.xml">
+      <configuration name="Doctest ReadAeolusL2aData.read_file" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1919" y="-11" width="1922" height="1212" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.185029" />
+      <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
+      <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3336502" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.2909968" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32583067" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007907" side_tool="true" weight="0.3555133" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.3434535" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
+          <line>2168</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
+          <line>383</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
+          <line>1872</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
+          <line>2211</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/async_helpers.py" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/coda/codapython.py" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/IPython/core/interactiveshell.py" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/polyint.py" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/scipy/interpolate/interpolate.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/numpy/lib/arraysetops.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/site-packages/matplotlib/artist.py" />
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.7/codecs.py" />
+    <entry file="file://$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png" />
+    <entry file="file://$PROJECT_DIR$/example_files/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001.DBL.profile.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf.sh" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/xarray/backends/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="244" selection-start-line="244" selection-end-line="244" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/site-packages/numpy/lib/nanfunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="581" selection-start-line="581" selection-end-line="581" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2A02_201811_all.run.txt" />
+    <entry file="file://$PROJECT_DIR$/AE_OPER_ALD_U_N_2A_20181201T033526026_005423993_001590_0001.DBL.profile.png" />
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="15" column="64" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/codecs.py" />
+    <entry file="file://$PROJECT_DIR$/2A02_201811_emep.run.txt" />
+    <entry file="file://$PROJECT_DIR$/TD01.run.txt" />
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh" />
+    <entry file="file://$PROJECT_DIR$/Run.All.TD01.sh" />
+    <entry file="file://$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20181129T233314036_005435987_001571_0001.DBL.profile.png" />
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/posixpath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
+    <entry file="file://$PROJECT_DIR$/TD01.run.all.txt" />
+    <entry file="file://$PROJECT_DIR$/test.png" />
+    <entry file="file://$PROJECT_DIR$/read_colocation_files.py" />
+    <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="2193" column="66" selection-start-line="2193" selection-start-column="66" selection-end-line="2193" selection-end-column="66" />
+          <folding>
+            <element signature="e#1378#1387#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
