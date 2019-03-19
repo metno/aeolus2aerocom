@@ -1835,6 +1835,7 @@ class ReadAeolusL2aData:
                 # scipy.interpolate cannot cope with nans in the data
                 # work only on profiles with a nansum > 0
 
+
                 nansum = np.nansum(var_data)
                 if nansum > 0:
                     height_data = self.data[time_index_dict[unique_time],self.INDEX_DICT['altitude']]
@@ -1843,9 +1844,14 @@ class ReadAeolusL2aData:
                         var_data = var_data[~plot_data_masks[var][time_index_dict[unique_time]]]
 
 
-                    f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
-                    interpolated = f(target_heights)
-                    out_arr[time_step_idx,:] = interpolated
+                    try:
+                        f = interpolate.interp1d(height_data, var_data, kind='nearest', bounds_error=False, fill_value=np.nan)
+                        interpolated = f(target_heights)
+                        out_arr[time_step_idx,:] = interpolated
+                    except ValueError:
+                        #out_arr is np.nan already
+                        pass
+
                 elif nansum == 0:
                     # set all heights of the plotted profile to 0 since nothing was detected
                     out_arr[time_step_idx,:] = 0.
@@ -2155,25 +2161,6 @@ if __name__ == '__main__':
                 obj.to_netcdf_simple(outfile_name, global_attributes=global_attributes,
                                      vars_to_read=vars_to_read)
 
-            #plot the profile
-            if options['plotprofile']:
-                plotfilename = os.path.join(options['outdir'], os.path.basename(filename)
-                                            + '.'+options['retrieval']+'.profile.png')
-                obj.logger.info('profile plot file: {}'.format(plotfilename))
-                # title = '{} {}'.format(options['retrieval'], os.path.basename(filename))
-                title = '{}'.format(os.path.basename(filename))
-                obj.plot_profile_v2(plotfilename, title=title,
-                                    retrieval_name=options['retrieval'],
-                                    plot_range=(0.,200.))
-
-            #plot the map
-            if options['plotmap']:
-                plotmapfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.map.png')
-                obj.logger.info('map plot file: {}'.format(plotmapfilename))
-                #title = os.path.basename(filename)
-                obj.plot_location_map(plotmapfilename)
-
-
 
             # work with emep data and do some colocation
             if options['netcdfcolocate']:
@@ -2264,6 +2251,25 @@ if __name__ == '__main__':
                     model_file_name = os.path.join(options['modeloutdir'], os.path.basename(filename) + '.colocated.nc')
                     obj.to_netcdf_simple(model_file_name, data_to_write=nc_colocated_data)
                 pass
+
+            #plot the profile
+            if options['plotprofile']:
+                plotfilename = os.path.join(options['outdir'], os.path.basename(filename)
+                                            + '.'+options['retrieval']+'.profile.png')
+                obj.logger.info('profile plot file: {}'.format(plotfilename))
+                # title = '{} {}'.format(options['retrieval'], os.path.basename(filename))
+                title = '{}'.format(os.path.basename(filename))
+                obj.plot_profile_v2(plotfilename, title=title,
+                                    retrieval_name=options['retrieval'],
+                                    plot_range=(0.,200.))
+
+            #plot the map
+            if options['plotmap']:
+                plotmapfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.map.png')
+                obj.logger.info('map plot file: {}'.format(plotmapfilename))
+                #title = os.path.basename(filename)
+                obj.plot_location_map(plotmapfilename)
+
 
 
 
