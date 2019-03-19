@@ -443,7 +443,8 @@ class ReadCoLocationData:
                                  plot_nbins=20.,
                                  linear_time=False,
                                  plot_orbit_info=True,
-                                 plot_stat_info=True):
+                                 plot_stat_info=True,
+                                 zero_to_nans=False):
         """plot sample profile plot with
         all time steps found in data dict regardless in which dict
 
@@ -615,6 +616,13 @@ class ReadCoLocationData:
                 # cmap = plt.get_cmap('PiYG')
                 cmap = plt.get_cmap('autumn_r')
                 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+
+                if zero_to_nans:
+                    # set all zeros to NaNs
+                    pass
+                    self.logger.info('setting zeros to NaNs for plotting...')
+                    # plot_out_arr = np.where(plot_out_arr == 0., plot_out_arr, np.nan)
+                    plot_out_arr = np.where(plot_out_arr == 0., np.nan, plot_out_arr)
 
                 plot_handle.append(axs[plot_index].pcolormesh(plot_out_arr.transpose(), cmap=cmap, norm=norm))
                 # plot the orbit info
@@ -847,6 +855,7 @@ if __name__ == '__main__':
 
     # parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
     # parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
+    parser.add_argument("--zerotonans", help="flag to plot zeros as NaNs", action='store_true')
     # parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
     # parser.add_argument("--latmax", help="max latitude to return", default=np.float_(76.))
     # parser.add_argument("--lonmin", help="min longitude to return", default=np.float_(-30.))
@@ -868,6 +877,11 @@ if __name__ == '__main__':
                         default='ec355aer,bs355aer')
 
     args = parser.parse_args()
+
+    if args.zerotonans:
+        options['zerotonans'] = True
+    else:
+        options['zerotonans'] = False
 
     if args.plotmapfile:
         options['plotmapfile'] = args.plotmapfile
@@ -1008,7 +1022,8 @@ if __name__ == '__main__':
     if 'plotfile' in options:
         obj.logger.info('plotting profile to file: {}...'.format(options['plotfile']))
         obj.plot_profile_independent(data_dict, options['plotfile'], retrieval_name=options['retrieval'],
-                                     plot_range=(0., 200.))
+                                     plot_range=(0., 200.),
+                                     zero_to_nans=options['zerotonans'])
         obj.logger.info('plotting done')
 
     if 'plotmapfile' in options:

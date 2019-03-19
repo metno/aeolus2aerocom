@@ -7,16 +7,13 @@
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1213" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1178" />
     <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="427" />
-    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="666" />
-    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="630" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="674" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="638" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out.png" beforeDir="false" afterPath="$PROJECT_DIR$/out.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20180912_curtain.png" beforeDir="false" afterPath="$PROJECT_DIR$/example_files/20180912_curtain.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_colocation_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_colocation_files.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,21 +27,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="675">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="683" column="38" selection-start-line="683" selection-start-column="38" selection-end-line="683" selection-end-column="38" />
+            <state relative-caret-position="3639">
+              <caret line="624" column="85" lean-forward="true" selection-start-line="624" selection-start-column="85" selection-end-line="624" selection-end-column="85" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
+        <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
@@ -383,7 +380,7 @@
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_colocation_files.py" />
-      <option name="PARAMETERS" value="--starttime 2018-09-12 --endtime 2018-09-13 --plotfile 20180912_curtain.png" />
+      <option name="PARAMETERS" value="--starttime 2018-09-12 --endtime 2018-09-13 --plotfile 20180912_curtain.png --zerotonans" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -510,8 +507,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="77" y="-2" width="3764" height="2163" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.19682284" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.19682284" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -522,7 +520,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32475883" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32475883" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007907" side_tool="true" weight="0.3555133" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34297964" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -555,12 +553,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
-          <line>624</line>
+          <line>632</line>
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
-          <line>675</line>
+          <line>683</line>
           <option name="timeStamp" value="162" />
         </line-breakpoint>
       </breakpoints>
@@ -673,9 +671,6 @@
     <entry file="file://$PROJECT_DIR$/example_files/20180912_profile.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/20181001_map.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -696,18 +691,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="683" column="38" selection-start-line="683" selection-start-column="38" selection-end-line="683" selection-end-column="38" />
+        <state relative-caret-position="3639">
+          <caret line="624" column="85" lean-forward="true" selection-start-line="624" selection-start-column="85" selection-end-line="624" selection-end-column="85" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
-      <provider selected="true" editor-type-id="images" />
     </entry>
   </component>
   <component name="masterDetails">
