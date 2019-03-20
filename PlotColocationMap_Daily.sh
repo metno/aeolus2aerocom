@@ -33,7 +33,7 @@ for date in `find ${datadir} -name '*.nc' | cut -d_ -f7 | cut -dT -f1 | sort | u
     namedate=`echo ${startdate} | sed -e 's/\-//g'`
     plotfile="${plotdir}${namedate}_profile.png"
     mapplotfile="${plotdir}${namedate}_map.png"
-    cmd="./read_colocation_files.py --retrieval ${retrieval} --starttime ${startdate} --endtime ${enddate} --plotfile ${plotfile} --plotmapfile ${mapplotfile}"
+    cmd="./read_colocation_files.py --retrieval ${retrieval} --starttime ${startdate} --endtime ${enddate} --plotfile ${plotfile} --plotmapfile ${mapplotfile} --zerotonans"
 #    cmd="./read_colocation_files.py --retrieval ${retrieval} --starttime ${startdate} --endtime ${enddate} --plotmapfile ${mapplotfile}"
     echo ${cmd}
     echo ${cmd} >> "${jobfile}"
