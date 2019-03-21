@@ -442,9 +442,11 @@ class ReadCoLocationData:
                                  plot_range=(0., 2000.),
                                  plot_nbins=20.,
                                  linear_time=False,
+                                 optimised_time=True,
                                  plot_orbit_info=True,
                                  plot_stat_info=True,
-                                 zero_to_nans=False):
+                                 zero_to_nans=False,):
+
         """plot sample profile plot with
         all time steps found in data dict regardless in which dict
 
@@ -488,28 +490,55 @@ class ReadCoLocationData:
         time_step_no = {}
 
         # plot all time steps found in data_dict and put the non existent ones to nan
+        orbit_dummy_dict = {}   #for testing
         for plot_index, data_name in enumerate(data_dict):
             try:
                 times_existing = np.append(times_existing, data_dict[data_name][:, self._TIMEINDEX], axis=0)
             except NameError:
                 times_existing = data_dict[data_name][:, self._TIMEINDEX]
 
-            if 'aeolus' in data_name:
-                # determine the borders of the different orbits
-                # the orbit number is stored in data_dict[data_name][:,self._DISTINDEX]
-                orbit_data = data_dict[data_name][:, self._DISTINDEX]
-                orbits = np.unique(orbit_data)
-                orbit_dict = {}
-                for orbit in orbits:
-                    dummy = np.where(orbit_data == orbit)
-                    orbit_time = data_dict[data_name][dummy[0][0], self._TIMEINDEX]
-                    orbit_dict[orbit_time] = {}
-                    orbit_dict[orbit_time]['orbit'] = int(orbit_data[dummy[0][0]])
-                    orbit_dict[orbit_time]['index'] = int(dummy[0][0])
-                    # orbit_dict[int(dummy[0][0])] = int(orbit_data[dummy[0][0]])
-                pass
+        # if 'aeolus' in data_name:
+            # determine the borders of the different orbits
+            # the orbit number is stored in data_dict[data_name][:,self._DISTINDEX]
+            orbit_data = data_dict[data_name][:, self._DISTINDEX]
+            orbits = np.unique(orbit_data)
+            orbit_dict = {}
+            for orbit in orbits:
+                dummy = np.where(orbit_data == orbit)
+                orbit_time = data_dict[data_name][dummy[0][0], self._TIMEINDEX]
+                orbit_dict[orbit_time] = {}
+                orbit_dict[orbit_time]['orbit'] = int(orbit_data[dummy[0][0]])
+                orbit_dict[orbit_time]['index'] = int(dummy[0][0])
+                # orbit_dict[int(dummy[0][0])] = int(orbit_data[dummy[0][0]])
+                orbit_dummy_dict[data_name] = orbit_dict
+            # pass
+        print(orbit_dummy_dict)
 
-        plot_times = np.unique(times_existing)
+        time_step_size = 12.
+        plot_xlabel_flag = True
+        if linear_time:
+            # print also the time gaps
+            plot_times = np.arange(np.min(times_existing), np.max(times_existing), np.float_(time_step_size))
+        elif optimised_time:
+            # print data with optimised time gaps
+            # that is a number of time steps after each orbit with no data
+            plot_xlabel_flag = False
+            time_steps_to_add = 25
+            plot_times = np.array([], dtype=np.int_)
+            for idx, orbit in enumerate(orbits):
+                dummy = np.where(orbit_data == orbit)
+                orbit_times = np.unique(data_dict[data_name][dummy[0], self._TIMEINDEX])
+                plot_times = np.append(plot_times, orbit_times, axis=0)
+                if idx == len(orbits)-1:
+                    continue
+                dummy_times = np.arange(orbit_times[-1]+time_step_size,
+                                        orbit_times[-1]+(time_step_size * time_steps_to_add),
+                                        np.float_(time_step_size))
+                plot_times = np.append(plot_times, dummy_times, axis=0)
+            pass
+        else:
+            plot_times = np.unique(times_existing)
+
         plot_time_steps = len(plot_times)
 
         target_x = np.arange(0, plot_time_steps)
@@ -531,6 +560,7 @@ class ReadCoLocationData:
 
             # create an index array to connect plot_times and times[data_name]
             # if the # of time steps do not match
+            matched_indexes = 0
             if plot_time_steps != times_no[data_name]:
                 # plot times do not match over both data sets
                 for time_idx, _time in enumerate(plot_times):
@@ -538,6 +568,10 @@ class ReadCoLocationData:
                     if len(dummy[0]) == 1:
                         # print(type(dummy[0]))
                         time_index_array[time_idx] = dummy[0]
+
+                    if _time in orbit_dict:
+                        orbit_dict[_time]['plotindex'] = time_idx
+                        orbit_dummy_dict[data_name][_time]['plotindex'] = time_idx
             else:
                 time_index_array = np.arange(plot_time_steps)
 
@@ -565,8 +599,6 @@ class ReadCoLocationData:
                 time_index_dict[time] = np.arange(unique_indexes[data_name][idx],
                                                   unique_indexes[data_name][idx] + unique_height_step_no[data_name][
                                                       idx])
-                if time in orbit_dict:
-                    orbit_dict[time]['plotindex'] = idx
 
             for var in vars_to_plot:
                 # this loop has not been optimised for several variables
@@ -579,6 +611,7 @@ class ReadCoLocationData:
                         print('time not found in {} data: {}'.format(data_name, unique_time.astype('datetime64[s]')))
                         continue
 
+                    matched_indexes += 1
                     # var_data = data[time_index_dict[unique_time],self.INDEX_DICT[var]]
                     var_data = data_dict[data_name][time_index_dict[unique_time], self.INDEX_DICT[var]]
                     # scipy.interpolate cannot cope with nans in the data
@@ -610,6 +643,7 @@ class ReadCoLocationData:
 
                     # plot_data[data_name] = plot_out_arr.copy()
 
+                self.logger.info('{} time steps matched'.format(matched_indexes))
                 # levels = MaxNLocator(nbins=15).tick_values(np.nanmin(out_arr), np.nanmax(out_arr))
                 # levels = MaxNLocator(nbins=20).tick_values(0., 2000.)
                 levels = MaxNLocator(nbins=plot_nbins).tick_values(plot_range[0], plot_range[1])
@@ -653,7 +687,11 @@ class ReadCoLocationData:
                 # plt_x = [30.,30.]
                 yticks.append(plot_handle[plot_index].axes.get_yticks())
                 yticklabels = plot_handle[plot_index].axes.set_yticklabels(yticks[-1] / 100.)
-                plot_handle[plot_index].axes.set_xlabel('time step number')
+                if plot_xlabel_flag:
+                    plot_handle[plot_index].axes.set_xlabel('time step number')
+                else:
+                    plot_handle[plot_index].axes.set_xlabel(' ')
+
                 plot_handle[plot_index].axes.set_ylabel('height [km]')
                 if title:
                     plot_handle[plot_index].axes.set_title(title, fontsize='small')
@@ -786,8 +824,9 @@ class ReadCoLocationData:
             # colors = cm.rainbow(np.linspace(0, 1, len(orbits)))
             orbit_number = orbits.max() - orbits.min()
             # cmap = plt.get_cmap('viridis',orbit_number)
-            cmap = plt.get_cmap('cool', orbit_number)
-            norm = mpl.colors.Normalize(vmin=orbits.min(), vmax=orbits.max())
+            # cmap = plt.get_cmap('cool', orbit_number)
+            cmap = plt.get_cmap('jet', orbit_number+1)
+            norm = mpl.colors.Normalize(vmin=orbits.min(), vmax=orbits.max()+1)
             sm = cm.ScalarMappable(norm=norm, cmap=cmap)
             sm.set_array([])
 
@@ -798,16 +837,6 @@ class ReadCoLocationData:
                 # plot = m.scatter(x[dummy], y[dummy], 4, marker='o', color=c)
                 plot = m.scatter(x[dummy], y[dummy], 4, marker='o', color=cmap(norm(orbit)))
                 plots.append(plot)
-
-            # m.drawmapboundary(fill_color='#99ffff')
-            # m.fillcontinents(color='#cc9966', lake_color='#99ffff')
-            # plot = m.scatter(x, y, 4, marker='o', color='r', )
-
-            # m.drawmeridians(np.arange(-180, 220, 40), labels=[0, 0, 0, 1], fontsize=10)
-            # m.drawparallels(np.arange(-90, 120, 30), labels=[1, 1, 0, 0], fontsize=10)
-            # # axis = plt.axis([LatsToPlot.min(), LatsToPlot.max(), LonsToPlot.min(), LonsToPlot.max()])
-            # # ax = plots[0].axes
-            # m.drawcoastlines()
 
             if title:
                 plt.title(title)
@@ -918,36 +947,6 @@ if __name__ == '__main__':
     if args.endtime:
         options['endtime'] = np.datetime64(args.endtime).astype('datetime64[s]')
 
-    # if args.outdir:
-    #     options['outdir'] = args.outdir
-    #
-    #
-    # if args.tempdir:
-    #     options['tempdir'] = args.tempdir
-    #
-    # if args.emep:
-    #     options['emepflag'] = args.emep
-    #     options['latmin'] = np.float(30.)
-    #     options['latmax'] = np.float(76.)
-    #     options['lonmin'] = np.float(-30.)
-    #     options['lonmax'] = np.float(45.)
-    # else:
-    #     options['emepflag'] = False
-    #
-    # if args.latmin:
-    #     options['latmin'] = np.float_(args.latmin)
-    #
-    # if args.latmax:
-    #     options['latmax'] = np.float_(args.latmax)
-    #
-    # if args.lonmin:
-    #     options['lonmin'] = np.float_(args.lonmin)
-    #
-    # if args.lonmax:
-    #     options['lonmax'] = np.float_(args.lonmax)
-    #
-    # if args.readpaths:
-    #     options['readpaths'] = args.readpaths.split(',')
 
     if args.variables:
         options['variables'] = args.variables.split(',')
@@ -986,6 +985,8 @@ if __name__ == '__main__':
             for model_file in sorted(model_files):
                 obj.logger.info('reading model file: {}'.format(model_file))
                 data_temp = obj.read_file(model_file)
+                orbit = os.path.basename(model_file).split('_')[-2]
+                data_temp[:, obj._DISTINDEX] = np.int_(orbit)
                 # obj.ndarr2data(data_temp)
                 model_data_temp = obj.ndarrappend(data_temp, model_data_temp)
 

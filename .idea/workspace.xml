@@ -7,13 +7,17 @@
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1213" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1178" />
     <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="427" />
-    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="674" />
-    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="638" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="712" />
+    <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="672" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20180912_curtain.png" beforeDir="false" afterPath="$PROJECT_DIR$/example_files/20180912_curtain.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20180912_curtain.png" beforeDir="false" afterPath="$PROJECT_DIR$/20180912_curtain.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20181001_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/20181001_map.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TD01.run.sca.emep.plot.daily.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TD01.run.sca.emep.plot.daily.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/read_colocation_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_colocation_files.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,24 +34,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3639">
-              <caret line="624" column="85" lean-forward="true" selection-start-line="624" selection-start-column="85" selection-end-line="624" selection-end-column="85" />
+            <state relative-caret-position="468">
+              <caret line="871" selection-start-line="871" selection-end-line="871" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
+        <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
@@ -57,15 +51,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/example_files/20180912_profile.png">
+        <entry file="file://$PROJECT_DIR$/20180912_map.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PlotColocationMap_Daily.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="928">
-              <caret line="36" column="59" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
+            <state relative-caret-position="864">
+              <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -73,8 +67,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="972">
-              <caret line="1921" lean-forward="true" selection-start-line="1911" selection-end-line="1921" />
+            <state relative-caret-position="68940">
+              <caret line="1921" selection-start-line="1911" selection-end-line="1921" />
               <folding>
                 <element signature="e#1378#1387#0" expanded="true" />
               </folding>
@@ -85,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
+            <state relative-caret-position="1188">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
             </state>
           </provider>
         </entry>
@@ -153,9 +147,9 @@
         <option value="$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh" />
         <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh" />
         <option value="$PROJECT_DIR$/Run.All.TD01.sh" />
-        <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
         <option value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
         <option value="$PROJECT_DIR$/PlotColocationMap_Daily.sh" />
+        <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
         <option value="$PROJECT_DIR$/read_colocation_files.py" />
       </list>
     </option>
@@ -171,6 +165,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -178,11 +173,15 @@
               <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
               <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
+              <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
+              <item name="example_files" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -219,7 +218,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.read_colocation_files time frame plus curtain">
+  <component name="RunManager" selected="Python.read_colocation_files time frame plus map">
     <configuration name="read_aeolus_l2a_data colocate test error" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -401,7 +400,7 @@
       <option name="ADD_CONTENT_ROOTS" value="false" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_colocation_files.py" />
-      <option name="PARAMETERS" value="--retrieval mca --starttime 2018-10-01 --endtime 2018-10-02 --plotmapfile 20181001_map.png" />
+      <option name="PARAMETERS" value="--retrieval mca --starttime 2018-09-12 --endtime 2018-09-13 --plotmapfile 20180912_map.png" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -509,12 +508,12 @@
     <frame x="77" y="-2" width="3764" height="2163" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.19682284" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.19682284" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.33333334" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33333334" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.41318327" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -553,13 +552,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
-          <line>632</line>
-          <option name="timeStamp" value="161" />
+          <line>721</line>
+          <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
-          <line>683</line>
-          <option name="timeStamp" value="162" />
+          <line>541</line>
+          <option name="timeStamp" value="168" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -631,9 +630,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test.png" />
     <entry file="file://$USER_HOME$/anaconda.2018/envs/aeolus/lib/python3.7/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
@@ -642,42 +639,20 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/20180912.png" />
-    <entry file="file://$PROJECT_DIR$/out.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/out.png" />
     <entry file="file://$PROJECT_DIR$/TD01.run.mca.txt">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example_files/20180912_map.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_map.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PlotColocationMap_Daily.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
-          <caret line="36" column="59" selection-start-line="36" selection-start-column="59" selection-end-line="36" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/example_files/20180912_profile.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20181001_map.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="972">
-          <caret line="1921" lean-forward="true" selection-start-line="1911" selection-end-line="1921" />
+        <state relative-caret-position="68940">
+          <caret line="1921" selection-start-line="1911" selection-end-line="1921" />
           <folding>
             <element signature="e#1378#1387#0" expanded="true" />
           </folding>
@@ -691,19 +666,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
-      <provider selected="true" editor-type-id="images" />
+    <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1188">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotColocationMap_Daily.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="864">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20181012_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20181001_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3639">
-          <caret line="624" column="85" lean-forward="true" selection-start-line="624" selection-start-column="85" selection-end-line="624" selection-end-column="85" />
+        <state relative-caret-position="468">
+          <caret line="871" selection-start-line="871" selection-end-line="871" />
         </state>
       </provider>
     </entry>
