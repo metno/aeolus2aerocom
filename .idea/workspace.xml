@@ -3,7 +3,7 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="557" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="240" />
-    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="2201" />
+    <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="2303" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1213" />
     <bookmark url="file://$PROJECT_DIR$/read_aeolus_l2a_data.py" line="1178" />
     <bookmark url="file://$PROJECT_DIR$/read_colocation_files.py" line="427" />
@@ -12,13 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49d540e8-e44a-459f-8a80-f9c0f70cccf2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20180912_curtain.png" beforeDir="false" afterPath="$PROJECT_DIR$/20180912_curtain.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20181001_map.png" beforeDir="false" afterPath="$PROJECT_DIR$/20181001_map.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TD01.run.mca.emep.colocation.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TD01.run.sca.emep.plot.daily.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TD01.run.sca.emep.plot.daily.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/read_colocation_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_colocation_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read_aeolus_l2a_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/read_aeolus_l2a_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,27 +26,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="675">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="871" selection-start-line="871" selection-end-line="871" />
+            <state relative-caret-position="588">
+              <caret line="708" column="76" selection-start-line="708" selection-start-column="61" selection-end-line="708" selection-end-column="76" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
-          <provider selected="true" editor-type-id="images" />
+        <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="1807" column="43" selection-start-line="1807" selection-start-column="43" selection-end-line="1807" selection-end-column="43" />
+              <folding>
+                <element signature="e#1378#1387#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/20181001_map.png">
-          <provider selected="true" editor-type-id="images" />
+        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="720">
+              <caret line="20" column="53" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/20180912_map.png">
+        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="972">
+              <caret line="27" column="59" selection-start-line="27" selection-start-column="59" selection-end-line="27" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002.DBL.map.png">
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
@@ -64,32 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PlotHimalayaMap.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68940">
-              <caret line="1921" selection-start-line="1911" selection-end-line="1921" />
-              <folding>
-                <element signature="e#1378#1387#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1188">
-              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="972">
-              <caret line="27" column="59" selection-start-line="27" selection-start-column="59" selection-end-line="27" selection-end-column="59" />
+            <state relative-caret-position="720">
+              <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -124,6 +118,7 @@
       <find>24</find>
       <find>&gt;&gt; &gt;</find>
       <find>glob.gl</find>
+      <find>:</find>
     </findStrings>
     <replaceStrings>
       <replace>355</replace>
@@ -132,6 +127,7 @@
       <replace>_MCA</replace>
       <replace>longitude</replace>
       <replace>altitude</replace>
+      <replace>']=(</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -147,18 +143,19 @@
         <option value="$PROJECT_DIR$/Aeolus2Netcdf_2A02.sh" />
         <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01.sh" />
         <option value="$PROJECT_DIR$/Run.All.TD01.sh" />
-        <option value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
         <option value="$PROJECT_DIR$/PlotColocationMap_Daily.sh" />
         <option value="$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh" />
         <option value="$PROJECT_DIR$/read_colocation_files.py" />
+        <option value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+        <option value="$PROJECT_DIR$/PlotHimalayaMap.sh" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="77" />
-    <option name="y" value="-2" />
-    <option name="width" value="3764" />
-    <option name="height" value="2163" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="78" />
+    <option name="y" value="40" />
+    <option name="width" value="3762" />
+    <option name="height" value="2127" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -172,11 +169,6 @@
             <path>
               <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
               <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="aeolus2netcdf" type="b2602c69:ProjectViewProjectNode" />
-              <item name="aeolus2netcdf" type="462c0819:PsiDirectoryNode" />
-              <item name="example_files" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -218,7 +210,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.read_colocation_files time frame plus map">
+  <component name="RunManager" selected="Python.read_aeolus_l2a_data read himalaya">
     <configuration name="read_aeolus_l2a_data colocate test error" type="PythonConfigurationType" factoryName="Python">
       <module name="aeolus2netcdf" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -338,6 +330,27 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
       <option name="PARAMETERS" value="--emep --outdir ~/tmp/aeolus2netcdf.out  --dir /lustre/storeB/project/fou/kl/admaeolus/data.rev.2A02/download/2018-09/05/" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="read_aeolus_l2a_data read himalaya" type="PythonConfigurationType" factoryName="Python">
+      <module name="aeolus2netcdf" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda.2018/envs/aeolus/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/read_aeolus_l2a_data.py" />
+      <option name="PARAMETERS" value="--himalaya --plotmap --outdir ./  --file /lustre/storeB/project/fou/kl/admaeolus/data.rev.TD01/download/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002.DBL" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -475,6 +488,7 @@
       <item itemvalue="Python.read_aeolus_l2a_data plot test DBL" />
       <item itemvalue="Python.read_aeolus_l2a_data plot test TGZ" />
       <item itemvalue="Python.read_aeolus_l2a_data read domain" />
+      <item itemvalue="Python.read_aeolus_l2a_data read himalaya" />
       <item itemvalue="Python.read_aeolus_l2a_data read" />
       <item itemvalue="Python.read_colocation_files" />
       <item itemvalue="Python.read_colocation_files time frame" />
@@ -505,21 +519,20 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="-2" width="3764" height="2163" extended-state="6" />
-    <editor active="true" />
+    <frame x="78" y="40" width="3762" height="2127" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.19682284" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49904943" visible="true" weight="0.21728595" />
       <window_info id="Structure" order="1" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info id="Favorites" order="2" sideWeight="0.5009506" side_tool="true" weight="0.29889297" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33333334" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.41318327" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.34044883" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49920928" weight="0.23754789" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32475883" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3245758" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5007907" side_tool="true" weight="0.3555133" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49973074" weight="0.34297964" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -532,7 +545,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>2207</line>
+          <line>2309</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -542,12 +555,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>1883</line>
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
-          <line>2251</line>
+          <line>2353</line>
           <option name="timeStamp" value="103" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -559,6 +567,16 @@
           <url>file://$PROJECT_DIR$/read_colocation_files.py</url>
           <line>541</line>
           <option name="timeStamp" value="168" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
+          <line>1829</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/read_aeolus_l2a_data.py</url>
+          <line>1826</line>
+          <option name="timeStamp" value="177" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -649,13 +667,34 @@
     <entry file="file://$PROJECT_DIR$/example_files/20180912_profile.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20181012_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/20180912_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/20181001_map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example_files/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002.DBL.sca.profile.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotColocationMap_Daily.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68940">
-          <caret line="1921" selection-start-line="1911" selection-end-line="1921" />
-          <folding>
-            <element signature="e#1378#1387#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="864">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -668,43 +707,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Aeolus2Netcdf_TD01_colocate.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+        <state relative-caret-position="720">
+          <caret line="20" column="53" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example_files/20180912_map_colored.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example_files/20180912_curtain.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_curtain_mca.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_curtain.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PlotColocationMap_Daily.sh">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+        <state relative-caret-position="655">
+          <caret line="1740" selection-start-line="1740" selection-end-line="1740" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/20181012_map.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20181001_map.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/20180912_map.png">
+    <entry file="file://$PROJECT_DIR$/example_files/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002.DBL.map.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/read_colocation_files.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="871" selection-start-line="871" selection-end-line="871" />
+        <state relative-caret-position="588">
+          <caret line="708" column="76" selection-start-line="708" selection-start-column="61" selection-end-line="708" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/read_aeolus_l2a_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="1807" column="43" selection-start-line="1807" selection-start-column="43" selection-end-line="1807" selection-end-column="43" />
+          <folding>
+            <element signature="e#1378#1387#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AE_TD01_ALD_U_N_2A_20180908T120926033_005387992_000264_0002.DBL.map.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PlotHimalayaMap.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
         </state>
       </provider>
     </entry>

@@ -1710,7 +1710,8 @@ class ReadAeolusL2aData:
 
     ###################################################################################
 
-    def plot_location_map(self, plotfilename):
+    def plot_location_map(self, plotfilename, bbox=None, himalaya_flag=None, title=None,
+                          plot_time = True):
         """small routine to plot the satellite track on a map
 
         >>> import matplotlib.pyplot as plt
@@ -1727,13 +1728,57 @@ class ReadAeolusL2aData:
 
         import matplotlib.pyplot as plt
         from mpl_toolkits.basemap import Basemap
+        import numpy as np
+
         lats = self.data[:,self._LATINDEX]
         lons = self.data[:,self._LONINDEX]
-        lat_low = -90.
-        lat_high = 90.
-        lon_low = -180.
-        lon_high = 180.
 
+        if bbox:
+            pass
+
+            lat_low = bbox[0]
+            lat_high = bbox[1]
+            lon_low = bbox[2]
+            lon_high = bbox[3]
+            himalaya_flag = True
+        else:
+            lat_low = -90.
+            lat_high = 90.
+            lon_low = -180.
+            lon_high = 180.
+            himalaya_flag = True
+
+        # positions of some peaks:
+
+        # Everest: 27.988056, 86.925278
+        # K2: 35.8825, 76.513333
+        # Kangchenjunga: 27.7025, 88.146667
+        # Lhotse: 27.961667, 86.933333
+        # Makalu: 27.889167, 87.088611
+        # Cho Oyu: 28.094167, 86.660833
+        # Dhaulagiri: 28.698333, 83.4875
+        # Manaslu: 28.549444, 84.561944
+        # Nanga Parbat: 35.2375, 74.589167
+        # Annapurna Massif: 28.596111, 83.820278
+        # Gasherbrum I: 35.724444, 76.696389
+        # Broad Peak: 35.811667, 76.565
+        # Gasherbrum II:35.758333, 76.653333
+        # Shishapangma:28.352222, 85.779722
+        himalaya_data = {}
+        himalaya_data['Everest']=(27.988056, 86.925278)
+        himalaya_data['K2']=(35.8825, 76.513333)
+        himalaya_data['Kangchenjunga']=(27.7025, 88.146667)
+        himalaya_data['Lhotse']=(27.961667, 86.933333)
+        himalaya_data['Makalu']=(27.889167, 87.088611)
+        himalaya_data['Cho Oyu']=(28.094167, 86.660833)
+        himalaya_data['Dhaulagiri']=(28.698333, 83.4875)
+        himalaya_data['Manaslu']=(28.549444, 84.561944)
+        himalaya_data['Nanga Parbat']=(35.2375, 74.589167)
+        himalaya_data['Annapurna Massif']=(28.596111, 83.820278)
+        himalaya_data['Gasherbrum I']=(35.724444, 76.696389)
+        himalaya_data['Broad Peak']=(35.811667, 76.565)
+        himalaya_data['Gasherbrum II']=(35.758333, 76.653333)
+        himalaya_data['Shishapangma']=(28.352222, 85.779722)
 
         m = Basemap(projection='cyl', llcrnrlat=lat_low, urcrnrlat=lat_high,
                     llcrnrlon=lon_low, urcrnrlon=lon_high, resolution='c', fix_aspect=False)
@@ -1746,7 +1791,41 @@ class ReadAeolusL2aData:
         m.drawparallels(np.arange(-90, 120, 30), labels=[1, 1, 0, 0], fontsize=10)
         # axis = plt.axis([LatsToPlot.min(), LatsToPlot.max(), LonsToPlot.min(), LonsToPlot.max()])
         ax = plot.axes
-        m.drawcoastlines()
+        # m.drawcoastlines()
+        # m.etopo()
+        # m.arcgisimage(service='ESRI_Imagery_World_2D', xpixels = 1500, verbose= True)
+        m.arcgisimage(service='World_Shaded_Relief', xpixels = 1500, verbose= True)
+        if bbox is not None:
+            m.drawcountries()
+            # m.drawrivers()
+
+        if himalaya_flag:
+            for peak in himalaya_data:
+                x,y=m(himalaya_data[peak][1], himalaya_data[peak][0])
+                plot=m.plot(x, y, 4, marker='.', color='b')
+
+        if title:
+            plt.title(title,fontsize='small')
+
+        if plot_time:
+            # plot 2 time stamps next to 2 dots to make the times clear
+            min_index = 30
+            max_index = -30
+            time_str = self.data[min_index, self._TIMEINDEX].astype('datetime64[s]')
+            x,y = m(self.data[min_index, self._LONINDEX], self.data[min_index, self._LATINDEX])
+            # plt.annotate(time_str, xy=(x, y),  xycoords='data', color='k')
+            plt.annotate(time_str, xy=(x, y),
+                         xycoords='data',
+                         color='k',
+                         fontsize='small')
+            time_str = self.data[max_index, self._TIMEINDEX].astype('datetime64[s]')
+            x,y = m(self.data[max_index, self._LONINDEX], self.data[max_index, self._LATINDEX])
+            plt.annotate(time_str, xy=(x, y),
+                         xycoords='data',
+                         color='k',
+                         fontsize='small')
+            pass
+
 
         plt.savefig(plotfilename, dpi=300)
         plt.close()
@@ -1953,6 +2032,7 @@ if __name__ == '__main__':
                         default="/home/jang/tmp/aeolus2netcdf.log")
     parser.add_argument("-O", "--overwrite", help="overwrite output file", action='store_true')
     parser.add_argument("--emep", help="flag to limit the read data to the cal/val model domain", action='store_true')
+    parser.add_argument("--himalayas", help="flag to limit the read data to himalayas", action='store_true')
     parser.add_argument("--codadef", help="set path of CODA_DEFINITION env variable",
                         default='/lustre/storeA/project/aerocom/aerocom1/ADM_CALIPSO_TEST/')
     parser.add_argument("--latmin", help="min latitude to return", default=np.float_(30.))
@@ -2018,15 +2098,6 @@ if __name__ == '__main__':
     if args.tempdir:
         options['tempdir'] = args.tempdir
 
-    if args.emep:
-        options['emepflag'] = args.emep
-        options['latmin'] = np.float(30.)
-        options['latmax'] = np.float(76.)
-        options['lonmin'] = np.float(-30.)
-        options['lonmax'] = np.float(45.)
-    else:
-        options['emepflag'] = False
-
     if args.latmin:
         options['latmin'] = np.float_(args.latmin)
 
@@ -2038,6 +2109,25 @@ if __name__ == '__main__':
 
     if args.lonmax:
         options['lonmax'] = np.float_(args.lonmax)
+
+    if args.emep:
+        options['emepflag'] = args.emep
+        options['latmin'] = np.float(30.)
+        options['latmax'] = np.float(76.)
+        options['lonmin'] = np.float(-30.)
+        options['lonmax'] = np.float(45.)
+    else:
+        options['emepflag'] = False
+
+    if args.himalayas:
+        options['himalayas'] = args.himalayas
+        options['latmin'] = np.float(10.)
+        options['latmax'] = np.float(50.)
+        options['lonmin'] = np.float(60.)
+        options['lonmax'] = np.float(110.)
+    else:
+        options['himalayas'] = False
+
 
     if args.readpaths:
         options['readpaths'] = args.readpaths.split(',')
@@ -2081,6 +2171,7 @@ if __name__ == '__main__':
     import pathlib
     import tarfile
 
+    bbox = None
 
     if 'files' not in options:
         options['files'] = glob.glob(options['dir']+'/**/'+options['filemask'], recursive=True)
@@ -2134,6 +2225,17 @@ if __name__ == '__main__':
                     obj.logger.info('file {} contains {} points in emep area! '.format(filename, len(tmp_data)))
                 else:
                     obj.logger.info('file {} contains no data in emep area! '.format(filename))
+                    obj = None
+                    continue
+
+            if options['himalayas']:
+                bbox = [options['latmin'], options['latmax'],options['lonmin'],options['lonmax']]
+                tmp_data = obj.select_bbox(bbox)
+                if len(tmp_data) > 0:
+                    obj.data = tmp_data
+                    obj.logger.info('file {} contains {} points in himalaya area! '.format(filename, len(tmp_data)))
+                else:
+                    obj.logger.info('file {} contains no data in himalaya area! '.format(filename))
                     obj = None
                     continue
 
@@ -2268,7 +2370,8 @@ if __name__ == '__main__':
                 plotmapfilename = os.path.join(options['outdir'], os.path.basename(filename) + '.map.png')
                 obj.logger.info('map plot file: {}'.format(plotmapfilename))
                 #title = os.path.basename(filename)
-                obj.plot_location_map(plotmapfilename)
+                obj.plot_location_map(plotmapfilename, bbox=bbox, title=os.path.basename(filename))
+                # obj.plot_location_map(plotmapfilename)
 
 
 
