@@ -1,6 +1,6 @@
 # aeolus2aerocom
 aeolus2aerocom is a converter for L2A data of the ESA satellite 
-[ADM Aeolus](http://www.esa.int/Our_Activities/Observing_the_Earth/Aeolus) from the ESA binary format to netcdf files used by [pyaerocom](https://pyaerocom.met.no/).
+[Aeolus](http://www.esa.int/Our_Activities/Observing_the_Earth/Aeolus) from the ESA binary format to netcdf files used by Met Norway's general evaluation tool [pyaerocom](https://pyaerocom.met.no/). It is intended to be included into pyaerocom at a later stage in the development.
 
 The reading is done using ESA's reading library [coda](http://stcorp.nl/coda/) 
 (provided by [Science [&] Technology Corporation](http://stcorp.nl)). coda is now also [packaged for conda](https://anaconda.org/stcorp/coda).
